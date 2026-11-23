@@ -240,8 +240,13 @@ input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px soli
         </fieldset>
         <fieldset>
           <legend>Equipe</legend>
+          <p class="nota" style="margin:0 0 6px">Ao lado do nome, escreva o setor (ex.: Caixa, Vendas, Depósito). Quem tem o mesmo setor se cobre: o motor não dá folga a todos no mesmo dia.</p>
           <div class="func" id="f-func"></div>
           <button class="bt sec peq" type="button" id="f-add">Incluir pessoa</button>
+        </fieldset>
+        <fieldset>
+          <legend>Mínimo por setor</legend>
+          <div id="f-set" style="display:flex;flex-direction:column;gap:6px"></div>
         </fieldset>
         <button class="bt" type="submit">Gerar 3 escalas</button>
         <p class="nota">Exemplo fictício: loja de seg–sex 08–18 e sábado 08–14, domingos fechados. Feriados já carregados: nacionais, Bahia e Candeias (2026–2027); confira os da cidade do cliente e a convenção coletiva.</p>
@@ -338,6 +343,18 @@ var SimulIAqui = (function () {
     return L[(Math.round(e * 6 / n) + w) % 6];
   }
 
+  function setorKey(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
+  function setores(cfg) {
+    var m = {}, out = [];
+    cfg.funcionarios.forEach(function (f, e) {
+      var k = setorKey(f.cargo); if (!k) return;
+      if (!m[k]) { m[k] = { key: k, nome: String(f.cargo).trim(), idx: [], min: 0 }; out.push(m[k]); }
+      m[k].idx.push(e);
+    });
+    out.forEach(function (st) { var v = cfg.minSetor ? cfg.minSetor[st.key] : null; st.min = v == null ? 0 : Math.max(0, Math.round(+v || 0)); });
+    return out;
+  }
+
   function custoDia(estr, dow, alvoDow) {
     if (dow === alvoDow) return 0;
     if (dow === 0) return 1;
@@ -351,6 +368,7 @@ var SimulIAqui = (function () {
     var weeks = buildWeeks(cfg), n = cfg.funcionarios.length, fixos = diasFixos(cfg);
     var estado = cfg.funcionarios.map(function () { return { tail: 0, domSeguidos: 0 }; });
     var plano = [], alertasSemana = [];
+    var SET = setores(cfg).filter(function (st) { return st.min > 0; });
 
     weeks.forEach(function (days, w) {
       var abertos = days.filter(function (d) { return d.horas; });
@@ -386,28 +404,65 @@ var SimulIAqui = (function () {
           if (estr === 'B' && (S.indexOf(6) >= 0 || S.indexOf(1) >= 0)) c -= 1; // emenda com o domingo
           return { S: S, c: c };
         }).sort(function (a, b) { return a.c - b.c; });
-        return list.slice(0, n > 6 ? 6 : 30);
+        return list.slice(0, 30);
       });
 
-      function cobertura(sel, ignorar) {
-        if (ignorar) return true;
-        return candFolga.every(function (d) {
-          var trab = 0; sel.forEach(function (x) { if (x.S.indexOf(d.dow) < 0) trab++; });
-          return trab >= minDiaDe(cfg, d);
-        });
+      // restantes por setor a partir do funcionário j (para podar a busca)
+      var resto = SET.map(function (st) { var r = []; for (var j = 0; j <= n; j++) r.push(st.idx.filter(function (e) { return e >= j; }).length); return r; });
+      function parcialOk(sel, modo) {
+        if (modo === 2) return true;
+        var falta = n - sel.length;
+        for (var q = 0; q < candFolga.length; q++) {
+          var d = candFolga[q], trab = 0;
+          for (var j = 0; j < sel.length; j++) if (sel[j].S.indexOf(d.dow) < 0) trab++;
+          if (trab + falta < minDiaDe(cfg, d)) return false;
+          if (modo === 0) {
+            for (var a = 0; a < SET.length; a++) {
+              var st = SET[a], ts = 0;
+              for (var b = 0; b < st.idx.length; b++) { var e = st.idx[b]; if (e < sel.length && sel[e].S.indexOf(d.dow) < 0) ts++; }
+              if (ts + resto[a][sel.length] < st.min) return false;
+            }
+          }
+        }
+        return true;
       }
-      function busca(ignorar) {
-        var best = null, bestC = Infinity, sel = [];
+      function busca1(modo, lim) {
+        var best = null, bestC = Infinity, sel = [], nos = 0;
         (function rec(e, c) {
-          if (c >= bestC) return;
-          if (e === n) { if (cobertura(sel, ignorar)) { bestC = c; best = sel.slice(); } return; }
-          for (var i = 0; i < cands[e].length; i++) { sel.push(cands[e][i]); rec(e + 1, c + cands[e][i].c); sel.pop(); }
+          if (c >= bestC || nos > 400000) return;
+          if (e === n) { bestC = c; best = sel.slice(); return; }
+          var L = Math.min(lim, cands[e].length);
+          for (var i = 0; i < L; i++) {
+            nos++;
+            sel.push(cands[e][i]);
+            if (parcialOk(sel, modo)) rec(e + 1, c + cands[e][i].c);
+            sel.pop();
+          }
         })(0, 0);
         return best;
       }
-      var sol = busca(false), alerta = null;
+      function busca(modo) {
+        var lims = n > 6 ? [6, 12, 30] : [30];
+        for (var q = 0; q < lims.length; q++) { var r = busca1(modo, lims[q]); if (r) return r; }
+        return null;
+      }
+      var sol = busca(0), alerta = null;
+      if (!sol && SET.length) {
+        sol = busca(1);
+        if (sol) {
+          var motivos = [];
+          SET.forEach(function (st) {
+            var folgam = st.idx.length * Math.min(k, candFolga.length), dias = candFolga.length;
+            if (k > 0 && st.idx.length <= st.min) motivos.push(st.nome + ' tem ' + st.idx.length + (st.idx.length > 1 ? ' pessoas' : ' pessoa') + ' e mínimo de ' + st.min + ' por dia, então ninguém do setor consegue folgar');
+            else if (st.idx.length * dias - folgam < st.min * dias) motivos.push(st.nome + ' não tem gente suficiente para manter ' + st.min + ' por dia com as folgas da semana');
+          });
+          alerta = 'Semana de ' + br(days[0].d).slice(0, 5) + ': não dá para manter o mínimo de cada setor. ' +
+            (motivos.length ? motivos.join('; ') + '.' : 'As folgas do setor se chocam com a folga obrigatória aos domingos (mulheres: um domingo de folga a cada 15 dias; homens: no máximo 2 domingos seguidos) ou com as horas da semana.') +
+            ' Diminua o mínimo do setor ou inclua mais uma pessoa nele.';
+        }
+      }
       if (!sol) {
-        sol = busca(true);
+        sol = busca(2);
         var precisa = candFolga.reduce(function (a, d) { return a + minDiaDe(cfg, d); }, 0);
         alerta = 'Semana de ' + br(days[0].d).slice(0, 5) + ': com ' + n + ' pessoas não dá para cumprir os mínimos por dia (precisa de ' + precisa + ' turnos; há ' + (n * (abertos.length - k)) + ', e as regras de domingo e de horas reduzem as combinações). Reduza um mínimo ou inclua uma pessoa (ex.: temporária de fim de ano).';
       }
@@ -526,7 +581,8 @@ var SimulIAqui = (function () {
 
   function montarTurnos(cfg, sem) {
     sem.turnos = sem.folgas.map(function () { return {}; });
-    sem.cobertura = {};
+    sem.cobertura = {}; sem.cobSetor = {};
+    var SETT = setores(cfg).filter(function (st) { return st.min > 0; });
     sem.days.forEach(function (d, i) {
       if (!d.horas) return;
       var quem = [];
@@ -534,11 +590,20 @@ var SimulIAqui = (function () {
       if (!quem.length) return;
       var ops = quem.map(function (e) { return opcoesTurno(cfg, sem.horas[e].porDia[i], d.horas.abre, d.horas.fecha); });
       var total = ops.reduce(function (a, o) { return a * o.length; }, 1), best = null;
+      function faltaSetor(sel) {
+        var f = 0;
+        SETT.forEach(function (st) {
+          var ts = []; sel.forEach(function (x, j) { if (st.idx.indexOf(quem[j]) >= 0) ts.push(x); });
+          var req = Math.min(st.min, ts.length); if (!req) return;
+          cobDia(ts, d.horas.abre, d.horas.fecha).arr.forEach(function (c) { if (c < req) f += req - c; });
+        });
+        return f;
+      }
       function nota(sel) {
         var cb = cobDia(sel, d.horas.abre, d.horas.fecha), desvio = 0, tardes = 0;
         sel.forEach(function (x) { if (x.alm != null && x.L >= 60) desvio += Math.abs(x.alm - 12 * 60); if (x.tarde) tardes++; });
         // almoços iguais pesam: queremos escalonar
-        return cb.min * 100000 - desvio - tardes * 5;
+        return cb.min * 100000 - faltaSetor(sel) * 2000 - desvio - tardes * 5;
       }
       if (total <= 60000) {
         var sel = [], bestN = -Infinity;
@@ -555,7 +620,16 @@ var SimulIAqui = (function () {
         });
       }
       best.forEach(function (x, j) { sem.turnos[quem[j]][i] = x; });
-      if (d.tipo !== 'feriado') sem.cobertura[i] = { pessoas: quem.length, min: cobDia(best, d.horas.abre, d.horas.fecha).min };
+      if (d.tipo !== 'feriado') {
+        sem.cobertura[i] = { pessoas: quem.length, min: cobDia(best, d.horas.abre, d.horas.fecha).min };
+        sem.cobSetor[i] = SETT.map(function (st) {
+          var ts = []; best.forEach(function (x, j) { if (st.idx.indexOf(quem[j]) >= 0) ts.push(x); });
+          var desc = 0, almSoma = 0;
+          if (ts.length) cobDia(ts, d.horas.abre, d.horas.fecha).arr.forEach(function (c) { if (c < Math.min(st.min, ts.length)) desc += 15; });
+          ts.forEach(function (x) { almSoma += x.L || 0; });
+          return { nome: st.nome, req: st.min, pessoas: ts.length, desc: desc, tol: ts.length <= st.min ? almSoma : 0 };
+        });
+      }
     });
   }
 
@@ -593,8 +667,8 @@ var SimulIAqui = (function () {
           if (prev && prev.t) { var gap = x.t.ini + 1440 - prev.t.fim; if (gap < interMin) interMin = gap; }
           run++; if (run > maxSeg) maxSeg = run;
         } else run = 0;
-        if (x.d.dow === 0 && x.d.tipo === 'dom') {
-          if (x.t) { domSeg++; domTrab++; if (domSeg >= K) domErr.push(f.nome + ' (' + x.d.dia + '/' + (x.d.d.getMonth() + 1) + ')'); }
+        if (x.d.dow === 0) {
+          if (x.d.tipo === 'dom' && x.t) { domSeg++; domTrab++; if (domSeg >= K) domErr.push(f.nome + ' (' + x.d.dia + '/' + (x.d.d.getMonth() + 1) + ')'); }
           else domSeg = 0;
         }
       });
@@ -635,6 +709,25 @@ var SimulIAqui = (function () {
       cobErr.length ? 'Abaixo do mínimo em: ' + cobErr.join(', ') : 'Todos os dias com o mínimo escalado (' + cfg.minDia.util + ' em dia útil, ' + cfg.minDia.sab + ' no sábado' + (temDom ? ', ' + cfg.minDia.dom + ' no domingo' : '') + ').');
     add('presenca', 'Loja nunca abaixo de ' + cfg.minPresente + ' pessoas (inclusive no almoço)', 'Regra da loja', presErr.length ? 'aviso' : 'ok',
       presErr.length ? 'Fica abaixo em algum horário: ' + presErr.join(', ') : 'Almoços escalonados: a loja sempre tem ' + cfg.minPresente + ' ou mais.');
+    var SETV = setores(cfg).filter(function (st) { return st.min > 0; });
+    if (SETV.length) {
+      var sDia = [], sHora = [], sAlm = 0;
+      res.plano.forEach(function (sem) {
+        sem.days.forEach(function (d, i) {
+          var cs = sem.cobSetor && sem.cobSetor[i]; if (!cs || !d.noMes) return;
+          cs.forEach(function (c) {
+            if (c.pessoas < c.req) sDia.push(c.nome + ' ' + DOW[d.dow] + ' ' + d.dia);
+            else if (c.desc > c.tol) sHora.push(c.nome + ' ' + DOW[d.dow] + ' ' + d.dia);
+            if (c.pessoas === c.req && c.tol > 0) sAlm++;
+          });
+        });
+      });
+      add('setor', 'Cobertura por setor', 'Regra da loja', sDia.length ? 'erro' : (sHora.length ? 'aviso' : 'ok'),
+        sDia.length ? 'Setor abaixo do mínimo em: ' + sDia.join(', ') :
+          (sHora.length ? 'Todo dia tem o mínimo escalado, mas o setor fica descoberto em algum horário além do almoço (ex.: alguém do setor em dia curto): ' + sHora.join(', ') :
+            'Todo dia com o mínimo de cada setor (' + SETV.map(function (st) { return st.nome + ' ' + st.min; }).join(', ') + '), sem dois do mesmo setor de folga juntos além do permitido.' +
+            (sAlm ? ' Nos dias em que o setor fica só com o mínimo, combine quem cobre o almoço (ex.: o gerente cobre o caixa).' : '')));
+    }
     res.alertasSemana.forEach(function (a) { add('busca', 'Combinação', 'Motor', 'erro', a); });
     var erros = itens.filter(function (x) { return x.status === 'erro'; }).length, avisos = itens.filter(function (x) { return x.status === 'aviso'; }).length;
     return { itens: itens, erros: erros, avisos: avisos, linhas: L };
@@ -695,7 +788,7 @@ var SimulIAqui = (function () {
     return { escalas: lista, porFunc: porFunc };
   }
 
-  return { gerar: gerar, exportar: exportar, fmt: fmt, fmtH: fmtH, toMin: toMin, DOW: DOW, buildWeeks: buildWeeks, iso: iso, br: br };
+  return { gerar: gerar, setores: setores, setorKey: setorKey, exportar: exportar, fmt: fmt, fmtH: fmtH, toMin: toMin, DOW: DOW, buildWeeks: buildWeeks, iso: iso, br: br };
 })();
 if (typeof module !== 'undefined') module.exports = SimulIAqui;
 
@@ -724,8 +817,9 @@ if (typeof module !== 'undefined') module.exports = SimulIAqui;
       { nome: 'Ana Souza', cargo: 'Gerente', sexo: 'F', folgaPref: null, semDomingo: false },
       { nome: 'Bruna Lima', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false },
       { nome: 'Carlos Rocha', cargo: 'Caixa', sexo: 'M', folgaPref: null, semDomingo: false },
-      { nome: 'Daniela Reis', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false }
-    ]
+      { nome: 'Daniela Reis', cargo: 'Caixa', sexo: 'F', folgaPref: null, semDomingo: false }
+    ],
+    minSetor: { caixa: 1 }
   };
   var resultados = {}, atual = 'B', selCel = null;
   var $ = function (id) { return document.getElementById(id); };
@@ -764,18 +858,29 @@ if (typeof module !== 'undefined') module.exports = SimulIAqui;
   function funcForm() {
     var h = '';
     cfg.funcionarios.forEach(function (f, i) {
-      h += '<div class="f" data-i="' + i + '"><input id="fn' + i + '" value="' + esc(f.nome) + '" aria-label="Nome"><input id="fc' + i + '" value="' + esc(f.cargo || '') + '" aria-label="Cargo">' +
+      h += '<div class="f" data-i="' + i + '"><input id="fn' + i + '" value="' + esc(f.nome) + '" aria-label="Nome"><input id="fc' + i + '" value="' + esc(f.cargo || '') + '" aria-label="Setor ou função" placeholder="Setor (ex.: Caixa)" title="Setor ou função">' +
         '<select id="fp' + i + '" aria-label="Folga preferida" style="grid-column:1/-1"></select>' +
         '<div class="x"><label><input type="checkbox" id="fs' + i + '"' + (f.sexo === 'F' ? ' checked' : '') + '> Mulher</label>' +
         '<label><input type="checkbox" id="fd' + i + '"' + (f.semDomingo ? ' checked' : '') + '> Não trabalha domingo</label>' +
         '<button class="bt sec peq" type="button" data-rm="' + i + '" style="margin-left:auto">Tirar</button></div></div>';
     });
     $('f-func').innerHTML = h;
+    setForm();
     cfg.funcionarios.forEach(function (f, i) {
       var sel = $('fp' + i);
       sel.add(new Option('Folga: sem preferência', ''));
       [1,2,3,4,5,6].forEach(function (d) { sel.add(new Option('Folga preferida: ' + DOW[d], String(d), false, f.folgaPref === d)); });
     });
+  }
+  function setForm() {
+    var lista = S.setores(cfg), h = '';
+    lista.forEach(function (st, q) {
+      var v = cfg.minSetor && cfg.minSetor[st.key] != null ? cfg.minSetor[st.key] : (st.idx.length >= 2 ? 1 : 0);
+      h += '<div class="lin"><label for="ms' + q + '">' + esc(st.nome) + ' (' + st.idx.length + (st.idx.length > 1 ? ' pessoas' : ' pessoa') + ')</label>' +
+        '<input id="ms' + q + '" class="f-ms" data-k="' + esc(st.key) + '" type="number" min="0" max="20" value="' + v + '" title="Mínimo de pessoas deste setor trabalhando por dia"></div>';
+    });
+    $('f-set').innerHTML = (h || '<p class="nota" style="margin:0">Preencha o setor das pessoas para definir o mínimo de cada um.</p>') +
+      (h ? '<p class="nota" style="margin:0">Mínimo trabalhando por dia em cada setor. 0 = sem regra. Ex.: Caixa 1 = se um caixa folga, o outro trabalha.</p>' : '');
   }
   function lerForm() {
     var c = JSON.parse(JSON.stringify(cfg));
@@ -792,6 +897,8 @@ if (typeof module !== 'undefined') module.exports = SimulIAqui;
       return { data: mm[3] + '-' + mm[2].padStart(2,'0') + '-' + mm[1].padStart(2,'0'), nome: mm[4] || 'Feriado' };
     }).filter(Boolean);
     c.regra386 = $('f-386').checked;
+    c.minSetor = JSON.parse(JSON.stringify(cfg.minSetor || {}));
+    Array.prototype.forEach.call(document.querySelectorAll('.f-ms'), function (x) { c.minSetor[x.getAttribute('data-k')] = Math.max(0, +x.value || 0); });
     c.funcionarios = cfg.funcionarios.map(function (f, i) {
       var p = $('fp' + i).value;
       return { nome: $('fn' + i).value.trim() || ('Pessoa ' + (i + 1)), cargo: $('fc' + i).value.trim(), sexo: $('fs' + i).checked ? 'F' : 'M', folgaPref: p ? +p : null, semDomingo: $('fd' + i).checked };
@@ -807,6 +914,7 @@ if (typeof module !== 'undefined') module.exports = SimulIAqui;
     cfg = lerForm(); cfg.funcionarios.push({ nome: 'Nova pessoa', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false }); funcForm();
   });
   $('f-mes').addEventListener('change', function () { cfg = lerForm(); domingosForm(); });
+  $('f-func').addEventListener('change', function (ev) { if (ev.target && /^fc\d+$/.test(ev.target.id)) { cfg = lerForm(); setForm(); } });
   $('form').addEventListener('submit', function (ev) { ev.preventDefault(); cfg = lerForm(); gerarTudo(); });
 
   // ---------- render ----------
@@ -866,7 +974,8 @@ if (typeof module !== 'undefined') module.exports = SimulIAqui;
         if (!d.noMes) return;
         var c = sem.cobertura[i];
         if (!c) { h += '<td>–</td>'; return; }
-        var baixo = c.pessoas < (d.tipo === 'sab' ? cfg.minDia.sab : d.tipo === 'dom' ? cfg.minDia.dom : cfg.minDia.util) || c.min < cfg.minPresente;
+        var baixo = c.pessoas < (d.tipo === 'sab' ? cfg.minDia.sab : d.tipo === 'dom' ? cfg.minDia.dom : cfg.minDia.util) || c.min < cfg.minPresente ||
+          ((sem.cobSetor && sem.cobSetor[i]) || []).some(function (x) { return x.pessoas < x.req; });
         h += '<td class="' + (baixo ? 'baixo' : '') + '"><b>' + c.pessoas + '</b>/' + c.min + '</td>';
       });
     });
