@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<title>Escala RHAqui</title>
+<meta name="description" content="Monte a escala do mês da sua loja em minutos: 3 opções conferidas com a CLT. RHAqui Soluções Empresariais.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: faixa de marca verde, depois painel de resultados (opções → calendário → conferência legal → exportar) e, ao lado, os dados da loja. */
+:root{
+  --verde:#0F766E; --verde-2:#0B5F58; --menta:#E6F6F2; --bg:#F6F9F8; --card:#FFFFFF; --fg:#16302C; --muted:#5B6F6B; --line:#D7E4E0;
+  --folga:#EEF2F1; --folga-fg:#4A5D59; --curto:#CDEDE5; --longo:#0F766E; --longo-fg:#FFFFFF; --feriado:#FBE7C6; --feriado-fg:#7A4B00;
+  --ok:#137A3F; --ok-bg:#E3F4EA; --aviso:#8A5A00; --aviso-bg:#FFF2D6; --erro:#B42318; --erro-bg:#FDE7E5;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; --display:'Space Grotesk','Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --verde:#2DB3A5; --verde-2:#5FD0C3; --menta:#12322E; --bg:#0D1715; --card:#14211F; --fg:#E3EFEC; --muted:#93A8A3; --line:#26403B;
+  --folga:#1B2A28; --folga-fg:#9DB3AE; --curto:#1E4741; --longo:#1F8F84; --longo-fg:#FFFFFF; --feriado:#4A3511; --feriado-fg:#FFD58A;
+  --ok:#5BD08D; --ok-bg:#163526; --aviso:#F5C35B; --aviso-bg:#3A2D10; --erro:#FF8A80; --erro-bg:#3D1916; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --verde:#2DB3A5; --verde-2:#5FD0C3; --menta:#12322E; --bg:#0D1715; --card:#14211F; --fg:#E3EFEC; --muted:#93A8A3; --line:#26403B;
+  --folga:#1B2A28; --folga-fg:#9DB3AE; --curto:#1E4741; --longo:#1F8F84; --longo-fg:#FFFFFF; --feriado:#4A3511; --feriado-fg:#FFD58A;
+  --ok:#5BD08D; --ok-bg:#163526; --aviso:#F5C35B; --aviso-bg:#3A2D10; --erro:#FF8A80; --erro-bg:#3D1916; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.5}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topo{background:#1F4B40;color:#fff;margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
+.topo .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-block:18px}
+.marca{display:flex;align-items:baseline;gap:10px}
+.marca h1{font-size:26px;font-weight:700}
+.marca h1 b{color:#A7F3E4;font-weight:700}
+.marca span{font-size:12px;opacity:.85;letter-spacing:.04em;text-transform:uppercase}
+.topo p{margin:0;font-size:13px;opacity:.92;flex:1 1 320px}
+.selo{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.grade{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;padding-block:20px 48px}
+@media (max-width:980px){.grade{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:20px;min-width:0}
+.bloco{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
+.bloco h2{font-size:17px;margin-bottom:4px}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+.mudanca{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px}
+.mudanca .de{text-decoration:line-through;color:var(--muted)}
+.mudanca .para{font-weight:600;color:var(--verde)}
+.opcoes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:760px){.opcoes{grid-template-columns:minmax(0,1fr)}}
+.op{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card)}
+.op:hover{border-color:var(--verde)}
+.op:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+.op[aria-pressed="true"]{border-color:var(--verde);background:var(--menta)}
+.op .let{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--verde)}
+.op h3{font-size:16px}
+.op p{margin:0;font-size:12.5px;color:var(--muted)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;width:max-content}
+.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.aviso{background:var(--aviso-bg);color:var(--aviso)} .pill.erro{background:var(--erro-bg);color:var(--erro)}
+.mini{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--fg)}
+.mini b{font-variant-numeric:tabular-nums}
+.cal{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums}
+.cal table{width:max-content;min-width:100%}
+.cal th,.cal td{border-bottom:1px solid var(--line);padding:0;text-align:center}
+.cal thead th{font-size:11px;font-weight:600;color:var(--muted);padding:6px 2px;background:var(--card);position:sticky;top:0}
+.cal thead th.fds{color:var(--verde)}
+.cal th.nome{position:sticky;left:0;background:var(--card);text-align:left;padding:6px 10px;font-size:12.5px;font-weight:600;min-width:118px;z-index:1;border-right:1px solid var(--line)}
+.cal th.nome small{display:block;font-weight:400;color:var(--muted);font-size:11px}
+.cel{all:unset;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;width:44px;height:42px;font-size:10.5px;line-height:1.15;border-radius:6px;margin:3px 2px}
+.cel:focus-visible{outline:2px solid var(--verde)}
+.cel.longo{background:var(--longo);color:var(--longo-fg)}
+.cel.curto{background:var(--curto);color:var(--fg)}
+.cel.folga{background:var(--folga);color:var(--folga-fg);font-weight:600;font-size:12px}
+.cel.dsr{color:var(--muted);font-size:11px}
+.cel.feriado{background:var(--feriado);color:var(--feriado-fg);font-weight:600}
+.cel.sel{outline:2px solid var(--fg);outline-offset:1px}
+.cal tr.equipe td{font-size:11px;color:var(--muted);padding:4px 0}
+.cal tr.equipe td b{color:var(--fg)}
+.cal tr.equipe td.baixo b{color:var(--erro)}
+.legenda{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--muted);margin-top:10px}
+.legenda i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-3px;margin-right:6px}
+.detalhe{margin-top:10px;font-size:13px;padding:10px 12px;border-radius:8px;background:var(--menta);min-height:42px}
+.tab{overflow-x:auto}
+.tab table{width:100%;font-size:13px}
+.tab th,.tab td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tab th:first-child,.tab td:first-child{text-align:left}
+.tab thead th{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.lei{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.lei li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
+.lei li .pill{grid-row:span 2;align-self:start;margin-top:2px}
+.lei li strong{font-size:13.5px}
+.lei li strong em{font-style:normal;font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.lei li span{font-size:12.5px;color:var(--muted)}
+.export{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.export label{font-weight:600;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
+textarea.saida{width:100%;min-height:120px;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre;overflow:auto}
+button.bt{font:600 13px var(--sans);border:1px solid var(--verde);background:var(--verde);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
+button.bt.sec{background:transparent;color:var(--verde)}
+button.bt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+button.bt.peq{padding:4px 10px;font-size:12px}
+/* formulário */
+.form{display:flex;flex-direction:column;gap:14px}
+.form fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.form legend{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--verde);margin-bottom:6px;padding:0}
+.lin{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;font-size:13px}
+.lin2{display:grid;grid-template-columns:52px auto minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center;font-size:13px}
+input,select,textarea{font:13px var(--sans);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 7px;min-width:0}
+input[type=number]{width:72px}
+input[type=time]{width:100%}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
+.func{display:flex;flex-direction:column;gap:8px}
+.func .f{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:8px;border:1px solid var(--line);border-radius:8px}
+.func .f .x{display:flex;gap:10px;align-items:center;font-size:12px;grid-column:1/-1;flex-wrap:wrap}
+.nota{font-size:12px;color:var(--muted);margin:0}
+.legal{font-size:12.5px;line-height:1.5;padding:12px 14px;border-radius:10px;background:var(--aviso-bg);color:var(--fg);border:1px solid var(--line)}
+.legal strong{color:var(--aviso)}
+.ajuda{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:13px}
+.ajuda a{color:var(--verde);font-weight:600}
+.aviso-geral{font-size:12.5px;padding:10px 12px;border-radius:8px;background:var(--aviso-bg);color:var(--aviso)}
+.comp th,.comp td{text-align:center!important}
+.comp td:first-child,.comp th:first-child{text-align:left!important}
+@media print{
+  body{background:#fff;color:#000}
+  aside.col,.nao-imprime,.selo,#form{display:none!important}
+  .grade{grid-template-columns:1fr;padding:0}
+  .bloco{border:0;padding:8px 0;break-inside:avoid}
+  .cal{overflow:visible;border:0}
+  .cel{width:30px;height:32px;font-size:8.5px;margin:1px}
+  .cal th.nome{min-width:90px}
+  #detalhe{display:none}
+  section.bloco:nth-of-type(n+5){display:none}
+  .legal{display:block!important;font-size:9.5px;break-inside:avoid}
+  .topo{background:#1F4B40!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .cel{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+@media (prefers-reduced-motion:no-preference){.op,.cel{transition:background .15s,border-color .15s}}
+</style>
+</head>
+<body>
+
+
+<header class="topo">
+  <div class="wrap">
+    <div class="marca"><h1><a href="https://www.rhaqui.com.br/" style="color:inherit;text-decoration:none">Escala <b>RH</b>Aqui</a></h1><span>RHAqui Soluções Empresariais</span></div>
+    <p id="titulo-sub">Escalas de trabalho com a CLT conferida.</p>
+    <span class="selo">Dados de exemplo · edite ao lado</span>
+  </div>
+</header>
+
+<main class="wrap grade">
+  <div class="col">
+    <section class="legal" id="aviso-legal">
+      <strong>Importante:</strong> a escala gerada é uma sugestão de organização. Ela confere as regras gerais da CLT, mas não substitui a convenção coletiva da sua categoria nem a orientação do seu contador. Dias acima de 8h só valem com acordo de compensação assinado por cada funcionário. A decisão e os documentos são responsabilidade da empresa. Os dados que você digita ficam só no seu navegador; nada é gravado pela RHAqui.
+    </section>
+
+    <section class="bloco">
+      <h2>3 escalas possíveis para o mês</h2>
+      <p class="sub" id="resumo-mes"></p>
+      <div class="mudanca" id="mudanca"></div>
+      <div style="height:14px"></div>
+      <div class="opcoes" id="opcoes"></div>
+    </section>
+
+    <section class="bloco">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 id="cal-titulo">Calendário</h2><button class="bt sec peq nao-imprime" type="button" id="bt-print">Imprimir ou salvar em PDF</button></div>
+      <p class="sub">Toque num dia para ver entrada, almoço e saída. A linha "Equipe" mostra quantas pessoas trabalham e o mínimo presente em qualquer horário.</p>
+      <div class="cal" id="cal"></div>
+      <div class="legenda">
+        <span><i style="background:var(--longo)"></i>Dia completo</span>
+        <span><i style="background:var(--curto)"></i>Dia curto (até 6h, pausa de 15 min)</span>
+        <span><i style="background:var(--folga)"></i>F = folga</span>
+        <span><i style="background:var(--feriado)"></i>FER = feriado (abonado)</span>
+        <span>· = domingo, loja fechada</span>
+      </div>
+      <div class="detalhe" id="detalhe">Toque num dia do calendário.</div>
+    </section>
+
+    <section class="bloco">
+      <h2>Horas e folgas por pessoa</h2>
+      <p class="sub">Semanas de segunda a domingo. Feriado conta como dia trabalhado (abonado).</p>
+      <div class="tab" id="tab-horas"></div>
+    </section>
+
+    <section class="bloco">
+      <h2>Conferência legal</h2>
+      <p class="sub">O motor só entrega escala que passa nestas regras. Aviso = permitido, mas exige um documento ou cuidado.</p>
+      <ul class="lei" id="lei"></ul>
+    </section>
+
+    <section class="bloco">
+      <h2>Comparar as 3 opções</h2>
+      <div class="tab comp" id="comp"></div>
+    </section>
+
+    <section class="bloco">
+      <h2>Levar para o Ponto RHAqui</h2>
+      <p class="sub">Copie e cole nas abas da planilha de ponto (a partir da linha livre). Cada mudança de folga vira uma linha nova em "Escala por funcionário", como o Ponto RHAqui já faz.</p>
+      <div class="export">
+        <div class="ajuda nao-imprime"><span>Precisa de ajuda, do acordo de compensação ou quer o ponto ligado à escala?</span><a href="https://wa.me/5571992022915" target="_blank" rel="noopener">Falar com a RHAqui no WhatsApp: (71) 99202-2915</a></div>
+        <div><label for="exp-escalas">Aba "Escalas" (colunas A a P) <button class="bt sec peq" id="cp1" type="button">Copiar</button></label><textarea class="saida" id="exp-escalas" readonly></textarea></div>
+        <div><label for="exp-func">Aba "Escala por funcionário" (colunas A a D) <button class="bt sec peq" id="cp2" type="button">Copiar</button></label><textarea class="saida" id="exp-func" readonly></textarea></div>
+        <p class="nota" id="exp-nota"></p>
+      </div>
+    </section>
+  </div>
+
+  <aside class="col">
+    <section class="bloco">
+      <h2>Dados da loja</h2>
+      <p class="sub">Mude qualquer dado e gere de novo.</p>
+      <form class="form" id="form">
+        <fieldset>
+          <legend>Mês e jornada</legend>
+          <div class="lin"><label for="f-emp">Empresa</label><input id="f-emp" style="width:170px"></div>
+          <div class="lin"><label for="f-mes">Mês</label><input id="f-mes" type="month" style="width:150px"></div>
+          <div class="lin"><label for="f-hs">Horas por semana</label><input id="f-hs" type="number" min="20" max="44" step="1"></div>
+          <div class="lin"><label for="f-ds">Dias de trabalho por semana</label><select id="f-ds"><option value="5">5 (5x2)</option><option value="6">6 (6x1)</option></select></div>
+          <div class="lin"><label for="f-modo">Como dividir as horas</label><select id="f-modo"><option value="curto">4 dias longos + 1 curto</option><option value="iguais">Dias iguais</option></select></div>
+          <div class="lin"><label for="f-amin">Almoço mínimo (min)</label><input id="f-amin" type="number" min="60" max="120" step="15"></div>
+          <div class="lin"><label for="f-amax">Almoço máximo (min)</label><input id="f-amax" type="number" min="60" max="120" step="15"></div>
+          <div class="lin"><label for="f-tol">Pode sair após fechar (min)</label><input id="f-tol" type="number" min="0" max="30" step="5"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Horário da loja</legend>
+          <div id="f-loja" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div class="lin"><span>Domingos abertos no mês</span><span></span></div>
+          <div id="f-doms" style="display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px"></div>
+          <div class="lin2"><span>Dom</span><span></span><input id="f-dabre" type="time" aria-label="Domingo abre"><input id="f-dfecha" type="time" aria-label="Domingo fecha"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Mínimo de pessoas</legend>
+          <div class="lin"><label for="f-mu">Escaladas em dia útil</label><input id="f-mu" type="number" min="1" max="20"></div>
+          <div class="lin"><label for="f-msab">Escaladas no sábado</label><input id="f-msab" type="number" min="1" max="20"></div>
+          <div class="lin"><label for="f-mdom">Escaladas no domingo aberto</label><input id="f-mdom" type="number" min="1" max="20"></div>
+          <div class="lin"><label for="f-mp">Presentes a qualquer hora</label><input id="f-mp" type="number" min="1" max="20"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Feriados (dd/mm/aaaa nome)</legend>
+          <textarea id="f-fer" rows="3" aria-label="Feriados"></textarea>
+          <label style="display:flex;gap:8px;font-size:13px;align-items:flex-start"><input id="f-386" type="checkbox" style="margin-top:3px"> Mulheres: domingo de folga a cada 15 dias (CLT art. 386)</label>
+        </fieldset>
+        <fieldset>
+          <legend>Equipe</legend>
+          <div class="func" id="f-func"></div>
+          <button class="bt sec peq" type="button" id="f-add">Incluir pessoa</button>
+        </fieldset>
+        <button class="bt" type="submit">Gerar 3 escalas</button>
+        <p class="nota">Exemplo fictício: loja de seg–sex 08–18 e sábado 08–14, domingos fechados. Feriados já carregados: nacionais, Bahia e Candeias (2026–2027); confira os da cidade do cliente e a convenção coletiva.</p>
+      </form>
+    </section>
+  </aside>
+</main>
+
+<script>
+/* Escala RHAqui – motor de escalas (protótipo 20/11/2026)
+   Gera escalas mensais por estratégia, distribui horas, monta turnos e confere regras da CLT. */
+var SimulIAqui = (function () {
+  var DOW = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+  function toMin(s) { var p = String(s).split(':'); return (+p[0]) * 60 + (+(p[1] || 0)); }
+  function fmt(m) { m = Math.round(m); var h = Math.floor(m / 60), mm = m % 60; return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); }
+  function fmtH(m) { m = Math.round(m); var h = Math.floor(m / 60), mm = m % 60; return mm ? h + 'h' + String(mm).padStart(2, '0') : h + 'h'; }
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function br(d) { return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); }
+  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+
+  function dayInfo(cfg, d) {
+    var id = iso(d), dow = d.getDay(), horas = null, tipo;
+    if (dow === 0) {
+      if (cfg.domingosAbertos.indexOf(id) >= 0) { horas = cfg.horasDomingo; tipo = 'dom'; } else tipo = 'fechado';
+    } else {
+      var h = cfg.loja[dow];
+      if (h && h.aberta) { horas = h; tipo = dow === 6 ? 'sab' : 'util'; } else tipo = 'fechado';
+    }
+    var fer = null;
+    cfg.feriados.forEach(function (f) { if (f.data === id) fer = f.nome; });
+    if (fer && horas) tipo = 'feriado'; // loja fecharia: dia "virtual" para o padrão, não trabalhado
+    return { id: id, d: d, dow: dow, dia: d.getDate(), noMes: d.getMonth() === cfg.mes - 1,
+      horas: horas ? { abre: toMin(horas.abre), fecha: toMin(horas.fecha) } : null, tipo: tipo, feriado: fer };
+  }
+
+  function buildWeeks(cfg) {
+    var first = new Date(cfg.ano, cfg.mes - 1, 1, 12), last = new Date(cfg.ano, cfg.mes, 0, 12);
+    var s = addDays(first, -((first.getDay() + 6) % 7)), weeks = [];
+    for (; s <= last; s = addDays(s, 7)) {
+      var days = [];
+      for (var i = 0; i < 7; i++) days.push(dayInfo(cfg, addDays(s, i)));
+      weeks.push(days);
+    }
+    return weeks;
+  }
+
+  function combos(arr, k) {
+    var out = [];
+    (function rec(start, cur) {
+      if (cur.length === k) { out.push(cur.slice()); return; }
+      for (var i = start; i < arr.length; i++) { cur.push(arr[i]); rec(i + 1, cur); cur.pop(); }
+    })(0, []);
+    return out;
+  }
+
+  function minDiaDe(cfg, day) {
+    if (day.tipo === 'sab') return cfg.minDia.sab;
+    if (day.tipo === 'dom') return cfg.minDia.dom;
+    return cfg.minDia.util;
+  }
+
+  // Dia fixo de folga (estratégia A): respeita preferência e capacidade de cada dia
+  function diasFixos(cfg) {
+    var n = cfg.funcionarios.length, cap = {}, res = [];
+    [1, 2, 3, 4, 5, 6].forEach(function (d) {
+      var h = cfg.loja[d]; if (!h || !h.aberta) { cap[d] = 0; return; }
+      cap[d] = n - (d === 6 ? cfg.minDia.sab : cfg.minDia.util);
+    });
+    var ordem = [6, 1, 3, 5, 2, 4];
+    cfg.funcionarios.forEach(function (f, i) { if (f.folgaPref && cap[f.folgaPref] > 0) { res[i] = f.folgaPref; cap[f.folgaPref]--; } });
+    var fila = cfg.funcionarios.map(function (f, i) { return i; });
+    // quem tem cargo de gestão fica por último (tende a folgar em dia útil e estar na loja no sábado)
+    fila.sort(function (a, b) { return (/gerent|gest|supervis/i.test(cfg.funcionarios[a].cargo || '') ? 1 : 0) - (/gerent|gest|supervis/i.test(cfg.funcionarios[b].cargo || '') ? 1 : 0) || a - b; });
+    fila.forEach(function (i) {
+      var f = cfg.funcionarios[i];
+      if (res[i]) return;
+      for (var j = 0; j < ordem.length; j++) { var d = ordem[j]; if (cap[d] > 0) { res[i] = d; cap[d]--; return; } }
+      res[i] = 1;
+    });
+    return res;
+  }
+
+  function alvo(estr, e, w, n, fixos, cfg) {
+    var f = cfg.funcionarios[e];
+    if (estr === 'A') return fixos[e];
+    if (estr === 'B') {
+      var capSab = Math.max(0, n - cfg.minDia.sab);
+      if (capSab > 0 && (((e - w * capSab) % n) + n) % n < capSab) return 6;
+      if (f.folgaPref && f.folgaPref !== 6) return f.folgaPref;
+      return [1, 5, 2, 4, 3][(e + w) % 5];
+    }
+    var L = [1, 2, 3, 4, 5, 6];
+    return L[(Math.round(e * 6 / n) + w) % 6];
+  }
+
+  function custoDia(estr, dow, alvoDow) {
+    if (dow === alvoDow) return 0;
+    if (dow === 0) return 1;
+    var dist = Math.abs(dow - alvoDow);
+    if (estr === 'C') dist = Math.min(dist, 6 - dist);
+    return 4 + dist * 2 + (dow === 6 ? 3 : 0);
+  }
+
+  // Monta uma estratégia completa
+  function gerar(cfg, estr) {
+    var weeks = buildWeeks(cfg), n = cfg.funcionarios.length, fixos = diasFixos(cfg);
+    var estado = cfg.funcionarios.map(function () { return { tail: 0, domSeguidos: 0 }; });
+    var plano = [], alertasSemana = [];
+
+    weeks.forEach(function (days, w) {
+      var abertos = days.filter(function (d) { return d.horas; });
+      var candFolga = abertos.filter(function (d) { return d.tipo !== 'feriado'; });
+      var k = Math.max(0, abertos.length - cfg.diasSemana);
+      var domingo = days[6];
+      var cands = cfg.funcionarios.map(function (f, e) {
+        var K = (cfg.regra386 && f.sexo === 'F') ? 2 : 3;
+        var list = combos(candFolga.map(function (d) { return d.dow; }), Math.min(k, candFolga.length)).filter(function (S) {
+          if (domingo.tipo === 'dom') {
+            if (f.semDomingo && S.indexOf(0) < 0) return false;
+            if (estado[e].domSeguidos >= K - 1 && S.indexOf(0) < 0) return false;
+          }
+          // no máximo 6 dias seguidos
+          var run = estado[e].tail, max = run;
+          days.forEach(function (d) {
+            var trab = d.horas && d.tipo !== 'feriado' && S.indexOf(d.dow) < 0;
+            run = trab ? run + 1 : 0; if (run > max) max = run;
+          });
+          if (max > 6) return false;
+          // as horas da semana precisam caber nos dias trabalhados
+          var cap = 0, nd = 0;
+          days.forEach(function (d) { if (d.horas && S.indexOf(d.dow) < 0) { cap += maxTrabalho(cfg, d); nd++; } });
+          return cap >= cfg.horasSemana * 60 * Math.min(1, nd / cfg.diasSemana) - 1;
+        }).map(function (S) {
+          var a = alvo(estr, e, w, n, fixos, cfg), c = 0;
+          S.forEach(function (dw) { c += custoDia(estr, dw, a); });
+          if (S.indexOf(a) < 0 && candFolga.some(function (d) { return d.dow === a; })) c += 20;
+          if (f.folgaPref && S.indexOf(f.folgaPref) < 0 && estr !== 'B') c += 6;
+          // evita terminar a semana com muitos dias seguidos
+          var run = 0; for (var i = 6; i >= 0; i--) { var d = days[i]; if (d.horas && d.tipo !== 'feriado' && S.indexOf(d.dow) < 0) run++; else break; }
+          if (run > 4) c += (run - 4) * 3;
+          if (estr === 'B' && (S.indexOf(6) >= 0 || S.indexOf(1) >= 0)) c -= 1; // emenda com o domingo
+          return { S: S, c: c };
+        }).sort(function (a, b) { return a.c - b.c; });
+        return list.slice(0, n > 6 ? 6 : 30);
+      });
+
+      function cobertura(sel, ignorar) {
+        if (ignorar) return true;
+        return candFolga.every(function (d) {
+          var trab = 0; sel.forEach(function (x) { if (x.S.indexOf(d.dow) < 0) trab++; });
+          return trab >= minDiaDe(cfg, d);
+        });
+      }
+      function busca(ignorar) {
+        var best = null, bestC = Infinity, sel = [];
+        (function rec(e, c) {
+          if (c >= bestC) return;
+          if (e === n) { if (cobertura(sel, ignorar)) { bestC = c; best = sel.slice(); } return; }
+          for (var i = 0; i < cands[e].length; i++) { sel.push(cands[e][i]); rec(e + 1, c + cands[e][i].c); sel.pop(); }
+        })(0, 0);
+        return best;
+      }
+      var sol = busca(false), alerta = null;
+      if (!sol) {
+        sol = busca(true);
+        var precisa = candFolga.reduce(function (a, d) { return a + minDiaDe(cfg, d); }, 0);
+        alerta = 'Semana de ' + br(days[0].d).slice(0, 5) + ': com ' + n + ' pessoas não dá para cumprir os mínimos por dia (precisa de ' + precisa + ' turnos; há ' + (n * (abertos.length - k)) + ', e as regras de domingo e de horas reduzem as combinações). Reduza um mínimo ou inclua uma pessoa (ex.: temporária de fim de ano).';
+      }
+      if (!sol) { sol = cfg.funcionarios.map(function () { return { S: [] }; }); alerta = 'Semana ' + (w + 1) + ': sem combinação válida.'; }
+      if (alerta) alertasSemana.push(alerta);
+
+      // atualiza estado
+      sol.forEach(function (x, e) {
+        var run = estado[e].tail;
+        days.forEach(function (d) { var trab = d.horas && d.tipo !== 'feriado' && x.S.indexOf(d.dow) < 0; run = trab ? run + 1 : 0; });
+        estado[e].tail = run;
+        if (domingo.tipo === 'dom') estado[e].domSeguidos = x.S.indexOf(0) >= 0 ? 0 : estado[e].domSeguidos + 1;
+        else estado[e].domSeguidos = 0;
+      });
+      plano.push({ days: days, folgas: sol.map(function (x) { return x.S; }) });
+    });
+
+    // horas e turnos
+    var memoCurto = cfg.funcionarios.map(function () { return null; });
+    plano.forEach(function (sem) { distribuirHoras(cfg, sem, memoCurto); montarTurnos(cfg, sem); });
+    var res = { estr: estr, plano: plano, alertasSemana: alertasSemana, fixos: fixos };
+    res.validacao = validar(cfg, res);
+    res.metricas = metricas(cfg, res);
+    return res;
+  }
+
+  function maxTrabalho(cfg, day) {
+    var span = day.horas.fecha - day.horas.abre, ext = span + cfg.tolFech;
+    if (ext - cfg.almocoMin > 360) return Math.min(cfg.limiteDiario, ext - cfg.almocoMin);
+    if (span <= 240) return span;
+    return Math.min(360, ext - cfg.pausaCurta);
+  }
+
+  function preencher(T, caps) {
+    var alloc = caps.map(function () { return 0; }), rem = T, open = caps.map(function (_, i) { return i; });
+    while (open.length && rem > 0.01) {
+      var per = rem / open.length;
+      var cap = open.filter(function (i) { return caps[i] - alloc[i] <= per; });
+      if (!cap.length) { open.forEach(function (i) { alloc[i] += per; }); rem = 0; break; }
+      cap.forEach(function (i) { rem -= caps[i] - alloc[i]; alloc[i] = caps[i]; });
+      open = open.filter(function (i) { return cap.indexOf(i) < 0; });
+    }
+    // arredonda em minutos inteiros mantendo o total
+    var fl = alloc.map(Math.floor), sobra = Math.round(alloc.reduce(function (a, b) { return a + b; }, 0) - fl.reduce(function (a, b) { return a + b; }, 0));
+    for (var i = 0; i < fl.length && sobra > 0; i++) { if (fl[i] < caps[i]) { fl[i]++; sobra--; } }
+    return { alloc: fl, falta: Math.max(0, Math.round(rem)) };
+  }
+
+  function distribuirHoras(cfg, sem, memoCurto) {
+    var days = sem.days;
+    var staff = days.map(function (d) {
+      if (!d.horas || d.tipo === 'feriado') return 0;
+      return sem.folgas.filter(function (S) { return S.indexOf(d.dow) < 0; }).length;
+    });
+    sem.horas = sem.folgas.map(function (S, e) {
+      var idx = [];
+      days.forEach(function (d, i) { if (d.horas && S.indexOf(d.dow) < 0) idx.push(i); });
+      var T = Math.round(cfg.horasSemana * 60 * Math.min(1, idx.length / cfg.diasSemana));
+      var caps = idx.map(function (i) { return maxTrabalho(cfg, days[i]); });
+      var fixo = idx.map(function () { return null; });
+      if (cfg.modo === 'curto' && idx.length >= 2) {
+        var curtos = idx.filter(function (i, j) { return caps[j] <= 360; });
+        if (!curtos.length) {
+          // escolhe um dia útil com mais gente para ser o "dia curto"
+          var resto = (T - 360) / (idx.length - 1);
+          var cand = idx.map(function (i, j) { return { i: i, j: j }; }).filter(function (x) { return days[x.i].tipo !== 'feriado'; });
+          if (cand.length && idx.every(function (i, j) { return caps[j] >= resto; })) {
+            var pref = cand.filter(function (x) { return days[x.i].dow === memoCurto[e] && staff[x.i] > minDiaDe(cfg, days[x.i]); });
+            cand.sort(function (a, b) { return staff[b.i] - staff[a.i] || b.i - a.i; });
+            var esc = pref.length ? pref[0] : cand[0];
+            fixo[esc.j] = 360; memoCurto[e] = days[esc.i].dow;
+          }
+        } else {
+          idx.forEach(function (i, j) { if (caps[j] <= 360) fixo[j] = caps[j]; });
+        }
+      }
+      var Tr = T, livres = [], capsL = [];
+      idx.forEach(function (i, j) { if (fixo[j] != null) Tr -= fixo[j]; else { livres.push(j); capsL.push(caps[j]); } });
+      var p = preencher(Tr, capsL), out = {};
+      idx.forEach(function (i, j) { out[i] = fixo[j] != null ? fixo[j] : 0; });
+      livres.forEach(function (j, q) { out[idx[j]] = p.alloc[q]; });
+      return { porDia: out, alvo: T, falta: p.falta };
+    });
+  }
+
+  function opcoesTurno(cfg, h, abre, fecha) {
+    var span = fecha - abre, L = h > 360 ? Math.min(cfg.almocoMax, Math.max(cfg.almocoMin, span - h)) : (h > 240 ? cfg.pausaCurta : 0);
+    var dur = h + L, starts = [abre];
+    if (dur < span) starts.push(fecha - dur);
+    if (dur > span + cfg.tolFech) starts = [fecha + cfg.tolFech - dur];
+    var jIni = toMin(cfg.janelaIni), jFim = toMin(cfg.janelaFim), res = [];
+    starts.forEach(function (s) {
+      var e = s + dur, ls = [];
+      if (L === 0) ls = [null];
+      else if (L >= 60) {
+        for (var t = jIni; t <= jFim; t += 30) if (t >= s + 120 && t + L <= e - 60) ls.push(t);
+        if (!ls.length) ls.push(s + Math.round((dur - L) / 2 / 30) * 30);
+      } else {
+        for (var t2 = s + 120; t2 + L <= e - 120; t2 += 30) ls.push(t2);
+        if (!ls.length) ls.push(s + Math.round((dur - L) / 2));
+      }
+      ls.forEach(function (l) { res.push({ ini: s, fim: e, alm: l, L: L, h: h, tarde: s !== abre }); });
+    });
+    return res;
+  }
+
+  function cobDia(turnos, abre, fecha) {
+    var min = Infinity, arr = [];
+    for (var t = abre; t < fecha; t += 15) {
+      var c = 0;
+      turnos.forEach(function (x) { if (t >= x.ini && t < x.fim && !(x.alm != null && t >= x.alm && t < x.alm + x.L)) c++; });
+      arr.push(c); if (c < min) min = c;
+    }
+    return { min: min === Infinity ? 0 : min, arr: arr };
+  }
+
+  function montarTurnos(cfg, sem) {
+    sem.turnos = sem.folgas.map(function () { return {}; });
+    sem.cobertura = {};
+    sem.days.forEach(function (d, i) {
+      if (!d.horas) return;
+      var quem = [];
+      sem.horas.forEach(function (hh, e) { if (hh.porDia[i] != null && hh.porDia[i] > 0) quem.push(e); });
+      if (!quem.length) return;
+      var ops = quem.map(function (e) { return opcoesTurno(cfg, sem.horas[e].porDia[i], d.horas.abre, d.horas.fecha); });
+      var total = ops.reduce(function (a, o) { return a * o.length; }, 1), best = null;
+      function nota(sel) {
+        var cb = cobDia(sel, d.horas.abre, d.horas.fecha), desvio = 0, tardes = 0;
+        sel.forEach(function (x) { if (x.alm != null && x.L >= 60) desvio += Math.abs(x.alm - 12 * 60); if (x.tarde) tardes++; });
+        // almoços iguais pesam: queremos escalonar
+        return cb.min * 100000 - desvio - tardes * 5;
+      }
+      if (total <= 60000) {
+        var sel = [], bestN = -Infinity;
+        (function rec(j) {
+          if (j === ops.length) { var nt = nota(sel); if (nt > bestN) { bestN = nt; best = sel.slice(); } return; }
+          for (var q = 0; q < ops[j].length; q++) { sel.push(ops[j][q]); rec(j + 1); sel.pop(); }
+        })(0);
+      } else {
+        best = [];
+        ops.forEach(function (o) {
+          var bq = o[0], bn = -Infinity;
+          o.forEach(function (x) { var nt = nota(best.concat([x])); if (nt > bn) { bn = nt; bq = x; } });
+          best.push(bq);
+        });
+      }
+      best.forEach(function (x, j) { sem.turnos[quem[j]][i] = x; });
+      if (d.tipo !== 'feriado') sem.cobertura[i] = { pessoas: quem.length, min: cobDia(best, d.horas.abre, d.horas.fecha).min };
+    });
+  }
+
+  // Sequência diária por funcionária (para validação e calendário)
+  function linhas(cfg, res) {
+    return cfg.funcionarios.map(function (f, e) {
+      var seq = [];
+      res.plano.forEach(function (sem, w) {
+        sem.days.forEach(function (d, i) {
+          var t = sem.turnos[e][i] || null, st;
+          if (d.tipo === 'feriado') st = t ? 'feriado' : 'feriado-folga';
+          else if (t) st = 'trab';
+          else if (d.horas) st = 'folga';
+          else st = d.dow === 0 ? 'dsr' : 'fechado';
+          if (d.feriado && !d.horas) st = 'feriado-folga';
+          seq.push({ d: d, w: w, t: d.tipo === 'feriado' ? null : t, virtual: d.tipo === 'feriado' ? t : null, st: st });
+        });
+      });
+      return seq;
+    });
+  }
+
+  function validar(cfg, res) {
+    var L = linhas(cfg, res), itens = [], n = cfg.funcionarios.length;
+    function add(id, titulo, ref, status, detalhe) { itens.push({ id: id, titulo: titulo, ref: ref, status: status, detalhe: detalhe }); }
+    var maxDia = 0, interMin = Infinity, maxSeg = 0, faltas = [], intraOk = true, domErr = [], domTrab = 0;
+    L.forEach(function (seq, e) {
+      var run = 0, domSeg = 0, f = cfg.funcionarios[e], K = (cfg.regra386 && f.sexo === 'F') ? 2 : 3;
+      seq.forEach(function (x, j) {
+        if (x.t) {
+          if (x.t.h > maxDia) maxDia = x.t.h;
+          if (x.t.h > 360 && (x.t.L < 60 || x.t.L > 120)) intraOk = false;
+          if (x.t.h > 240 && x.t.h <= 360 && x.t.L < 15) intraOk = false;
+          var prev = seq[j - 1];
+          if (prev && prev.t) { var gap = x.t.ini + 1440 - prev.t.fim; if (gap < interMin) interMin = gap; }
+          run++; if (run > maxSeg) maxSeg = run;
+        } else run = 0;
+        if (x.d.dow === 0 && x.d.tipo === 'dom') {
+          if (x.t) { domSeg++; domTrab++; if (domSeg >= K) domErr.push(f.nome + ' (' + x.d.dia + '/' + (x.d.d.getMonth() + 1) + ')'); }
+          else domSeg = 0;
+        }
+      });
+    });
+    res.plano.forEach(function (sem, w) {
+      sem.horas.forEach(function (h, e) { if (h.falta > 0) faltas.push(cfg.funcionarios[e].nome + ' sem. ' + (w + 1) + ' (faltam ' + fmtH(h.falta) + ')'); });
+    });
+    // cobertura
+    var cobErr = [], presErr = [];
+    res.plano.forEach(function (sem) {
+      sem.days.forEach(function (d, i) {
+        var c = sem.cobertura[i]; if (!c || !d.noMes) return;
+        if (c.pessoas < minDiaDe(cfg, d)) cobErr.push(DOW[d.dow] + ' ' + d.dia);
+        if (c.min < cfg.minPresente) presErr.push(DOW[d.dow] + ' ' + d.dia);
+      });
+    });
+
+    add('jornada', 'Jornada semanal de ' + cfg.horasSemana + 'h em ' + cfg.diasSemana + ' dias', 'CF art. 7º, XIII', faltas.length ? 'erro' : 'ok',
+      faltas.length ? 'Não fecha: ' + faltas.join('; ') : 'Todas as semanas fecham ' + cfg.horasSemana + 'h (feriado conta como dia trabalhado).');
+    add('diaria', 'Limite diário', 'CLT art. 58 e 59', maxDia > 600 ? 'erro' : (maxDia > 480 ? 'aviso' : 'ok'),
+      maxDia > 600 ? 'Há dia acima de 10h.' : (maxDia > 480 ? 'Maior dia: ' + fmtH(maxDia) + '. Acima de 8h exige acordo de compensação por escrito (art. 59, §2º e §6º).' : 'Nenhum dia passa de 8h.'));
+    add('intra', 'Intervalo para almoço/descanso', 'CLT art. 71', intraOk ? 'ok' : 'erro',
+      intraOk ? 'Dias acima de 6h com ' + fmtH(cfg.almocoMin) + ' a ' + fmtH(cfg.almocoMax) + ' de almoço; dias de 4h a 6h com pausa de 15 min.' : 'Há dia sem o intervalo mínimo.');
+    add('inter', 'Descanso entre jornadas (11h)', 'CLT art. 66', interMin >= 660 ? 'ok' : 'erro',
+      interMin === Infinity ? 'Sem dias seguidos.' : 'Menor descanso entre um dia e outro: ' + fmtH(interMin) + '.');
+    add('dsr', 'Folga semanal e no máximo 6 dias seguidos', 'CLT art. 67; Lei 605/49; OJ 410 TST', maxSeg <= 6 ? 'ok' : 'erro',
+      'Maior sequência de trabalho: ' + maxSeg + ' dias.');
+    var temDom = res.plano.some(function (s) { return s.days[6].tipo === 'dom'; });
+    add('domingo', 'Folga aos domingos', cfg.regra386 ? 'Lei 10.101/2000 art. 6º; CLT art. 386 (mulheres)' : 'Lei 10.101/2000 art. 6º',
+      domErr.length ? 'erro' : 'ok',
+      !temDom ? 'Loja fechada aos domingos: todos os domingos são folga.' :
+        (domErr.length ? 'Domingo seguido sem folga: ' + domErr.join(', ') : 'Domingos trabalhados: ' + domTrab + '. Ninguém trabalha ' + (cfg.regra386 ? 'dois domingos seguidos (mulheres: revezamento quinzenal).' : 'mais de 2 domingos seguidos.')));
+    var ferNoMes = [];
+    res.plano.forEach(function (s) { s.days.forEach(function (d) { if (d.feriado && d.noMes) ferNoMes.push(d.dia + ' (' + d.feriado + ')'); }); });
+    add('feriado', 'Feriados', 'Lei 605/49; Lei 10.101/2000 art. 6º-A', 'ok',
+      ferNoMes.length ? 'Loja fechada em ' + ferNoMes.join(', ') + '. Nenhuma folga caiu no feriado; o dia é abonado.' : 'Sem feriado no mês.');
+    add('cobertura', 'Mínimo de pessoas por dia', 'Regra da loja', cobErr.length ? 'erro' : 'ok',
+      cobErr.length ? 'Abaixo do mínimo em: ' + cobErr.join(', ') : 'Todos os dias com o mínimo escalado (' + cfg.minDia.util + ' em dia útil, ' + cfg.minDia.sab + ' no sábado' + (temDom ? ', ' + cfg.minDia.dom + ' no domingo' : '') + ').');
+    add('presenca', 'Loja nunca abaixo de ' + cfg.minPresente + ' pessoas (inclusive no almoço)', 'Regra da loja', presErr.length ? 'aviso' : 'ok',
+      presErr.length ? 'Fica abaixo em algum horário: ' + presErr.join(', ') : 'Almoços escalonados: a loja sempre tem ' + cfg.minPresente + ' ou mais.');
+    res.alertasSemana.forEach(function (a) { add('busca', 'Combinação', 'Motor', 'erro', a); });
+    var erros = itens.filter(function (x) { return x.status === 'erro'; }).length, avisos = itens.filter(function (x) { return x.status === 'aviso'; }).length;
+    return { itens: itens, erros: erros, avisos: avisos, linhas: L };
+  }
+
+  function metricas(cfg, res) {
+    var L = res.validacao.linhas;
+    return cfg.funcionarios.map(function (f, e) {
+      var m = { sabTrab: 0, sabFolga: 0, fds: 0, emendas: 0, domTrab: 0, minutosMes: 0, abono: 0, diasFolga: {}, diasTrab: 0 };
+      L[e].forEach(function (x, j) {
+        if (!x.d.noMes) return;
+        if (x.t) { m.minutosMes += x.t.h; m.diasTrab++; }
+        if (x.virtual) m.abono += x.virtual.h;
+        if (x.d.dow === 6 && x.d.horas && x.d.tipo !== 'feriado') { if (x.t) m.sabTrab++; else m.sabFolga++; }
+        if (x.d.dow === 0 && x.t) m.domTrab++;
+        if (x.st === 'folga') m.diasFolga[x.d.dow] = (m.diasFolga[x.d.dow] || 0) + 1;
+        if (x.d.dow === 0 && !x.t) {
+          var sab = L[e][j - 1], seg = L[e][j + 1];
+          if (sab && !sab.t && sab.d.horas) m.fds++;
+          if ((sab && !sab.t && sab.d.horas) || (seg && !seg.t && seg.d.horas)) m.emendas++;
+        }
+      });
+      m.diasFolgaDistintos = Object.keys(m.diasFolga).length;
+      return m;
+    });
+  }
+
+  // Exportação para as abas do Ponto RHAqui (Escalas / Escala por funcionário)
+  function exportar(cfg, res, prefixo) {
+    var mapa = {}, lista = [], porFunc = [];
+    var ordem = [1, 2, 3, 4, 5, 6, 0];
+    var abrev = { 0: 'Dom', 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb' };
+    cfg.funcionarios.forEach(function (f, e) {
+      var ultimo = null;
+      res.plano.forEach(function (sem, w) {
+        var cel = [], almocoMin = null, folgas = [];
+        ordem.forEach(function (dw) {
+          var i = sem.days.findIndex(function (d) { return d.dow === dw; });
+          var t = sem.turnos[e][i];
+          if (t) { cel.push(fmt(t.ini), fmt(t.fim)); if (t.L >= 60) almocoMin = almocoMin == null ? t.L : Math.min(almocoMin, t.L); }
+          else { cel.push('', ''); folgas.push(abrev[dw]); }
+        });
+        var chave = cel.join('|') + '|' + almocoMin;
+        if (!mapa[chave]) {
+          var nome = prefixo + (lista.length + 1) + ' · folga ' + folgas.join('+');
+          mapa[chave] = nome;
+          lista.push([nome].concat(cel, [almocoMin != null ? fmt(almocoMin) : '']));
+        }
+        var nome2 = mapa[chave];
+        if (nome2 !== ultimo) {
+          var ini = sem.days[0].d, primeiro = new Date(cfg.ano, cfg.mes - 1, 1, 12);
+          if (ini < primeiro) ini = primeiro;
+          porFunc.push([f.nome, nome2, br(ini), 'Escala RHAqui – opção ' + res.estr]);
+          ultimo = nome2;
+        }
+      });
+    });
+    return { escalas: lista, porFunc: porFunc };
+  }
+
+  return { gerar: gerar, exportar: exportar, fmt: fmt, fmtH: fmtH, toMin: toMin, DOW: DOW, buildWeeks: buildWeeks, iso: iso, br: br };
+})();
+if (typeof module !== 'undefined') module.exports = SimulIAqui;
+
+</script>
+<script>
+(function(){
+  var S = SimulIAqui, DOW = S.DOW, fmt = S.fmt, fmtH = S.fmtH;
+  var NOMES = { A: 'Folga fixa', B: 'Fim de semana em rodízio', C: 'Folga que anda' };
+  var DESC = {
+    A: 'Cada pessoa folga sempre no mesmo dia da semana. Mais fácil de decorar e de combinar a vida fora do trabalho.',
+    B: 'Sábado e domingo livres para uma pessoa por semana, em rodízio. Nas outras semanas, a folga tende a emendar com o domingo.',
+    C: 'A folga anda um dia por semana (seg, ter, qua...). Divide por igual os dias bons e ruins ao longo dos meses.'
+  };
+  // Feriados: nacionais + Bahia + Candeias (conferir a cidade de cada cliente)
+  var FERIADOS = [{ data: '2026-11-02', nome: 'Finados' }, { data: '2026-11-15', nome: 'Proclamação da República' }, { data: '2026-11-20', nome: 'Consciência Negra' }, { data: '2026-12-25', nome: 'Natal' }, { data: '2027-01-01', nome: 'Confraternização Universal' }, { data: '2027-02-02', nome: 'N. Sra. das Candeias (Candeias)' }, { data: '2027-02-08', nome: 'Segunda de Carnaval (CCT Candeias)' }, { data: '2027-02-09', nome: 'Carnaval' }, { data: '2027-03-26', nome: 'Sexta-feira Santa' }, { data: '2027-04-21', nome: 'Tiradentes' }, { data: '2027-05-01', nome: 'Dia do Trabalho' }, { data: '2027-07-02', nome: 'Independência da Bahia' }, { data: '2027-08-14', nome: 'Emancipação de Candeias' }, { data: '2027-09-07', nome: 'Independência' }, { data: '2027-10-12', nome: 'N. Sra. Aparecida' }, { data: '2027-11-02', nome: 'Finados' }, { data: '2027-11-15', nome: 'Proclamação da República' }, { data: '2027-11-20', nome: 'Consciência Negra' }, { data: '2027-12-25', nome: 'Natal' }];
+  var HOJE = new Date(), PROX = new Date(HOJE.getFullYear(), HOJE.getMonth() + 1, 1, 12);
+  var cfg = {
+    empresa: 'Loja Exemplo', ano: PROX.getFullYear(), mes: PROX.getMonth() + 1, horasSemana: 42, diasSemana: 5, modo: 'curto',
+    almocoMin: 60, almocoMax: 120, pausaCurta: 15, tolFech: 15, limiteDiario: 600, janelaIni: '11:00', janelaFim: '13:30',
+    loja: { 1:{aberta:true,abre:'08:00',fecha:'18:00'}, 2:{aberta:true,abre:'08:00',fecha:'18:00'}, 3:{aberta:true,abre:'08:00',fecha:'18:00'},
+            4:{aberta:true,abre:'08:00',fecha:'18:00'}, 5:{aberta:true,abre:'08:00',fecha:'18:00'}, 6:{aberta:true,abre:'08:00',fecha:'14:00'} },
+    domingosAbertos: [], horasDomingo: { abre: '09:00', fecha: '15:00' },
+    feriados: FERIADOS,
+    minDia: { util: 3, sab: 3, dom: 2 }, minPresente: 2, regra386: true,
+    funcionarios: [
+      { nome: 'Ana Souza', cargo: 'Gerente', sexo: 'F', folgaPref: null, semDomingo: false },
+      { nome: 'Bruna Lima', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false },
+      { nome: 'Carlos Rocha', cargo: 'Caixa', sexo: 'M', folgaPref: null, semDomingo: false },
+      { nome: 'Daniela Reis', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false }
+    ]
+  };
+  var resultados = {}, atual = 'B', selCel = null;
+  var $ = function (id) { return document.getElementById(id); };
+  var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  // ---------- formulário ----------
+  function preencherForm() {
+    $('f-emp').value = cfg.empresa;
+    $('f-mes').value = cfg.ano + '-' + String(cfg.mes).padStart(2, '0');
+    $('f-hs').value = cfg.horasSemana; $('f-ds').value = String(cfg.diasSemana); $('f-modo').value = cfg.modo;
+    $('f-amin').value = cfg.almocoMin; $('f-amax').value = cfg.almocoMax; $('f-tol').value = cfg.tolFech;
+    var h = '';
+    [1,2,3,4,5,6].forEach(function (d) {
+      var l = cfg.loja[d] || { aberta: false, abre: '08:00', fecha: '18:00' };
+      h += '<div class="lin2"><span>' + DOW[d] + '</span><input type="checkbox" id="f-ab' + d + '" aria-label="' + DOW[d] + ' aberto"' + (l.aberta ? ' checked' : '') + '>' +
+        '<input type="time" id="f-a' + d + '" value="' + l.abre + '" aria-label="' + DOW[d] + ' abre"><input type="time" id="f-f' + d + '" value="' + l.fecha + '" aria-label="' + DOW[d] + ' fecha"></div>';
+    });
+    $('f-loja').innerHTML = h;
+    $('f-dabre').value = cfg.horasDomingo.abre; $('f-dfecha').value = cfg.horasDomingo.fecha;
+    domingosForm();
+    $('f-mu').value = cfg.minDia.util; $('f-msab').value = cfg.minDia.sab; $('f-mdom').value = cfg.minDia.dom; $('f-mp').value = cfg.minPresente;
+    $('f-fer').value = cfg.feriados.map(function (f) { var p = f.data.split('-'); return p[2] + '/' + p[1] + '/' + p[0] + ' ' + f.nome; }).join('\n');
+    $('f-386').checked = cfg.regra386;
+    funcForm();
+  }
+  function domingosForm() {
+    var d = new Date(cfg.ano, cfg.mes - 1, 1, 12), h = '';
+    while (d.getMonth() === cfg.mes - 1) {
+      if (d.getDay() === 0) { var id = S.iso(d); h += '<label style="display:flex;gap:4px;align-items:center"><input type="checkbox" class="f-dom" value="' + id + '"' + (cfg.domingosAbertos.indexOf(id) >= 0 ? ' checked' : '') + '>' + String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '</label>'; }
+      d.setDate(d.getDate() + 1);
+    }
+    $('f-doms').innerHTML = h;
+  }
+  function funcForm() {
+    var h = '';
+    cfg.funcionarios.forEach(function (f, i) {
+      h += '<div class="f" data-i="' + i + '"><input id="fn' + i + '" value="' + esc(f.nome) + '" aria-label="Nome"><input id="fc' + i + '" value="' + esc(f.cargo || '') + '" aria-label="Cargo">' +
+        '<select id="fp' + i + '" aria-label="Folga preferida" style="grid-column:1/-1"></select>' +
+        '<div class="x"><label><input type="checkbox" id="fs' + i + '"' + (f.sexo === 'F' ? ' checked' : '') + '> Mulher</label>' +
+        '<label><input type="checkbox" id="fd' + i + '"' + (f.semDomingo ? ' checked' : '') + '> Não trabalha domingo</label>' +
+        '<button class="bt sec peq" type="button" data-rm="' + i + '" style="margin-left:auto">Tirar</button></div></div>';
+    });
+    $('f-func').innerHTML = h;
+    cfg.funcionarios.forEach(function (f, i) {
+      var sel = $('fp' + i);
+      sel.add(new Option('Folga: sem preferência', ''));
+      [1,2,3,4,5,6].forEach(function (d) { sel.add(new Option('Folga preferida: ' + DOW[d], String(d), false, f.folgaPref === d)); });
+    });
+  }
+  function lerForm() {
+    var c = JSON.parse(JSON.stringify(cfg));
+    c.empresa = $('f-emp').value.trim() || 'Empresa';
+    var m = ($('f-mes').value || '2026-12').split('-'); c.ano = +m[0]; c.mes = +m[1];
+    c.horasSemana = +$('f-hs').value || 42; c.diasSemana = +$('f-ds').value; c.modo = $('f-modo').value;
+    c.almocoMin = Math.max(60, +$('f-amin').value || 60); c.almocoMax = Math.max(c.almocoMin, Math.min(120, +$('f-amax').value || 120)); c.tolFech = +$('f-tol').value || 0;
+    [1,2,3,4,5,6].forEach(function (d) { c.loja[d] = { aberta: $('f-ab' + d).checked, abre: $('f-a' + d).value || '08:00', fecha: $('f-f' + d).value || '18:00' }; });
+    c.horasDomingo = { abre: $('f-dabre').value || '09:00', fecha: $('f-dfecha').value || '15:00' };
+    c.domingosAbertos = Array.prototype.map.call(document.querySelectorAll('.f-dom:checked'), function (x) { return x.value; });
+    c.minDia = { util: +$('f-mu').value || 1, sab: +$('f-msab').value || 1, dom: +$('f-mdom').value || 1 }; c.minPresente = +$('f-mp').value || 1;
+    c.feriados = $('f-fer').value.split('\n').map(function (l) {
+      var mm = l.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s*(.*)$/); if (!mm) return null;
+      return { data: mm[3] + '-' + mm[2].padStart(2,'0') + '-' + mm[1].padStart(2,'0'), nome: mm[4] || 'Feriado' };
+    }).filter(Boolean);
+    c.regra386 = $('f-386').checked;
+    c.funcionarios = cfg.funcionarios.map(function (f, i) {
+      var p = $('fp' + i).value;
+      return { nome: $('fn' + i).value.trim() || ('Pessoa ' + (i + 1)), cargo: $('fc' + i).value.trim(), sexo: $('fs' + i).checked ? 'F' : 'M', folgaPref: p ? +p : null, semDomingo: $('fd' + i).checked };
+    });
+    return c;
+  }
+  $('f-func').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-rm]'); if (!b) return;
+    cfg = lerForm(); if (cfg.funcionarios.length <= 1) return;
+    cfg.funcionarios.splice(+b.getAttribute('data-rm'), 1); funcForm();
+  });
+  $('f-add').addEventListener('click', function () {
+    cfg = lerForm(); cfg.funcionarios.push({ nome: 'Nova pessoa', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false }); funcForm();
+  });
+  $('f-mes').addEventListener('change', function () { cfg = lerForm(); domingosForm(); });
+  $('form').addEventListener('submit', function (ev) { ev.preventDefault(); cfg = lerForm(); gerarTudo(); });
+
+  // ---------- render ----------
+  function gerarTudo() {
+    ['A','B','C'].forEach(function (k) { resultados[k] = S.gerar(cfg, k); });
+    $('titulo-sub').textContent = 'Escalas de trabalho com a CLT conferida. ' + cfg.empresa + ', ' + MESES[cfg.mes - 1] + ' de ' + cfg.ano + ', ' + cfg.diasSemana + 'x' + (7 - cfg.diasSemana) + ' com ' + cfg.horasSemana + 'h semanais.';
+    var n = cfg.funcionarios.length;
+    $('resumo-mes').textContent = n + ' pessoas · ' + MESES[cfg.mes - 1] + '/' + cfg.ano + ' · ' + cfg.horasSemana + 'h por semana em ' + cfg.diasSemana + ' dias · ' + (cfg.domingosAbertos.length ? cfg.domingosAbertos.length + ' domingo(s) aberto(s)' : 'domingos fechados') + ' · feriados: ' + (cfg.feriados.filter(function(f){return +f.data.slice(5,7)===cfg.mes && +f.data.slice(0,4)===cfg.ano;}).map(function(f){return f.data.slice(8)+'/'+f.data.slice(5,7);}).join(', ') || 'nenhum');
+    renderOpcoes(); renderAtual();
+  }
+  function statusPill(v) {
+    if (v.erros) return '<span class="pill erro">' + v.erros + ' problema(s)</span>';
+    if (v.avisos) return '<span class="pill aviso">CLT ok · ' + v.avisos + ' aviso(s)</span>';
+    return '<span class="pill ok">CLT ok</span>';
+  }
+  function faixa(arr) { var mn = Math.min.apply(null, arr), mx = Math.max.apply(null, arr); return mn === mx ? String(mn) : mn + ' a ' + mx; }
+  function renderOpcoes() {
+    var h = '';
+    ['A','B','C'].forEach(function (k) {
+      var r = resultados[k], m = r.metricas;
+      h += '<button type="button" class="op" data-op="' + k + '" aria-pressed="' + (k === atual) + '">' +
+        '<span class="let">Opção ' + k + '</span><h3>' + NOMES[k] + '</h3><p>' + DESC[k] + '</p>' + statusPill(r.validacao) +
+        '<div class="mini"><span>Sábados de folga: <b>' + faixa(m.map(function(x){return x.sabFolga;})) + '</b></span><span>Fins de semana completos: <b>' + faixa(m.map(function(x){return x.fds;})) + '</b></span><span>Folga emendada no domingo: <b>' + faixa(m.map(function(x){return x.emendas;})) + '</b></span></div></button>';
+    });
+    $('opcoes').innerHTML = h;
+  }
+  $('opcoes').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-op]'); if (!b) return; atual = b.getAttribute('data-op'); selCel = null;
+    renderOpcoes(); renderAtual();
+  });
+
+  function renderAtual() {
+    var r = resultados[atual], L = r.validacao.linhas;
+    $('cal-titulo').textContent = 'Calendário · Opção ' + atual + ' (' + NOMES[atual] + ')';
+    // calendário
+    var dias = L[0].filter(function (x) { return x.d.noMes; });
+    var h = '<table><thead><tr><th class="nome">' + MESES[cfg.mes - 1].replace(/^./, function(c){return c.toUpperCase();}) + '</th>';
+    dias.forEach(function (x) { h += '<th class="' + (x.d.dow === 0 || x.d.dow === 6 ? 'fds' : '') + '">' + DOW[x.d.dow].slice(0,3) + '<br>' + x.d.dia + '</th>'; });
+    h += '</tr></thead><tbody>';
+    cfg.funcionarios.forEach(function (f, e) {
+      h += '<tr><th class="nome">' + esc(f.nome) + '<small>' + esc(f.cargo || '') + '</small></th>';
+      L[e].forEach(function (x, j) {
+        if (!x.d.noMes) return;
+        var cls, txt, key = e + ':' + j;
+        if (x.t) { cls = x.t.h > 360 ? 'longo' : 'curto'; txt = fmt(x.t.ini).replace(':00','') + '<br>' + fmt(x.t.fim).replace(':00',''); }
+        else if (x.st === 'folga') { cls = 'folga'; txt = 'F'; }
+        else if (x.st === 'feriado' || x.st === 'feriado-folga') { cls = 'feriado'; txt = 'FER'; }
+        else { cls = 'dsr'; txt = '·'; }
+        h += '<td><button type="button" class="cel ' + cls + (selCel === key ? ' sel' : '') + '" data-k="' + key + '">' + txt + '</button></td>';
+      });
+      h += '</tr>';
+    });
+    h += '<tr class="equipe"><th class="nome">Equipe<small>escaladas / mín. presente</small></th>';
+    var di = 0;
+    r.plano.forEach(function (sem) {
+      sem.days.forEach(function (d, i) {
+        if (!d.noMes) return;
+        var c = sem.cobertura[i];
+        if (!c) { h += '<td>–</td>'; return; }
+        var baixo = c.pessoas < (d.tipo === 'sab' ? cfg.minDia.sab : d.tipo === 'dom' ? cfg.minDia.dom : cfg.minDia.util) || c.min < cfg.minPresente;
+        h += '<td class="' + (baixo ? 'baixo' : '') + '"><b>' + c.pessoas + '</b>/' + c.min + '</td>';
+      });
+    });
+    h += '</tr></tbody></table>';
+    $('cal').innerHTML = h;
+    if (!selCel) $('detalhe').textContent = 'Toque num dia do calendário.';
+
+    // horas por semana
+    var ns = r.plano.length, t = '<table><thead><tr><th>Pessoa</th>';
+    r.plano.forEach(function (sem, w) { var a = sem.days[0].d, b = sem.days[6].d; t += '<th>Sem. ' + (w+1) + '<br><span style="font-weight:400;text-transform:none">' + String(a.getDate()).padStart(2,'0') + '/' + String(a.getMonth()+1).padStart(2,'0') + '–' + String(b.getDate()).padStart(2,'0') + '/' + String(b.getMonth()+1).padStart(2,'0') + '</span></th>'; });
+    t += '<th>Sábados trab.</th><th>Fins de semana livres</th><th>Domingos trab.</th></tr></thead><tbody>';
+    cfg.funcionarios.forEach(function (f, e) {
+      var m = r.metricas[e]; t += '<tr><td>' + esc(f.nome) + '</td>';
+      r.plano.forEach(function (sem) {
+        var tot = 0, ab = 0; sem.days.forEach(function (d, i) { var x = sem.turnos[e][i]; if (x) { if (d.tipo === 'feriado') ab += x.h; else tot += x.h; } });
+        t += '<td>' + fmtH(tot + ab) + (ab ? ' <span style="color:var(--feriado-fg);font-size:11px">(' + fmtH(ab) + ' fer.)</span>' : '') + '</td>';
+      });
+      t += '<td>' + m.sabTrab + '</td><td>' + m.fds + '</td><td>' + m.domTrab + '</td></tr>';
+    });
+    t += '</tbody></table>';
+    $('tab-horas').innerHTML = t;
+
+    // legal
+    $('lei').innerHTML = r.validacao.itens.map(function (it) {
+      var lab = it.status === 'ok' ? 'OK' : it.status === 'aviso' ? 'Aviso' : 'Problema';
+      return '<li><span class="pill ' + it.status + '">' + lab + '</span><strong>' + esc(it.titulo) + '<em>' + esc(it.ref) + '</em></strong><span>' + esc(it.detalhe) + '</span></li>';
+    }).join('');
+
+    // comparação
+    var crit = [
+      ['Situação CLT', function (k) { var v = resultados[k].validacao; return v.erros ? v.erros + ' problema(s)' : (v.avisos ? 'OK, ' + v.avisos + ' aviso(s)' : 'OK'); }],
+      ['Sábados de folga por pessoa', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.sabFolga;})); }],
+      ['Fins de semana completos', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.fds;})); }],
+      ['Folgas emendadas no domingo', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.emendas;})); }],
+      ['Dias diferentes de folga por pessoa', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.diasFolgaDistintos;})); }],
+      ['Linhas novas no Ponto RHAqui', function (k) { return S.exportar(cfg, resultados[k], k).porFunc.length; }],
+      ['Melhor para', function (k) { return { A: 'quem quer rotina fixa', B: 'equipe que valoriza fim de semana', C: 'dividir por igual no longo prazo' }[k]; }]
+    ];
+    var c = '<table><thead><tr><th></th><th>A · ' + NOMES.A + '</th><th>B · ' + NOMES.B + '</th><th>C · ' + NOMES.C + '</th></tr></thead><tbody>';
+    crit.forEach(function (cr) { c += '<tr><td>' + cr[0] + '</td><td>' + cr[1]('A') + '</td><td>' + cr[1]('B') + '</td><td>' + cr[1]('C') + '</td></tr>'; });
+    $('comp').innerHTML = c + '</tbody></table>';
+
+    // exportação
+    var ex = S.exportar(cfg, r, atual);
+    $('exp-escalas').value = ex.escalas.map(function (l) { return l.join('\t'); }).join('\n');
+    $('exp-func').value = ex.porFunc.map(function (l) { return l.join('\t'); }).join('\n');
+    $('exp-nota').textContent = ex.escalas.length + ' escala(s) e ' + ex.porFunc.length + ' linha(s) de troca. A coluna Q (jornada semanal) é calculada pela planilha. Dias curtos de 6h têm pausa de 15 min que não entra na jornada; no Ponto RHAqui de hoje, cadastrar a saída 15 min mais cedo ou ajustar o cálculo (ajuste pendente no Ponto RHAqui).';
+  }
+
+  $('cal').addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-k]'); if (!b) return;
+    selCel = b.getAttribute('data-k');
+    document.querySelectorAll('.cel.sel').forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel');
+    var p = selCel.split(':'), e = +p[0], j = +p[1], x = resultados[atual].validacao.linhas[e][j], f = cfg.funcionarios[e];
+    var dt = DOW[x.d.dow] + ' ' + S.br(x.d.d).slice(0, 5), txt;
+    if (x.t) {
+      txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · entrada ' + fmt(x.t.ini) + ', ' + (x.t.alm != null ? (x.t.L >= 60 ? 'almoço ' : 'pausa ') + fmt(x.t.alm) + '–' + fmt(x.t.alm + x.t.L) + ', ' : '') + 'saída ' + fmt(x.t.fim) + ' · <b>' + fmtH(x.t.h) + '</b> de trabalho';
+    } else if (x.virtual) txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Feriado (' + esc(x.d.feriado) + '). Dia abonado: conta ' + fmtH(x.virtual.h) + ' na semana.';
+    else if (x.st === 'folga') txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Folga da semana.';
+    else if (x.d.feriado) txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Feriado (' + esc(x.d.feriado) + ').';
+    else txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Domingo, loja fechada (descanso semanal).';
+    $('detalhe').innerHTML = txt;
+  });
+
+  function copiar(btn, ta) {
+    btn.addEventListener('click', function () {
+      var el = $(ta), ok = function () { btn.textContent = 'Copiado'; setTimeout(function () { btn.textContent = 'Copiar'; }, 1600); };
+      try { navigator.clipboard.writeText(el.value).then(ok, function () { el.focus(); el.select(); btn.textContent = 'Selecionado: Ctrl+C'; }); }
+      catch (e) { el.focus(); el.select(); btn.textContent = 'Selecionado: Ctrl+C'; }
+    });
+  }
+  $('bt-print').addEventListener('click', function () { window.print(); });
+  copiar($('cp1'), 'exp-escalas'); copiar($('cp2'), 'exp-func');
+
+  preencherForm(); gerarTudo();
+})();
+</script>
+
+</body>
+</html>
