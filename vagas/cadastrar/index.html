@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anuncie sua vaga grátis | RHAqui</title>
+<meta name="description" content="Empresas de Candeias, Salvador e região: anuncie sua vaga de emprego grátis no site da RHAqui. Conferimos e publicamos em até 1 dia útil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--esc:#1F4B40;--ver:#0F766E;--cla:#E6F6F2;--pon:#7ED67A;--txt:#1d2b27;--sua:#5b6f69;--lin:#dde9e5;--fun:#f6faf8;--av:#8A5A00;--avf:#FFF2D6;--er:#B42318;--erf:#FDE7E5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--txt);background:var(--fun);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--lin)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.marca{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--esc)}
+.marca b{color:var(--ver)}
+.ic{position:relative;width:34px;height:34px;border-radius:24%;background:var(--esc);display:grid;place-items:center;flex-shrink:0}
+.ic svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round}
+.ic i{position:absolute;top:13%;right:13%;width:20%;height:20%;border-radius:50%;background:var(--pon)}
+.nav .lk{font-size:14.5px;font-weight:600;color:var(--ver)}
+.topo{background:linear-gradient(180deg,var(--cla),var(--fun));padding:40px 0 24px}
+.olho{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ver)}
+.olho:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pon)}
+h1{font-size:clamp(28px,4.4vw,40px);font-weight:800;color:var(--esc);letter-spacing:-.02em;line-height:1.15;margin:10px 0 10px}
+.lead{font-size:17px;color:var(--sua);max-width:640px}
+.selos{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:14px;font-weight:600;color:var(--esc)}
+.selos span{display:flex;align-items:center;gap:7px}
+.selos svg{width:17px;height:17px;fill:none;stroke:var(--ver);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+form{padding:8px 0 56px}
+fieldset{border:1px solid var(--lin);background:#fff;border-radius:18px;padding:22px 20px;margin-top:18px}
+legend{font-weight:800;color:var(--esc);font-size:18px;padding:0 6px}
+.dica{color:var(--sua);font-size:13.5px;margin:-2px 0 12px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.g .tudo{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:600;color:var(--esc)}
+label small{font-weight:500;color:var(--sua)}
+.ob{color:var(--er);font-style:normal}
+input,select,textarea{width:100%;margin-top:6px;border:1.5px solid var(--lin);border-radius:12px;padding:11px 12px;font:inherit;font-size:15px;color:var(--txt);background:#fff}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ver);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+.opc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opc label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--lin);border-radius:999px;padding:8px 14px;font-weight:500;cursor:pointer;background:#fff}
+.opc input{width:auto;margin:0;accent-color:var(--ver)}
+.opc label:has(input:checked){border-color:var(--ver);background:var(--cla);font-weight:600}
+.aviso{background:var(--avf);color:var(--av);border-radius:12px;padding:12px 14px;font-size:14px;margin-top:4px}
+.aviso b{color:#6b4500}
+#alerta{display:none;margin-top:12px}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-weight:500;color:var(--txt);font-size:14px}
+.aceite input{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--ver)}
+.termos{font-size:13px;color:var(--sua);margin-top:10px}
+.termos li{margin:4px 0 0 18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:999px;font-weight:700;font-size:16px;border:0;cursor:pointer;background:var(--ver);color:#fff;box-shadow:0 10px 24px rgba(15,118,110,.28);margin-top:20px;width:100%;max-width:360px}
+.btn:hover{background:var(--esc)}
+.btn[disabled]{opacity:.6;cursor:wait}
+#msg{margin-top:14px;font-weight:600}
+#msg.er{color:var(--er)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.feito{display:none;background:#fff;border:1px solid var(--lin);border-radius:18px;padding:32px 22px;margin:24px 0 56px;text-align:center}
+.feito h2{color:var(--esc);font-size:26px;margin-bottom:8px}
+.feito p{color:var(--sua);max-width:520px;margin:0 auto 6px}
+.feito .ok{width:56px;height:56px;border-radius:50%;background:var(--cla);display:grid;place-items:center;margin:0 auto 14px}
+.feito .ok svg{width:30px;height:30px;fill:none;stroke:var(--ver);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.sec-bt{display:inline-flex;margin-top:16px;padding:12px 22px;border-radius:999px;border:2px solid var(--esc);color:var(--esc);font-weight:700}
+footer{background:var(--esc);color:#cfe3dd;font-size:13px;padding:26px 0}
+footer a{text-decoration:underline}
+@media (max-width:640px){.g{grid-template-columns:1fr}fieldset{padding:18px 14px}.nav .lk span{display:none}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="/" class="marca"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></svg><i></i></span><span><b>RH</b>Aqui</span></a>
+    <a class="lk" href="/vagas/"><span>Ver </span>vagas abertas &rarr;</a>
+  </div>
+</header>
+
+<section class="topo">
+  <div class="wrap">
+    <span class="olho">Sou empresa</span>
+    <h1>Anuncie sua vaga grátis</h1>
+    <p class="lead">Preencha os dados da vaga. A nossa equipe confere e publica em até 1 dia útil na página de vagas da RHAqui, vista por candidatos de Candeias, Salvador e região.</p>
+    <div class="selos">
+      <span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Sem custo</span>
+      <span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Vaga conferida antes de ir ao ar</span>
+      <span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Você escolhe como recebe os candidatos</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<form id="f" novalidate>
+  <div class="hp" aria-hidden="true"><label>Site <input name="site_url" tabindex="-1" autocomplete="off"></label></div>
+
+  <fieldset>
+    <legend>1. Empresa</legend>
+    <div class="g">
+      <label class="tudo">Nome da empresa <i class="ob">*</i><input name="empresa" required maxlength="120" autocomplete="organization"></label>
+      <label>CNPJ <small>(opcional, não aparece no site)</small><input name="cnpj" inputmode="numeric" maxlength="18" placeholder="00.000.000/0000-00"></label>
+      <label>Ramo<input name="ramo" maxlength="80" placeholder="Ex.: loja de calçados, mercado, oficina"></label>
+      <label>Cidade <i class="ob">*</i><input name="cidade" required maxlength="60" list="cidades" placeholder="Ex.: Candeias"></label>
+      <label>Bairro<input name="bairro" maxlength="60"></label>
+      <div class="tudo">
+        <label>Mostrar o nome da empresa no anúncio?</label>
+        <div class="opc">
+          <label><input type="radio" name="mostrar_nome" value="sim" checked>Sim</label>
+          <label><input type="radio" name="mostrar_nome" value="nao">Não, anunciar como "empresa confidencial"</label>
+        </div>
+      </div>
+    </div>
+    <datalist id="cidades"><option>Candeias</option><option>Salvador</option><option>Lauro de Freitas</option><option>Simões Filho</option><option>Camaçari</option><option>São Francisco do Conde</option><option>Madre de Deus</option><option>São Sebastião do Passé</option></datalist>
+  </fieldset>
+
+  <fieldset>
+    <legend>2. Quem cuida da vaga</legend>
+    <p class="dica">Só a RHAqui vê estes dados, para conferir a vaga e falar com você.</p>
+    <div class="g">
+      <label class="tudo">Nome do responsável <i class="ob">*</i><input name="responsavel" required maxlength="80" autocomplete="name"></label>
+      <label>WhatsApp (com DDD) <i class="ob">*</i><input name="whatsapp" required inputmode="tel" maxlength="20" placeholder="(71) 90000-0000" autocomplete="tel"></label>
+      <label>E-mail <i class="ob">*</i><input name="email" type="email" required maxlength="120" autocomplete="email"></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>3. A vaga</legend>
+    <div class="g">
+      <label>Cargo <i class="ob">*</i><input name="cargo" required maxlength="80" placeholder="Ex.: Vendedor(a), Auxiliar de estoque"></label>
+      <label>Quantidade de vagas<input name="quantidade" type="number" min="1" max="99" value="1"></label>
+      <label>Tipo de contrato
+         <i class="ob">*</i><select name="contrato" required>
+          <option value="">Escolha</option><option>CLT (efetivo)</option><option>CLT temporário</option><option>CLT intermitente</option><option>Estágio</option><option>Jovem aprendiz</option><option>Autônomo / PJ</option><option>Freelancer / diária</option>
+        </select></label>
+      <label>Modalidade
+        <select name="modalidade"><option>Presencial</option><option>Híbrido</option><option>Remoto</option></select></label>
+      <label>Jornada <i class="ob">*</i><input name="jornada" required maxlength="120" placeholder="Ex.: 44h semanais, 08h às 18h"></label>
+      <label>Dias de trabalho / escala<input name="dias" maxlength="120" placeholder="Ex.: seg a sáb, folga no domingo; 6x1"></label>
+      <label>Salário <i class="ob">*</i><input name="salario" required maxlength="80" placeholder="Ex.: R$ 1.650,00 + comissão, ou A combinar"></label>
+      <label>Benefícios<input name="beneficios" maxlength="200" placeholder="Ex.: vale-transporte, alimentação, plano de saúde"></label>
+      <label class="tudo">Principais atividades <i class="ob">*</i><textarea name="atividades" required maxlength="1500" placeholder="O que a pessoa vai fazer no dia a dia."></textarea></label>
+      <label class="tudo">Requisitos <i class="ob">*</i><textarea name="requisitos" required maxlength="1500" placeholder="Ex.: experiência em vendas, conhecimento em caixa, disponibilidade aos sábados."></textarea></label>
+      <label>Escolaridade
+        <select name="escolaridade"><option value="">Não exigida</option><option>Fundamental completo</option><option>Médio cursando</option><option>Médio completo</option><option>Técnico</option><option>Superior cursando</option><option>Superior completo</option></select></label>
+      <label>Experiência
+        <select name="experiencia"><option value="">Não exigida</option><option>Desejável</option><option>Mínimo 6 meses</option><option>Mínimo 1 ano</option><option>Mínimo 2 anos</option></select></label>
+      <label>Vaga para pessoa com deficiência (PCD)?
+        <select name="pcd"><option value="">Aberta a todos (inclusive PCD)</option><option>Exclusiva para PCD</option></select></label>
+      <label>Anunciar até <small>(máx. 60 dias)</small><input name="validade" type="date"></label>
+    </div>
+    <div class="aviso" style="margin-top:16px"><b>A lei não permite</b> pedir sexo, idade, estado civil, se tem filhos, gravidez, cor, religião, "boa aparência" ou foto (Lei 9.029/95 e CLT art. 373-A). Vagas assim são recusadas ou ajustadas com você antes de ir ao ar. Vagas afirmativas (ex.: exclusiva para PCD) são permitidas.</div>
+    <div class="aviso" id="alerta"></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>4. Como receber os candidatos</legend>
+    <div class="opc" id="cand">
+      <label><input type="radio" name="candidatura" value="rhaqui" checked>Pela RHAqui (recebemos os currículos e repassamos)</label>
+      <label><input type="radio" name="candidatura" value="whatsapp_empresa">No WhatsApp da empresa</label>
+      <label><input type="radio" name="candidatura" value="email_empresa">No e-mail da empresa</label>
+    </div>
+    <div class="g" id="contatoBox" style="display:none;margin-top:14px">
+      <label class="tudo" id="contatoLbl">Contato que aparece no anúncio <small>(deixe vazio para usar o informado acima)</small><input name="contato_candidatura" maxlength="120"></label>
+    </div>
+    <p class="dica" style="margin-top:12px" id="candDica">Os candidatos falam com a RHAqui e você recebe os currículos. Se quiser, também fazemos a triagem e as entrevistas (serviço à parte, com orçamento antes).</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>5. Termos</legend>
+    <label class="aceite"><input type="checkbox" name="aceite" required><span>Declaro que a vaga é real, que estou autorizado(a) a anunciá-la e aceito os termos abaixo.</span></label>
+    <ul class="termos">
+      <li>O anúncio é gratuito. A RHAqui pode ajustar o texto, recusar ou retirar vagas que pareçam falsas, discriminatórias ou fora da lei.</li>
+      <li>É proibido cobrar qualquer valor do candidato (taxa, curso, kit, uniforme) para participar da seleção.</li>
+      <li>A vaga sai do ar na data escolhida ou quando você pedir pelo WhatsApp (71) 99202-2915.</li>
+      <li>Privacidade (LGPD): os dados da empresa e do responsável são usados só para conferir e publicar a vaga e para contato sobre ela. CNPJ, nome do responsável e telefone não aparecem no site, salvo o contato que você escolher para receber candidatos. Para pedir a exclusão, escreva para rhaqui.solucoes@gmail.com.</li>
+    </ul>
+    <button class="btn" id="enviar" type="submit">Enviar vaga para publicação</button>
+    <p id="msg" role="status"></p>
+  </fieldset>
+</form>
+
+<div class="feito" id="feito">
+  <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h2>Vaga recebida!</h2>
+  <p>Código <b id="cod"></b>. Vamos conferir e publicar em até 1 dia útil. Você recebe um e-mail quando ela estiver no ar.</p>
+  <p>Dúvidas: WhatsApp (71) 99202-2915.</p>
+  <a class="sec-bt" href="/vagas/cadastrar/">Anunciar outra vaga</a>
+</div>
+</div>
+
+<footer>
+  <div class="wrap">RHAqui Soluções Empresariais · Candeias/BA · (71) 99202-2915 · rhaqui.solucoes@gmail.com · <a href="/">www.rhaqui.com.br</a></div>
+</footer>
+
+<script>
+// Link do app "Vagas RHAqui" (Apps Script, conta rhaqui.solucoes). Preencher após a implantação.
+var API_URL = 'https://script.google.com/macros/s/AKfycby-H1rKG8wYxF-fCtvAQqDR_S9RRnNuF5htuYQl-Kb335Gp2vNtXsCJZq_BMK_RyNgY/exec';
+
+var f = document.getElementById('f');
+var hoje = new Date(), max = new Date(); max.setDate(max.getDate() + 60);
+var iso = function(d){ return d.toISOString().slice(0,10); };
+var val = f.validade; val.min = iso(hoje); val.max = iso(max);
+var pad = new Date(); pad.setDate(pad.getDate() + 30); val.value = iso(pad);
+
+// como receber candidatos
+var dicas = {
+  rhaqui: 'Os candidatos falam com a RHAqui e você recebe os currículos. Se quiser, também fazemos a triagem e as entrevistas (serviço à parte, com orçamento antes).',
+  whatsapp_empresa: 'O botão "Quero me candidatar" abre o WhatsApp informado. Esse número fica visível no anúncio.',
+  email_empresa: 'O botão "Quero me candidatar" abre um e-mail para o endereço informado. Esse e-mail fica visível no anúncio.'
+};
+document.getElementById('cand').addEventListener('change', function(){
+  var v = f.candidatura.value;
+  document.getElementById('contatoBox').style.display = v === 'rhaqui' ? 'none' : 'grid';
+  f.contato_candidatura.placeholder = v === 'whatsapp_empresa' ? '(71) 90000-0000' : 'vagas@suaempresa.com.br';
+  document.getElementById('candDica').textContent = dicas[v];
+});
+
+// aviso de termos que a lei não permite (só alerta; a equipe confere)
+var regras = [
+  [/\b(sexo|somente|apenas|só)\s+(masculino|feminino|homens?|mulheres?)\b/i, 'sexo'],
+  [/\b(idade|entre\s+\d{2}\s*(e|a)\s*\d{2}\s*anos|até\s+\d{2}\s*anos|menos de\s+\d{2}\s*anos)\b/i, 'idade'],
+  [/\b(solteir[oa]s?|casad[oa]s?|sem filhos|grávida|gestante)\b/i, 'estado civil, filhos ou gravidez'],
+  [/\b(boa aparência|bonit[oa]|magr[oa]|foto)\b/i, 'aparência ou foto'],
+  [/\b(raça|religião|evangélic[oa]|católic[oa])\b/i, 'raça ou religião'],
+  [/\b(pix|taxa de inscrição|pagar para|kit inicial)\b/i, 'cobrança do candidato']
+];
+function confere(){
+  var t = [f.cargo.value, f.requisitos.value, f.atividades.value, f.beneficios.value].join(' ');
+  var achou = regras.filter(function(r){ return r[0].test(t); }).map(function(r){ return r[1]; });
+  var a = document.getElementById('alerta');
+  a.style.display = achou.length ? 'block' : 'none';
+  a.innerHTML = achou.length ? '<b>Confira o texto:</b> parece citar ' + achou.join(', ') + '. Se for exigência, retire antes de enviar, para a vaga não ser recusada.' : '';
+}
+['cargo','requisitos','atividades','beneficios'].forEach(function(n){ f[n].addEventListener('input', confere); });
+
+f.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  var msg = document.getElementById('msg'); msg.className = ''; msg.textContent = '';
+  var falta = Array.prototype.filter.call(f.querySelectorAll('[required]'), function(el){
+    return el.type === 'checkbox' ? !el.checked : !el.value.trim();
+  });
+  if (falta.length){
+    msg.className = 'er';
+    msg.textContent = falta[0].type === 'checkbox' ? 'Marque a caixa de aceite dos termos.' : 'Preencha os campos com * (faltou: ' + falta[0].parentNode.firstChild.textContent.replace('*','').trim() + ').';
+    falta[0].focus(); return;
+  }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value)){ msg.className='er'; msg.textContent='Confira o e-mail.'; f.email.focus(); return; }
+  if (f.whatsapp.value.replace(/\D/g,'').length < 10){ msg.className='er'; msg.textContent='Informe o WhatsApp com DDD.'; f.whatsapp.focus(); return; }
+
+  var d = {};
+  new FormData(f).forEach(function(v,k){ d[k] = typeof v === 'string' ? v.trim() : v; });
+  d.aceite = f.aceite.checked;
+  var bt = document.getElementById('enviar'); bt.disabled = true; bt.textContent = 'Enviando…';
+
+  if (!API_URL){ // prévia: ainda sem o app ligado
+    setTimeout(function(){ feito('PRÉVIA'); }, 600); return;
+  }
+  fetch(API_URL, { method: 'POST', body: JSON.stringify(d) })
+    .then(function(r){ return r.json(); })
+    .then(function(r){
+      if (r.ok) feito(r.id);
+      else { msg.className='er'; msg.textContent = r.erro || 'Não foi possível enviar.'; bt.disabled=false; bt.textContent='Enviar vaga para publicação'; }
+    })
+    .catch(function(){
+      msg.className='er';
+      msg.innerHTML = 'Não foi possível enviar agora. Tente de novo ou mande a vaga pelo <a href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Tenho%20uma%20vaga%20para%20divulgar." style="text-decoration:underline">WhatsApp</a>.';
+      bt.disabled=false; bt.textContent='Enviar vaga para publicação';
+    });
+});
+function feito(id){
+  document.getElementById('cod').textContent = id;
+  f.style.display = 'none';
+  document.getElementById('feito').style.display = 'block';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
