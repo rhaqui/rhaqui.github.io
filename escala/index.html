@@ -1,1173 +1,539 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
-<title>Escala RHAqui</title>
-<meta name="description" content="Monte a escala do mês da sua loja em minutos: 3 opções conferidas com a CLT. RHAqui Soluções Empresariais.">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escala RHAqui | Montagem de escalas de trabalho</title>
+<meta name="description" content="Escala RHAqui: montagem de escalas de trabalho para o comércio, conferidas com a CLT e a convenção coletiva. Folgas, domingos e feriados, acordo de compensação e PDF para assinatura. Online para todo o Brasil.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* Layout: faixa de marca verde, depois painel de resultados (opções → calendário → conferência legal → exportar) e, ao lado, os dados da loja. */
-:root{
-  --verde:#0F766E; --verde-2:#0B5F58; --menta:#E6F6F2; --bg:#F6F9F8; --card:#FFFFFF; --fg:#16302C; --muted:#5B6F6B; --line:#D7E4E0;
-  --folga:#EEF2F1; --folga-fg:#4A5D59; --curto:#CDEDE5; --longo:#0F766E; --longo-fg:#FFFFFF; --feriado:#FBE7C6; --feriado-fg:#7A4B00;
-  --ok:#137A3F; --ok-bg:#E3F4EA; --aviso:#8A5A00; --aviso-bg:#FFF2D6; --erro:#B42318; --erro-bg:#FDE7E5;
-  --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; --display:'Space Grotesk','Inter',system-ui,sans-serif;
-}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --verde:#2DB3A5; --verde-2:#5FD0C3; --menta:#12322E; --bg:#0D1715; --card:#14211F; --fg:#E3EFEC; --muted:#93A8A3; --line:#26403B;
-  --folga:#1B2A28; --folga-fg:#9DB3AE; --curto:#1E4741; --longo:#1F8F84; --longo-fg:#FFFFFF; --feriado:#4A3511; --feriado-fg:#FFD58A;
-  --ok:#5BD08D; --ok-bg:#163526; --aviso:#F5C35B; --aviso-bg:#3A2D10; --erro:#FF8A80; --erro-bg:#3D1916; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --verde:#2DB3A5; --verde-2:#5FD0C3; --menta:#12322E; --bg:#0D1715; --card:#14211F; --fg:#E3EFEC; --muted:#93A8A3; --line:#26403B;
-  --folga:#1B2A28; --folga-fg:#9DB3AE; --curto:#1E4741; --longo:#1F8F84; --longo-fg:#FFFFFF; --feriado:#4A3511; --feriado-fg:#FFD58A;
-  --ok:#5BD08D; --ok-bg:#163526; --aviso:#F5C35B; --aviso-bg:#3A2D10; --erro:#FF8A80; --erro-bg:#3D1916; color-scheme:dark}
-*{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.5}
-h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
-.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.topo{background:#1F4B40;color:#fff;margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}
-.topo .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-block:18px}
-.marca{display:flex;align-items:baseline;gap:10px}
-.marca h1{font-size:26px;font-weight:700}
-.marca h1 b{color:#A7F3E4;font-weight:700}
-.marca span{font-size:12px;opacity:.85;letter-spacing:.04em;text-transform:uppercase}
-.topo p{margin:0;font-size:13px;opacity:.92;flex:1 1 320px}
-.selo{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:4px 10px;border-radius:999px;white-space:nowrap}
-.grade{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;padding-block:20px 48px}
-@media (max-width:980px){.grade{grid-template-columns:minmax(0,1fr)}}
-.col{display:flex;flex-direction:column;gap:20px;min-width:0}
-.bloco{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0}
-.bloco h2{font-size:17px;margin-bottom:4px}
-.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
-.mudanca{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:13px}
-.mudanca .de{text-decoration:line-through;color:var(--muted)}
-.mudanca .para{font-weight:600;color:var(--verde)}
-.opcoes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:760px){.opcoes{grid-template-columns:minmax(0,1fr)}}
-.op{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:8px;padding:14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card)}
-.op:hover{border-color:var(--verde)}
-.op:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
-.op[aria-pressed="true"]{border-color:var(--verde);background:var(--menta)}
-.op .let{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--verde)}
-.op h3{font-size:16px}
-.op p{margin:0;font-size:12.5px;color:var(--muted)}
-.pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:2px 9px;border-radius:999px;width:max-content}
-.pill.ok{background:var(--ok-bg);color:var(--ok)} .pill.aviso{background:var(--aviso-bg);color:var(--aviso)} .pill.erro{background:var(--erro-bg);color:var(--erro)}
-.mini{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--fg)}
-.mini b{font-variant-numeric:tabular-nums}
-.cal{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-table{border-collapse:collapse;font-variant-numeric:tabular-nums}
-.cal table{width:max-content;min-width:100%}
-.cal th,.cal td{border-bottom:1px solid var(--line);padding:0;text-align:center}
-.cal thead th{font-size:11px;font-weight:600;color:var(--muted);padding:6px 2px;background:var(--card);position:sticky;top:0}
-.cal thead th.fds{color:var(--verde)}
-.cal th.nome{position:sticky;left:0;background:var(--card);text-align:left;padding:6px 10px;font-size:12.5px;font-weight:600;min-width:118px;z-index:1;border-right:1px solid var(--line)}
-.cal th.nome small{display:block;font-weight:400;color:var(--muted);font-size:11px}
-.cel{all:unset;cursor:pointer;display:flex;flex-direction:column;justify-content:center;align-items:center;width:44px;height:42px;font-size:10.5px;line-height:1.15;border-radius:6px;margin:3px 2px}
-.cel:focus-visible{outline:2px solid var(--verde)}
-.cel.longo{background:var(--longo);color:var(--longo-fg)}
-.cel.curto{background:var(--curto);color:var(--fg)}
-.cel.folga{background:var(--folga);color:var(--folga-fg);font-weight:600;font-size:12px}
-.cel.dsr{color:var(--muted);font-size:11px}
-.cel.feriado{background:var(--feriado);color:var(--feriado-fg);font-weight:600}
-.cel.sel{outline:2px solid var(--fg);outline-offset:1px}
-.cal tr.equipe td{font-size:11px;color:var(--muted);padding:4px 0}
-.cal tr.equipe td b{color:var(--fg)}
-.cal tr.equipe td.baixo b{color:var(--erro)}
-.legenda{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12px;color:var(--muted);margin-top:10px}
-.legenda i{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-3px;margin-right:6px}
-.detalhe{margin-top:10px;font-size:13px;padding:10px 12px;border-radius:8px;background:var(--menta);min-height:42px}
-.tab{overflow-x:auto}
-.tab table{width:100%;font-size:13px}
-.tab th,.tab td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
-.tab th:first-child,.tab td:first-child{text-align:left}
-.tab thead th{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.lei{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
-.lei li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;padding:10px 12px;border:1px solid var(--line);border-radius:8px}
-.lei li .pill{grid-row:span 2;align-self:start;margin-top:2px}
-.lei li strong{font-size:13.5px}
-.lei li strong em{font-style:normal;font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
-.lei li span{font-size:12.5px;color:var(--muted)}
-.export{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
-.export label{font-weight:600;font-size:13px;display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px}
-textarea.saida{width:100%;min-height:120px;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre;overflow:auto}
-button.bt{font:600 13px var(--sans);border:1px solid var(--verde);background:var(--verde);color:#fff;padding:8px 14px;border-radius:8px;cursor:pointer}
-button.bt.sec{background:transparent;color:var(--verde)}
-button.bt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
-button.bt.peq{padding:4px 10px;font-size:12px}
-/* formulário */
-.form{display:flex;flex-direction:column;gap:14px}
-.form fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
-.form legend{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--verde);margin-bottom:6px;padding:0}
-.lin{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;font-size:13px}
-.lin2{display:grid;grid-template-columns:52px auto minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center;font-size:13px}
-input,select,textarea{font:13px var(--sans);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:5px 7px;min-width:0}
-input[type=number]{width:72px}
-input[type=time]{width:100%}
-input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
-.func{display:flex;flex-direction:column;gap:8px}
-.func .f{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px;padding:8px;border:1px solid var(--line);border-radius:8px}
-.func .f .x{display:flex;gap:10px;align-items:center;font-size:12px;grid-column:1/-1;flex-wrap:wrap}
-.nota{font-size:12px;color:var(--muted);margin:0}
-.util h2{font-size:20px}
-.util .grp{border-top:1px solid var(--line);padding:16px 0 4px;margin-top:6px}
-.util .grp:first-of-type{border-top:0;margin-top:0;padding-top:4px}
-.util h3{font-size:15px;margin:0 0 8px}
-.util .notas{display:flex;gap:10px;flex-wrap:wrap}
-.util .nt{font:600 14px var(--sans);border:1px solid var(--line);background:var(--card);color:var(--fg);padding:10px 16px;border-radius:999px;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
-.util .nt[aria-pressed="true"]{border-color:var(--verde);background:var(--menta);color:var(--verde)}
-.util .nt svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.util textarea,.util input[type=text],.util input[type=email],.util input[type=tel]{width:100%;font:14px var(--sans);padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);box-sizing:border-box}
-.util .dup{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-.util label.l{display:block;font-size:13px;font-weight:600;margin:0 0 4px}
-.util .ck{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--muted);margin:8px 0 12px}
-.util .ok-msg{color:var(--verde);font-weight:600;font-size:14px;margin:8px 0 0}
-.util .err-msg{color:#b42318;font-size:13px;margin:8px 0 0}
-.util a.bt{display:inline-flex;align-items:center;gap:8px;font:600 13px var(--sans);border:1px solid var(--verde);background:var(--verde);color:#fff;padding:9px 14px;border-radius:8px;text-decoration:none}
-.util .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-.natal{margin-top:12px;border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center}
-.natal img{width:110px;height:110px;border-radius:6px;background:#fff;padding:4px}
-.natal b{color:var(--fg)}
-.natal .pix{font-family:ui-monospace,monospace;font-size:11px;word-break:break-all;background:var(--menta);border-radius:6px;padding:6px 8px;margin:6px 0}
-@media(max-width:620px){.util .dup{grid-template-columns:1fr}.natal{grid-template-columns:1fr}}
-@media print{.util{display:none}}
+:root{--esc:#1F4B40;--ver:#0F766E;--cla:#E6F6F2;--pon:#7ED67A;--txt:#1d2b27;--sua:#5b6f69;--lin:#dde9e5;--fun:#f6faf8}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;color:var(--txt);background:#fff;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+h1,h2,h3{line-height:1.15;letter-spacing:-.02em}
+h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;color:var(--esc)}
+.olho{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ver)}
+.olho:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pon)}
+.intro{font-size:18px;color:var(--sua);max-width:680px;margin-top:14px}
+.sec{padding:96px 0}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 26px;border-radius:999px;font-weight:700;font-size:16px;transition:.2s;border:2px solid transparent;cursor:pointer}
+.btn-pri{background:var(--ver);color:#fff;box-shadow:0 10px 24px rgba(15,118,110,.28)}
+.btn-pri:hover{background:var(--esc);transform:translateY(-1px)}
+.btn-sec{border-color:var(--esc);color:var(--esc);background:#fff}
+.btn-sec:hover{background:var(--cla)}
+.btn-cla{background:#fff;color:var(--esc)}
+.btn-bor{border-color:rgba(255,255,255,.6);color:#fff}
+.btn svg{width:20px;height:20px;fill:currentColor}
 
-.legal{font-size:12.5px;line-height:1.5;padding:12px 14px;border-radius:10px;background:var(--aviso-bg);color:var(--fg);border:1px solid var(--line)}
-.legal strong{color:var(--aviso)}
-.ajuda{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-size:13px}
-.ajuda a{color:var(--verde);font-weight:600}
-.aviso-geral{font-size:12.5px;padding:10px 12px;border-radius:8px;background:var(--aviso-bg);color:var(--aviso)}
-.comp th,.comp td{text-align:center!important}
-.comp td:first-child,.comp th:first-child{text-align:left!important}
-@media print{
-  body{background:#fff;color:#000}
-  aside.col,.nao-imprime,.selo,#form{display:none!important}
-  .grade{grid-template-columns:1fr;padding:0}
-  .bloco{border:0;padding:8px 0;break-inside:avoid}
-  .cal{overflow:visible;border:0}
-  .cel{width:30px;height:32px;font-size:8.5px;margin:1px}
-  .cal th.nome{min-width:90px}
-  #detalhe{display:none}
-  section.bloco:nth-of-type(n+5){display:none}
-  .legal{display:block!important;font-size:9.5px;break-inside:avoid}
-  .topo{background:#1F4B40!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .cel{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* topo */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--lin)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.marca{display:flex;align-items:center;gap:10px;font-weight:800;font-size:24px;letter-spacing:-.03em;color:var(--esc)}
+.marca b{color:var(--ver)}
+.ic{position:relative;width:38px;height:38px;border-radius:24%;background:var(--esc);display:grid;place-items:center;flex-shrink:0}
+.ic svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round}
+.ic i{position:absolute;top:13%;right:13%;width:20%;height:20%;border-radius:50%;background:var(--pon)}
+.menu{display:flex;align-items:center;gap:28px;font-size:15px;font-weight:500;color:var(--sua)}
+.menu a:hover{color:var(--ver)}
+.menu .btn{padding:11px 20px;font-size:15px;color:#fff}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--cla) 0%,#fff 100%);padding:64px 0 80px;overflow:hidden}
+.hero-g{display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--lin);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--esc);box-shadow:0 4px 14px rgba(31,75,64,.06)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--pon);box-shadow:0 0 0 4px rgba(126,214,122,.25)}
+.hero h1{font-size:clamp(38px,5.2vw,62px);font-weight:800;color:var(--esc);margin:22px 0 18px}
+.hero h1 em{font-style:normal;color:var(--ver);position:relative;white-space:nowrap}
+.hero h1 em:after{content:"";position:absolute;left:0;right:0;bottom:4px;height:10px;background:rgba(126,214,122,.45);z-index:-1;border-radius:4px}
+.hero .lead{font-size:19px;color:var(--sua);max-width:560px}
+.acoes{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.checks{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:28px;font-size:14.5px;color:var(--esc);font-weight:500}
+.checks span{display:flex;align-items:center;gap:8px}
+.checks svg{width:18px;height:18px;fill:none;stroke:var(--ver);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.colagem{position:relative;height:520px}
+.colagem .f1{position:absolute;right:0;top:0;width:82%;height:440px;border-radius:28px;object-fit:cover;box-shadow:0 30px 60px rgba(31,75,64,.22)}
+.colagem .f2{position:absolute;left:0;bottom:0;width:46%;height:230px;border-radius:22px;object-fit:cover;border:6px solid #fff;box-shadow:0 20px 40px rgba(31,75,64,.2)}
+.flut{position:absolute;background:#fff;border-radius:16px;box-shadow:0 18px 40px rgba(31,75,64,.18);padding:14px 16px;display:flex;gap:12px;align-items:center;font-size:13.5px}
+.flut b{display:block;color:var(--esc);font-size:15px}
+.flut small{color:var(--sua)}
+.flut .ok{width:38px;height:38px;border-radius:12px;background:var(--cla);display:grid;place-items:center;flex-shrink:0}
+.flut .ok svg{width:20px;height:20px;fill:none;stroke:var(--ver);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.flut.a{left:4%;top:34px}
+.flut.b{right:-8px;bottom:36px}
+
+/* faixa segmentos */
+.seg{border-top:1px solid var(--lin);border-bottom:1px solid var(--lin);background:#fff}
+.seg .wrap{display:flex;align-items:center;gap:34px;padding-top:24px;padding-bottom:24px;flex-wrap:wrap;justify-content:center}
+.seg p{font-size:14px;font-weight:600;color:var(--sua);text-transform:uppercase;letter-spacing:.06em}
+.seg ul{list-style:none;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.seg li{background:var(--fun);border:1px solid var(--lin);border-radius:999px;padding:8px 16px;font-weight:600;font-size:14.5px;color:var(--esc)}
+
+/* jornada */
+.jor-g{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:48px}
+.jor{border-radius:24px;overflow:hidden;background:#fff;border:1px solid var(--lin);display:flex;flex-direction:column;transition:.25s}
+.jor:hover{transform:translateY(-4px);box-shadow:0 24px 48px rgba(31,75,64,.12)}
+.jor .foto{position:relative;height:220px}
+.jor .foto img{width:100%;height:100%;object-fit:cover}
+.jor .num{position:absolute;left:18px;top:18px;background:#fff;color:var(--esc);font-weight:800;font-size:13px;border-radius:999px;padding:6px 12px;letter-spacing:.04em}
+.jor .corpo{padding:26px 26px 30px}
+.jor h3{font-size:23px;color:var(--esc);font-weight:800}
+.jor .sub{color:var(--sua);margin:8px 0 16px;font-size:15.5px}
+.jor ul{list-style:none;display:grid;gap:10px}
+.jor li{display:flex;gap:10px;font-size:15px}
+.jor li:before{content:"";flex-shrink:0;width:18px;height:18px;margin-top:3px;border-radius:50%;background:var(--cla) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230F766E' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/12px no-repeat}
+.jor li b{color:var(--esc)}
+.extras{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:22px;margin-top:26px}
+.ext{border-radius:22px;padding:26px;background:var(--fun);border:1px solid var(--lin)}
+.ext h3{font-size:19px;color:var(--esc);margin-bottom:6px}
+.ext p{font-size:15px;color:var(--sua)}
+.ext.transp{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:center;background:#fff}
+.ext.transp img{width:150px;height:150px;border-radius:16px;object-fit:cover}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ver);background:var(--cla);border-radius:999px;padding:4px 10px;margin-bottom:8px}
+
+/* produtos */
+.prod{background:var(--esc);color:#fff;position:relative;overflow:hidden}
+.prod:before{content:"";position:absolute;width:640px;height:640px;border-radius:50%;background:radial-gradient(circle,rgba(126,214,122,.18),transparent 65%);right:-200px;top:-200px}
+.prod h2{color:#fff}
+.prod .olho{color:var(--pon)}
+.prod .intro{color:#c9ded8}
+.prod-g{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:48px;position:relative}
+.pcard{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:26px;padding:32px;display:grid;grid-template-columns:1fr 200px;gap:24px;align-items:start}
+.pcard h3{font-size:26px;font-weight:800}
+.pcard h3 span{color:var(--pon)}
+.pcard .sub{color:#c9ded8;margin:6px 0 16px}
+.pcard ul{list-style:none;display:grid;gap:9px;font-size:14.5px;color:#e6f1ee}
+.pcard li{padding-left:22px;position:relative}
+.pcard li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:9px;border-radius:50%;background:var(--pon)}
+.pcard .rod{margin-top:18px;font-size:14px;font-weight:600;color:var(--pon)}
+.badge{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--pon);color:var(--esc);border-radius:999px;padding:4px 10px;margin-bottom:12px}
+/* celular */
+.cel{width:200px;border-radius:30px;background:#0d1f1a;padding:9px;box-shadow:0 24px 50px rgba(0,0,0,.35)}
+.tela{border-radius:22px;overflow:hidden;background:#f4f7f6;color:var(--txt);font-size:11px}
+.tela .cab{background:#2c4a40;color:#fff;padding:14px 12px 12px}
+.tela .cab b{font-size:13px;display:block}
+.tela .cab small{display:inline-block;margin-top:6px;background:rgba(255,255,255,.15);border-radius:999px;padding:2px 8px;font-size:9.5px}
+.tela .hora{text-align:center;padding:14px 0 6px;font-size:26px;font-weight:800;color:#2c4a40}
+.tela .dt{text-align:center;color:var(--sua);font-size:10px}
+.tela .bt{margin:10px 12px 0;border-radius:10px;padding:10px;text-align:center;font-weight:700;font-size:11.5px}
+.tela .bt.v{background:#0F766E;color:#fff}
+.tela .bt.c{background:#fff;border:1px solid var(--lin);color:#2c4a40}
+.tela .reg{margin:12px;background:#fff;border-radius:10px;padding:8px 10px;display:grid;gap:4px}
+.tela .reg div{display:flex;justify-content:space-between;color:var(--sua)}
+.tela .reg b{color:#2c4a40}
+/* escala */
+.esc{width:200px;background:#fff;border-radius:18px;padding:14px;color:var(--txt);box-shadow:0 24px 50px rgba(0,0,0,.35);font-size:10px}
+.esc .t{font-weight:800;color:var(--esc);font-size:12px;margin-bottom:8px}
+.esc table{width:100%;border-collapse:separate;border-spacing:3px}
+.esc th{color:var(--sua);font-weight:600}
+.esc td{height:20px;border-radius:5px;background:var(--cla);text-align:center;font-weight:700;color:var(--esc)}
+.esc td.f{background:#fde7d9;color:#9a4a1a}
+.esc td.n{background:var(--ver);color:#fff}
+.esc .leg{display:flex;gap:8px;margin-top:8px;color:var(--sua)}
+
+/* praia */
+.praia{position:relative;min-height:440px;display:flex;align-items:center;color:#fff;background:linear-gradient(90deg,rgba(23,59,50,.93) 0%,rgba(23,59,50,.78) 42%,rgba(15,118,110,.25) 100%),url(https://images.pexels.com/photos/33263728/pexels-photo-33263728.jpeg?auto=compress&cs=tinysrgb&w=1920) center 60%/cover}
+.praia .wrap{width:100%}
+.praia h2{color:#fff;max-width:560px}
+.praia p{font-size:18px;color:#e2efeb;max-width:520px;margin:16px 0 26px}
+.locais{display:flex;flex-wrap:wrap;gap:10px;max-width:560px}
+.locais span{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:7px 14px;font-weight:600;font-size:14.5px;backdrop-filter:blur(4px)}
+.credito{position:absolute;right:16px;bottom:10px;font-size:11px;opacity:.7}
+
+/* vagas */
+.vag-g{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.vag-f{position:relative}
+.vag-f img{border-radius:26px;height:440px;width:100%;object-fit:cover}
+.vag-f .flut{left:-20px;bottom:30px}
+.vag-bt{display:grid;gap:12px;margin-top:28px;max-width:420px}
+
+/* planos */
+.planos{background:var(--fun)}
+.pl-g{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px;align-items:stretch}
+.pl{background:#fff;border:1px solid var(--lin);border-radius:24px;padding:32px;display:flex;flex-direction:column}
+.pl h3{font-size:24px;color:var(--esc);font-weight:800}
+.pl .para{color:var(--ver);font-weight:600;margin:4px 0 14px;font-size:15px}
+.pl p{color:var(--sua);font-size:15.5px;flex:1}
+.pl .btn{margin-top:22px}
+.pl.dest{background:var(--esc);color:#fff;border-color:var(--esc);transform:scale(1.03);box-shadow:0 30px 60px rgba(31,75,64,.25);position:relative}
+.pl.dest h3{color:#fff}.pl.dest .para{color:var(--pon)}.pl.dest p{color:#d3e6e0}
+.pl.dest .fit{position:absolute;top:-13px;left:32px;background:var(--pon);color:var(--esc);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:5px 12px}
+
+/* como */
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:48px;counter-reset:p}
+.passo{position:relative;padding-top:66px}
+.passo:before{counter-increment:p;content:counter(p);position:absolute;top:0;left:0;width:48px;height:48px;border-radius:14px;background:var(--cla);color:var(--ver);font-weight:800;font-size:20px;display:grid;place-items:center}
+.passo:after{content:"";position:absolute;top:24px;left:62px;right:-12px;height:2px;background:repeating-linear-gradient(90deg,var(--lin) 0 8px,transparent 8px 14px)}
+.passo:last-child:after{display:none}
+.passo h3{font-size:19px;color:var(--esc);margin-bottom:6px}
+.passo p{color:var(--sua);font-size:15px}
+
+/* quem */
+.quem{background:linear-gradient(180deg,#fff 0%,var(--cla) 100%)}
+.pes-g{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:44px}
+.pes{background:#fff;border-radius:24px;padding:30px;border:1px solid var(--lin);display:grid;grid-template-columns:92px 1fr;gap:22px;align-items:start}
+.av{width:92px;height:92px;border-radius:26px;background:linear-gradient(135deg,var(--ver),var(--esc));color:#fff;font-size:38px;font-weight:800;display:grid;place-items:center}
+.pes h3{font-size:22px;color:var(--esc)}
+.pes .cargo{color:var(--ver);font-weight:600;font-size:14.5px;margin:2px 0 10px}
+.pes p{color:var(--sua);font-size:15.5px}
+.frase{margin-top:44px;text-align:center;font-size:clamp(22px,3vw,32px);font-weight:800;font-style:italic;color:var(--ver);letter-spacing:-.02em}
+
+/* faq */
+.faq-g{display:grid;grid-template-columns:.8fr 1.2fr;gap:56px}
+details{border-bottom:1px solid var(--lin);padding:20px 0}
+summary{cursor:pointer;list-style:none;font-weight:700;font-size:17px;color:var(--esc);display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:24px;line-height:1;color:var(--ver);font-weight:500}
+details[open] summary:after{content:"–"}
+details p{color:var(--sua);margin-top:10px;font-size:15.5px}
+
+/* cta */
+.cta{padding:0 0 96px}
+.cta-box{border-radius:32px;padding:64px;background:radial-gradient(ellipse at 85% 110%,rgba(126,214,122,.35),transparent 55%),linear-gradient(135deg,var(--ver),var(--esc));color:#fff;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center}
+.cta h2{color:#fff}
+.cta p{color:#d9ece6;font-size:18px;margin-top:12px}
+.cta .lado{display:grid;gap:12px}
+.cta .infos{font-size:15px;color:#d9ece6;margin-top:6px;display:grid;gap:4px}
+
+footer{background:#132f28;color:#a9c2bb;padding:48px 0 36px;font-size:14.5px}
+.rod-g{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:32px}
+footer .marca{color:#fff}
+footer h4{color:#fff;font-size:15px;margin-bottom:10px}
+footer a:hover{color:#fff}
+.lgpd{border-top:1px solid rgba(255,255,255,.1);margin-top:32px;padding-top:20px;font-size:13px;opacity:.85}
+.zap{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 12px 28px rgba(0,0,0,.25);z-index:60}
+.zap svg{width:32px;height:32px;fill:#fff}
+
+@media(max-width:980px){
+  .menu a:not(.btn){display:none}
+  .hero-g,.vag-g,.faq-g,.cta-box{grid-template-columns:1fr}
+  .colagem{height:440px}
+  .jor-g,.pl-g,.prod-g,.pes-g{grid-template-columns:1fr}
+  .extras{grid-template-columns:1fr}
+  .passos{grid-template-columns:1fr 1fr}
+  .passo:after{display:none}
+  .pl.dest{transform:none}
 }
-@media (prefers-reduced-motion:no-preference){.op,.cel{transition:background .15s,border-color .15s}}
+@media(max-width:620px){
+  .wrap{padding:0 16px}
+  .sec{padding:64px 0}
+  .hero{padding:36px 0 56px}
+  .colagem{height:360px}
+  .colagem .f1{height:300px;width:88%}
+  .colagem .f2{height:160px;width:52%}
+  .flut.b{right:0;bottom:6px}
+  .flut.a{top:16px;left:0}
+  .acoes .btn,.vag-bt .btn{width:100%}
+  .pcard{grid-template-columns:1fr;justify-items:start}
+  .ext.transp{grid-template-columns:1fr}
+  .ext.transp img{width:100%;height:180px}
+  .passos{grid-template-columns:1fr}
+  .pes{grid-template-columns:1fr}
+  .cta-box{padding:36px 24px;border-radius:24px}
+  .rod-g{grid-template-columns:1fr}
+  .vag-f img{height:320px}
+  .vag-f .flut{left:10px}
+  .menu .btn span{display:none}
+  .praia{min-height:520px;background-position:62% center}
+}
+.escolha{background:var(--esc);padding:14px 0}
+.escolha .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center}
+.escolha p{color:#c9ded8;font-weight:600;font-size:15px;margin-right:4px}
+.esc-bt{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:10px 18px 10px 12px;min-width:270px;transition:.2s}
+.esc-bt:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.esc-bt .i{width:40px;height:40px;border-radius:12px;background:var(--cla);display:grid;place-items:center;flex-shrink:0}
+.esc-bt .i svg{width:22px;height:22px;fill:none;stroke:var(--ver);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.esc-bt b{display:block;color:var(--esc);font-size:16px}
+.esc-bt small{color:var(--sua);font-size:13px}
+.esc-bt.cand{background:var(--pon)}.esc-bt.cand .i{background:#fff}
+@media(max-width:620px){.esc-bt{min-width:0;width:100%}.escolha p{width:100%;text-align:center}}
+.extras{grid-template-columns:1fr 1fr!important}
+@media(max-width:980px){.extras{grid-template-columns:1fr!important}}
+.ext.sob{grid-column:1/-1;display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;background:#fff;border:2px solid var(--ver)}
+.ext.sob ul{list-style:none;display:grid;gap:8px;margin:12px 0 16px}
+.ext.sob li{font-size:15px;color:var(--sua);padding-left:22px;position:relative}
+.ext.sob li:before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:3px;background:var(--ver)}
+.ext.sob .caso{background:var(--cla);border-radius:14px;padding:12px 14px;font-size:14.5px;color:var(--esc);margin-bottom:16px}
+.sheet{border:1px solid var(--lin);border-radius:14px;overflow:hidden;font-size:12.5px;box-shadow:0 14px 30px rgba(15,60,50,.10)}
+.sheet .bar{background:var(--esc);color:#fff;font-weight:700;padding:9px 12px}
+.sheet table{width:100%;border-collapse:collapse}
+.sheet th{background:var(--cla);color:var(--esc);text-align:left;padding:7px 10px;font-weight:700}
+.sheet td{padding:7px 10px;border-top:1px solid var(--lin);color:#33443f}
+.sheet .ok{color:#15803d;font-weight:700}.sheet .al{color:#b45309;font-weight:700}
+.sheet .seta{display:flex;align-items:center;justify-content:center;gap:8px;padding:9px;background:var(--fun);color:var(--ver);font-weight:700;font-size:12.5px}
+@media(max-width:980px){.ext.sob{grid-template-columns:1fr}}
+.clic{position:relative;transition:transform .15s,box-shadow .15s}
+.clic:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(0,0,0,.14)}
+.clic .vai::after,.clic .estica::after{content:"";position:absolute;inset:0;border-radius:inherit;z-index:1}
+.vai{display:inline-block;margin-top:14px;font-weight:700;color:var(--ver);text-decoration:none}
+.vai:hover{text-decoration:underline}
+.aviso-ped{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.5}
+.aviso-ped.ok{display:block;background:var(--cla);color:var(--esc);border:1px solid var(--ver)}
+.aviso-ped.erro{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FCA5A5}
+.aviso-ped a{color:inherit;font-weight:700}
+</style>
+<style>
+.ph{background:var(--esc);color:#fff;padding:72px 0 80px;position:relative;overflow:hidden}
+.ph .g{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:center}
+.ph h1{font-size:clamp(34px,4.6vw,54px);font-weight:800}
+.ph h1 span{color:var(--pon)}
+.ph .lead{font-size:19px;color:#d4e6e1;margin:16px 0 26px;max-width:560px}
+.ph .acoes{display:flex;flex-wrap:wrap;gap:12px}
+.ph .selo{display:inline-block;background:rgba(126,214,122,.18);color:var(--pon);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:6px 14px;margin-bottom:16px}
+.ph .tel{display:flex;justify-content:center;gap:22px}
+.ph .cel{width:230px}
+.ph .tela{font-size:12px}
+.vant{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.vant div{background:var(--fun);border:1px solid var(--lin);border-radius:20px;padding:24px}
+.vant h3{font-size:18px;color:var(--esc);margin-bottom:6px}
+.vant p{color:var(--sua);font-size:15px}
+.mos{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.mock{background:#fff;border:1px solid var(--lin);border-radius:20px;box-shadow:0 14px 34px rgba(31,75,64,.08);overflow:hidden}
+.mock .bar{background:#2c4a40;color:#fff;font-weight:700;font-size:14px;padding:12px 16px}
+.mock .cp{padding:16px;font-size:14px;color:var(--txt)}
+.mock table{width:100%;border-collapse:collapse;font-size:13px}
+.mock th{background:var(--cla);color:var(--esc);text-align:left;padding:7px 8px}
+.mock td{padding:7px 8px;border-top:1px solid var(--lin)}
+.mock .ok{color:#0F766E;font-weight:700}.mock .al{color:#b45309;font-weight:700}
+.mock .leg{font-size:12.5px;color:var(--sua);padding:0 16px 14px}
+.passos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:40px;counter-reset:p}
+.passos div{border-top:3px solid var(--ver);padding-top:14px}
+.passos div:before{counter-increment:p;content:counter(p);display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--cla);color:var(--esc);font-weight:800;margin-bottom:8px}
+.passos h3{font-size:17px;color:var(--esc)}
+.passos p{font-size:14.5px;color:var(--sua)}
+.ped{background:var(--fun)}
+.ped .g{display:grid;grid-template-columns:1fr 1.1fr;gap:40px;align-items:start}
+.form{background:#fff;border:1px solid var(--lin);border-radius:22px;padding:28px;box-shadow:0 14px 34px rgba(31,75,64,.08)}
+.form label{display:block;font-weight:600;font-size:14px;color:var(--esc);margin:12px 0 5px}
+.form input,.form select,.form textarea{width:100%;font:inherit;font-size:15px;padding:11px 13px;border:1px solid #c9dad5;border-radius:12px;background:#fff;color:var(--txt)}
+.form input:focus,.form select:focus,.form textarea:focus{outline:2px solid var(--ver);border-color:transparent}
+.form .dup{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form .bts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}.form .bts .btn{padding:14px 16px;font-size:15px;white-space:nowrap}
+.form .obs{font-size:12.5px;color:var(--sua);margin-top:12px}
+.lst{list-style:none;display:grid;gap:10px;margin-top:18px}
+.lst li{padding-left:26px;position:relative;color:var(--sua)}
+.lst li:before{content:"✓";position:absolute;left:0;color:var(--ver);font-weight:800}
+@media(max-width:980px){.ph .g,.ped .g,.mos{grid-template-columns:1fr}.vant{grid-template-columns:1fr}.passos{grid-template-columns:1fr 1fr}.ph .tel .cel+.cel{display:none}}
+@media(max-width:620px){.passos{grid-template-columns:1fr}.form .dup,.form .bts{grid-template-columns:1fr}.ph{padding:48px 0 56px}.sec{padding:64px 0}}
+.esc-card{background:#fff;color:var(--txt);border-radius:22px;padding:18px;box-shadow:0 24px 50px rgba(0,0,0,.35);width:100%;max-width:360px}
+.esc-card .t{font-weight:800;color:var(--esc);margin-bottom:10px}
+.esc-card table{width:100%;border-collapse:separate;border-spacing:3px;font-size:12.5px;text-align:center}
+.esc-card th{color:var(--sua);font-weight:700}
+.esc-card td{background:var(--cla);color:var(--esc);border-radius:6px;padding:6px 0;font-weight:700}
+.esc-card td.n{background:none;text-align:left;font-weight:600;padding-right:4px}
+.esc-card td.f{background:#f1f3f2;color:#8a9a96}
+.esc-card td.d{background:var(--ver);color:#fff}
+.esc-card .ok{margin-top:12px;font-size:12.5px;color:var(--ver);font-weight:700}
+.precos{background:var(--fun)}
+.pr-g{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px}
+.pr{background:#fff;border:1px solid var(--lin);border-radius:20px;padding:24px}
+.pr-t{display:block;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ver)}
+.pr-v{font-size:34px;font-weight:800;color:var(--esc);margin:8px 0 4px;letter-spacing:-.02em}
+.pr-v small{font-size:16px;font-weight:600;color:var(--sua)}
+.pr p{color:var(--sua);font-size:15px}
+.grupo{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-top:20px;background:var(--esc);color:#fff;border-radius:20px;padding:26px 28px}
+.grupo .pr-t{color:var(--pon)}
+.grupo h3{font-size:22px;margin:6px 0}
+.grupo p{color:#d4e6e1;font-size:15px}
+.grupo .btn{flex-shrink:0}
+.nota-pr{margin-top:18px;color:var(--sua);font-size:15px}
+.demo{margin-top:22px;color:var(--sua);font-size:15px}
+.demo a{color:var(--ver);font-weight:700;text-decoration:underline}
+@media(max-width:980px){.pr-g{grid-template-columns:1fr}.grupo{flex-direction:column;align-items:flex-start}}
 </style>
 </head>
 <body>
 
-
-<header class="topo">
-  <div class="wrap">
-    <div class="marca"><h1><a href="https://www.rhaqui.com.br/" style="color:inherit;text-decoration:none">Escala <b>RH</b>Aqui</a></h1><span>RHAqui Soluções Empresariais</span></div>
-    <p id="titulo-sub">Escalas de trabalho com a CLT conferida.</p>
-    <span class="selo">Dados de exemplo · edite ao lado</span>
+<header>
+  <div class="wrap nav">
+    <a href="/#inicio" class="marca"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></svg><i></i></span><span><b>RH</b>Aqui</span></a>
+    <nav class="menu">
+      <a href="/#servicos">Serviços</a>
+      <a href="/#solucoes">Ponto e Escala</a>
+      <a href="/#vagas">Vagas</a>
+      <a href="/#planos">Planos</a>
+      <a href="/#quem">Quem somos</a>
+      <a href="/escala/">Escala pronta</a>
+      <a class="btn btn-pri" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Fale conosco</span></a>
+    </nav>
   </div>
 </header>
 
-<main class="wrap grade">
-  <div class="col">
-    <section class="legal" id="aviso-legal">
-      <strong>Importante:</strong> a escala gerada é uma sugestão de organização. Ela confere as regras gerais da CLT, mas não substitui a convenção coletiva da sua categoria nem a orientação do seu contador. Dias acima de 8h só valem com acordo de compensação assinado por cada funcionário. A decisão e os documentos são responsabilidade da empresa. Os dados que você digita ficam só no seu navegador; nada é gravado pela RHAqui.
-    </section>
-
-    <section class="bloco">
-      <h2>3 escalas possíveis para o mês</h2>
-      <p class="sub" id="resumo-mes"></p>
-      <div class="mudanca" id="mudanca"></div>
-      <div style="height:14px"></div>
-      <div class="opcoes" id="opcoes"></div>
-    </section>
-
-    <section class="bloco">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><h2 id="cal-titulo">Calendário</h2><button class="bt sec peq nao-imprime" type="button" id="bt-print">Imprimir ou salvar em PDF</button></div>
-      <p class="sub">Toque num dia para ver entrada, almoço e saída. A linha "Equipe" mostra quantas pessoas trabalham e o mínimo presente em qualquer horário.</p>
-      <div class="cal" id="cal"></div>
-      <div class="legenda">
-        <span><i style="background:var(--longo)"></i>Dia completo</span>
-        <span><i style="background:var(--curto)"></i>Dia curto (até 6h, pausa de 15 min)</span>
-        <span><i style="background:var(--folga)"></i>F = folga</span>
-        <span><i style="background:var(--feriado)"></i>FER = feriado (abonado)</span>
-        <span>· = domingo, loja fechada</span>
+<section class="ph" id="inicio">
+  <div class="wrap g">
+    <div>
+      <span class="selo">Online para todo o Brasil</span>
+      <h1>Escala <span>RH</span>Aqui</h1>
+      <p class="lead">Nós montamos a escala de trabalho da sua loja todo mês, conferida com a CLT e a convenção do comércio: folgas, domingos e feriados no rodízio, acordo de compensação e PDF pronto para assinar.</p>
+      <div class="acoes">
+        <a class="btn btn-cla" href="#pedido">Quero minha escala montada</a>
+        <a class="btn btn-bor" href="#precos">Ver preços</a>
       </div>
-      <div class="detalhe" id="detalhe">Toque num dia do calendário.</div>
-    </section>
-
-    <section class="bloco">
-      <h2>Horas e folgas por pessoa</h2>
-      <p class="sub">Semanas de segunda a domingo. Feriado conta como dia trabalhado (abonado).</p>
-      <div class="tab" id="tab-horas"></div>
-    </section>
-
-    <section class="bloco">
-      <h2>Conferência legal</h2>
-      <p class="sub">O motor só entrega escala que passa nestas regras. Aviso = permitido, mas exige um documento ou cuidado.</p>
-      <ul class="lei" id="lei"></ul>
-    </section>
-
-    <section class="bloco">
-      <h2>Comparar as 3 opções</h2>
-      <div class="tab comp" id="comp"></div>
-    </section>
-
-    <section class="bloco">
-      <h2>Levar para o Ponto RHAqui</h2>
-      <p class="sub">Copie e cole nas abas da planilha de ponto (a partir da linha livre). Cada mudança de folga vira uma linha nova em "Escala por funcionário", como o Ponto RHAqui já faz.</p>
-      <div class="export">
-        <div class="ajuda nao-imprime"><span>Precisa de ajuda, do acordo de compensação ou quer o ponto ligado à escala?</span><a href="https://wa.me/5571992022915" target="_blank" rel="noopener">Falar com a RHAqui no WhatsApp: (71) 99202-2915</a></div>
-        <div><label for="exp-escalas">Aba "Escalas" (colunas A a P) <button class="bt sec peq" id="cp1" type="button">Copiar</button></label><textarea class="saida" id="exp-escalas" readonly></textarea></div>
-        <div><label for="exp-func">Aba "Escala por funcionário" (colunas A a D) <button class="bt sec peq" id="cp2" type="button">Copiar</button></label><textarea class="saida" id="exp-func" readonly></textarea></div>
-        <p class="nota" id="exp-nota"></p>
+    </div>
+    <div class="tel">
+      <div class="esc-card">
+        <div class="t">Dezembro · Loja Centro</div>
+        <table>
+          <tr><th></th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th><th>D</th></tr>
+          <tr><td class="n">Ana</td><td>T</td><td>T</td><td class="f">F</td><td>T</td><td>T</td><td>T</td><td class="d">T</td></tr>
+          <tr><td class="n">Bruno</td><td>T</td><td class="f">F</td><td>T</td><td>T</td><td>T</td><td>T</td><td class="f">F</td></tr>
+          <tr><td class="n">Carla</td><td>T</td><td>T</td><td>T</td><td class="f">F</td><td>T</td><td>T</td><td class="d">T</td></tr>
+          <tr><td class="n">Davi</td><td class="f">F</td><td>T</td><td>T</td><td>T</td><td>T</td><td>T</td><td class="f">F</td></tr>
+        </table>
+        <div class="ok">✓ CLT e convenção conferidas · domingos no rodízio</div>
       </div>
-    </section>
-
-    <section class="bloco util nao-imprime" id="util">
-      <h2>Este simulador de escala foi útil?</h2>
-      <p class="sub">Leva menos de um minuto e ajuda a gente a melhorar o simulador.</p>
-
-      <div class="grp">
-        <h3>1. Avalie em um clique</h3>
-        <div class="notas">
-          <button type="button" class="nt" data-nota="Gostei" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.5 2.5V9h5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.3 20H7"/></svg>Gostei</button>
-          <button type="button" class="nt" data-nota="Não gostei" aria-pressed="false"><svg viewBox="0 0 24 24" style="transform:rotate(180deg)"><path d="M7 11v9H4v-9zM7 11l4-7c1.5 0 2.5 1 2.5 2.5V9h5a2 2 0 0 1 2 2.3l-1.2 7A2 2 0 0 1 17.3 20H7"/></svg>Não gostei</button>
-        </div>
-        <div id="av-extra" hidden style="margin-top:10px">
-          <label class="l" for="av-com">Quer contar mais? (opcional)</label>
-          <textarea id="av-com" rows="2" maxlength="1000" placeholder="O que faltou ou o que mais ajudou?"></textarea>
-          <button type="button" class="bt" id="av-env" style="margin-top:8px">Enviar comentário</button>
-        </div>
-        <p class="ok-msg" id="av-ok" hidden></p>
-      </div>
-
-      <div class="grp">
-        <h3>2. Receba a escala do próximo mês pronta</h3>
-        <p class="nota" style="margin-bottom:10px">Deixe seu WhatsApp ou e-mail e a RHAqui avisa quando a escala do próximo mês estiver pronta para conferir.</p>
-        <div class="dup">
-          <div><label class="l" for="ct-nome">Seu nome</label><input type="text" id="ct-nome" maxlength="80" autocomplete="name"></div>
-          <div><label class="l" for="ct-emp">Empresa</label><input type="text" id="ct-emp" maxlength="100" autocomplete="organization"></div>
-        </div>
-        <div class="dup">
-          <div><label class="l" for="ct-wa">WhatsApp</label><input type="tel" id="ct-wa" maxlength="30" autocomplete="tel" placeholder="(71) 9...."></div>
-          <div><label class="l" for="ct-mail">E-mail</label><input type="email" id="ct-mail" maxlength="120" autocomplete="email"></div>
-        </div>
-        <input type="text" id="ct-site" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <label class="ck"><input type="checkbox" id="ct-lgpd"> <span>Autorizo a RHAqui a guardar estes dados para me enviar a escala e novidades do simulador. Posso pedir a exclusão a qualquer momento pelo e-mail rhaqui.solucoes@gmail.com (LGPD).</span></label>
-        <button type="button" class="bt" id="ct-env">Quero receber</button>
-        <p class="ok-msg" id="ct-ok" hidden></p><p class="err-msg" id="ct-err" hidden></p>
-      </div>
-
-      <div class="grp">
-        <h3>3. Conhece outro lojista que sofre com escala?</h3>
-        <a class="bt" id="bt-share" target="_blank" rel="noopener" href="#"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg>Compartilhar com outro lojista</a>
-      </div>
-
-      <div class="natal" id="natal" hidden>
-        <img id="natal-qr" alt="QR code Pix">
-        <div><b>Colabore com o nosso Natal.</b> O simulador é gratuito. Se ele ajudou a sua loja e você quiser contribuir com qualquer valor, use o Pix abaixo. É totalmente opcional.
-          <div style="margin-top:6px">Chave Pix (celular): <b id="natal-chave"></b></div>
-          <div class="pix" id="natal-pix"></div>
-          <button type="button" class="bt sec peq" id="natal-cp">Copiar Pix copia e cola</button> <span class="nota">Confira o nome do recebedor no app do seu banco antes de confirmar.</span>
-        </div>
-      </div>
-    </section>
+    </div>
   </div>
+</section>
 
-  <aside class="col">
-    <section class="bloco">
-      <h2>Dados da loja</h2>
-      <p class="sub">Mude qualquer dado e gere de novo.</p>
-      <form class="form" id="form">
-        <fieldset>
-          <legend>Mês e jornada</legend>
-          <div class="lin"><label for="f-emp">Empresa</label><input id="f-emp" style="width:170px"></div>
-          <div class="lin"><label for="f-mes">Mês</label><input id="f-mes" type="month" style="width:150px"></div>
-          <div class="lin"><label for="f-hs">Horas por semana</label><input id="f-hs" type="number" min="20" max="44" step="1"></div>
-          <div class="lin"><label for="f-ds">Dias de trabalho por semana</label><select id="f-ds"><option value="5">5 (5x2)</option><option value="6">6 (6x1)</option></select></div>
-          <div class="lin"><label for="f-modo">Como dividir as horas</label><select id="f-modo"><option value="curto">4 dias longos + 1 curto</option><option value="iguais">Dias iguais</option></select></div>
-          <div class="lin"><label for="f-amin">Almoço mínimo (min)</label><input id="f-amin" type="number" min="60" max="120" step="15"></div>
-          <div class="lin"><label for="f-amax">Almoço máximo (min)</label><input id="f-amax" type="number" min="60" max="120" step="15"></div>
-          <div class="lin"><label for="f-tol">Pode sair após fechar (min)</label><input id="f-tol" type="number" min="0" max="30" step="5"></div>
-        </fieldset>
-        <fieldset>
-          <legend>Horário da loja</legend>
-          <div id="f-loja" style="display:flex;flex-direction:column;gap:6px"></div>
-          <div class="lin"><span>Domingos abertos no mês</span><span></span></div>
-          <div id="f-doms" style="display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px"></div>
-          <div class="lin2"><span>Dom</span><span></span><input id="f-dabre" type="time" aria-label="Domingo abre"><input id="f-dfecha" type="time" aria-label="Domingo fecha"></div>
-        </fieldset>
-        <fieldset>
-          <legend>Mínimo de pessoas</legend>
-          <div class="lin"><label for="f-mu">Escaladas em dia útil</label><input id="f-mu" type="number" min="1" max="20"></div>
-          <div class="lin"><label for="f-msab">Escaladas no sábado</label><input id="f-msab" type="number" min="1" max="20"></div>
-          <div class="lin"><label for="f-mdom">Escaladas no domingo aberto</label><input id="f-mdom" type="number" min="1" max="20"></div>
-          <div class="lin"><label for="f-mp">Presentes a qualquer hora</label><input id="f-mp" type="number" min="1" max="20"></div>
-        </fieldset>
-        <fieldset>
-          <legend>Feriados (dd/mm/aaaa nome)</legend>
-          <textarea id="f-fer" rows="3" aria-label="Feriados"></textarea>
-          <label style="display:flex;gap:8px;font-size:13px;align-items:flex-start"><input id="f-386" type="checkbox" style="margin-top:3px"> Mulheres: domingo de folga a cada 15 dias (CLT art. 386)</label>
-        </fieldset>
-        <fieldset>
-          <legend>Equipe</legend>
-          <p class="nota" style="margin:0 0 6px">Ao lado do nome, escreva o setor (ex.: Caixa, Vendas, Depósito). Quem tem o mesmo setor se cobre: o motor não dá folga a todos no mesmo dia.</p>
-          <div class="func" id="f-func"></div>
-          <button class="bt sec peq" type="button" id="f-add">Incluir pessoa</button>
-        </fieldset>
-        <fieldset>
-          <legend>Mínimo por setor</legend>
-          <div id="f-set" style="display:flex;flex-direction:column;gap:6px"></div>
-        </fieldset>
-        <button class="bt" type="submit">Gerar 3 escalas</button>
-        <p class="nota">Exemplo fictício: loja de seg–sex 08–18 e sábado 08–14, domingos fechados. Feriados já carregados: nacionais, Bahia e Candeias (2026–2027); confira os da cidade do cliente e a convenção coletiva.</p>
-      </form>
-    </section>
-  </aside>
-</main>
+<section class="sec">
+  <div class="wrap">
+    <span class="olho">O que você recebe</span>
+    <h2>A escala do mês pronta, sem dor de cabeça</h2>
+    <div class="vant">
+      <div><h3>Escala montada por nós</h3><p>Você conta horários, equipe e movimento da loja. Nós montamos a escala do mês e ajustamos com você.</p></div>
+      <div><h3>CLT e convenção conferidas</h3><p>Jornada, intervalo, descanso semanal e regras da convenção coletiva do comércio da sua cidade.</p></div>
+      <div><h3>Folgas, domingos e feriados</h3><p>Rodízio justo de domingos e feriados, folgas distribuídas e cobertura mínima nos horários de pico.</p></div>
+      <div><h3>Acordo de compensação</h3><p>Quando a escala pede dias mais longos, preparamos o acordo de compensação para cada funcionário assinar.</p></div>
+      <div><h3>PDF para assinatura</h3><p>Escala do mês em PDF, pronta para imprimir, afixar e colher as assinaturas.</p></div>
+      <div><h3>Liga com o Ponto RHAqui</h3><p>Se você usa o Ponto RHAqui, a escala aprovada vai direto para o controle de atrasos e horas extras.</p></div>
+    </div>
+  </div>
+</section>
 
-<script>
-/* Escala RHAqui – motor de escalas (protótipo 20/11/2026)
-   Gera escalas mensais por estratégia, distribui horas, monta turnos e confere regras da CLT. */
-var SimulIAqui = (function () {
-  var DOW = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <span class="olho">Como funciona</span>
+    <h2>Do primeiro contato à escala assinada</h2>
+    <div class="passos">
+      <div><h3>Diagnóstico gratuito</h3><p>Uma conversa ou ficha para entender a rotina, os problemas e as necessidades da sua loja. Sem custo.</p></div>
+      <div><h3>Proposta</h3><p>Você recebe a proposta com o valor da sua loja ou do seu grupo de lojas.</p></div>
+      <div><h3>Escala montada</h3><p>Montamos a escala do mês, conferimos a lei e ajustamos com você até ficar boa.</p></div>
+      <div><h3>Todo mês</h3><p>A escala do mês seguinte chega pronta, com o PDF e os acordos que forem necessários.</p></div>
+    </div>
+  </div>
+</section>
 
-  function toMin(s) { var p = String(s).split(':'); return (+p[0]) * 60 + (+(p[1] || 0)); }
-  function fmt(m) { m = Math.round(m); var h = Math.floor(m / 60), mm = m % 60; return String(h).padStart(2, '0') + ':' + String(mm).padStart(2, '0'); }
-  function fmtH(m) { m = Math.round(m); var h = Math.floor(m / 60), mm = m % 60; return mm ? h + 'h' + String(mm).padStart(2, '0') : h + 'h'; }
-  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-  function br(d) { return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); }
-  function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+<section class="sec precos" id="precos">
+  <div class="wrap">
+    <span class="olho">Preços</span>
+    <h2>Adesão única e mensalidade por loja</h2>
+    <p class="intro">A adesão é a mesma para qualquer tamanho de equipe. A mensalidade depende do número de colaboradores de cada loja.</p>
+    <div class="pr-g">
+      <div class="pr">
+        <span class="pr-t">Adesão</span>
+        <div class="pr-v">R$ 149,99</div>
+        <p>Pagamento único, independente da quantidade de colaboradores.</p>
+      </div>
+      <div class="pr">
+        <span class="pr-t">Até 10 colaboradores</span>
+        <div class="pr-v">R$ 49,99<small>/mês</small></div>
+        <p>Por loja.</p>
+      </div>
+      <div class="pr">
+        <span class="pr-t">De 11 a 25 colaboradores</span>
+        <div class="pr-v">R$ 89,99<small>/mês</small></div>
+        <p>Por loja. Acima de 25 colaboradores, sob consulta.</p>
+      </div>
+    </div>
+    <div class="grupo">
+      <div>
+        <span class="pr-t">Grupo de lojas</span>
+        <h3>A partir de 2 lojas: 15% de desconto na mensalidade</h3>
+        <p>E o grupo paga uma adesão única, para até 40 colaboradores no total. Acima disso, a adesão é combinada na proposta.</p>
+      </div>
+      <a class="btn btn-pri" href="#pedido">Quero minha escala montada</a>
+    </div>
+    <p class="nota-pr">Quem contrata a consultoria de RH da RHAqui já tem o planejamento de escala incluído no pacote.</p>
+  </div>
+</section>
 
-  function dayInfo(cfg, d) {
-    var id = iso(d), dow = d.getDay(), horas = null, tipo;
-    if (dow === 0) {
-      if (cfg.domingosAbertos.indexOf(id) >= 0) { horas = cfg.horasDomingo; tipo = 'dom'; } else tipo = 'fechado';
-    } else {
-      var h = cfg.loja[dow];
-      if (h && h.aberta) { horas = h; tipo = dow === 6 ? 'sab' : 'util'; } else tipo = 'fechado';
-    }
-    var fer = null;
-    cfg.feriados.forEach(function (f) { if (f.data === id) fer = f.nome; });
-    if (fer && horas) tipo = 'feriado'; // loja fecharia: dia "virtual" para o padrão, não trabalhado
-    return { id: id, d: d, dow: dow, dia: d.getDate(), noMes: d.getMonth() === cfg.mes - 1,
-      horas: horas ? { abre: toMin(horas.abre), fecha: toMin(horas.fecha) } : null, tipo: tipo, feriado: fer };
-  }
-
-  function buildWeeks(cfg) {
-    var first = new Date(cfg.ano, cfg.mes - 1, 1, 12), last = new Date(cfg.ano, cfg.mes, 0, 12);
-    var s = addDays(first, -((first.getDay() + 6) % 7)), weeks = [];
-    for (; s <= last; s = addDays(s, 7)) {
-      var days = [];
-      for (var i = 0; i < 7; i++) days.push(dayInfo(cfg, addDays(s, i)));
-      weeks.push(days);
-    }
-    return weeks;
-  }
-
-  function combos(arr, k) {
-    var out = [];
-    (function rec(start, cur) {
-      if (cur.length === k) { out.push(cur.slice()); return; }
-      for (var i = start; i < arr.length; i++) { cur.push(arr[i]); rec(i + 1, cur); cur.pop(); }
-    })(0, []);
-    return out;
-  }
-
-  function minDiaDe(cfg, day) {
-    if (day.tipo === 'sab') return cfg.minDia.sab;
-    if (day.tipo === 'dom') return cfg.minDia.dom;
-    return cfg.minDia.util;
-  }
-
-  // Dia fixo de folga (estratégia A): respeita preferência e capacidade de cada dia
-  function diasFixos(cfg) {
-    var n = cfg.funcionarios.length, cap = {}, res = [];
-    [1, 2, 3, 4, 5, 6].forEach(function (d) {
-      var h = cfg.loja[d]; if (!h || !h.aberta) { cap[d] = 0; return; }
-      cap[d] = n - (d === 6 ? cfg.minDia.sab : cfg.minDia.util);
-    });
-    var ordem = [6, 1, 3, 5, 2, 4];
-    cfg.funcionarios.forEach(function (f, i) { if (f.folgaPref && cap[f.folgaPref] > 0) { res[i] = f.folgaPref; cap[f.folgaPref]--; } });
-    var fila = cfg.funcionarios.map(function (f, i) { return i; });
-    // quem tem cargo de gestão fica por último (tende a folgar em dia útil e estar na loja no sábado)
-    fila.sort(function (a, b) { return (/gerent|gest|supervis/i.test(cfg.funcionarios[a].cargo || '') ? 1 : 0) - (/gerent|gest|supervis/i.test(cfg.funcionarios[b].cargo || '') ? 1 : 0) || a - b; });
-    fila.forEach(function (i) {
-      var f = cfg.funcionarios[i];
-      if (res[i]) return;
-      for (var j = 0; j < ordem.length; j++) { var d = ordem[j]; if (cap[d] > 0) { res[i] = d; cap[d]--; return; } }
-      res[i] = 1;
-    });
-    return res;
-  }
-
-  function alvo(estr, e, w, n, fixos, cfg) {
-    var f = cfg.funcionarios[e];
-    if (estr === 'A') return fixos[e];
-    if (estr === 'B') {
-      var capSab = Math.max(0, n - cfg.minDia.sab);
-      if (capSab > 0 && (((e - w * capSab) % n) + n) % n < capSab) return 6;
-      if (f.folgaPref && f.folgaPref !== 6) return f.folgaPref;
-      return [1, 5, 2, 4, 3][(e + w) % 5];
-    }
-    var L = [1, 2, 3, 4, 5, 6];
-    return L[(Math.round(e * 6 / n) + w) % 6];
-  }
-
-  function setorKey(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim(); }
-  function setores(cfg) {
-    var m = {}, out = [];
-    cfg.funcionarios.forEach(function (f, e) {
-      var k = setorKey(f.cargo); if (!k) return;
-      if (!m[k]) { m[k] = { key: k, nome: String(f.cargo).trim(), idx: [], min: 0 }; out.push(m[k]); }
-      m[k].idx.push(e);
-    });
-    out.forEach(function (st) { var v = cfg.minSetor ? cfg.minSetor[st.key] : null; st.min = v == null ? 0 : Math.max(0, Math.round(+v || 0)); });
-    return out;
-  }
-
-  function custoDia(estr, dow, alvoDow) {
-    if (dow === alvoDow) return 0;
-    if (dow === 0) return 1;
-    var dist = Math.abs(dow - alvoDow);
-    if (estr === 'C') dist = Math.min(dist, 6 - dist);
-    return 4 + dist * 2 + (dow === 6 ? 3 : 0);
-  }
-
-  // Monta uma estratégia completa
-  function gerar(cfg, estr) {
-    var weeks = buildWeeks(cfg), n = cfg.funcionarios.length, fixos = diasFixos(cfg);
-    var estado = cfg.funcionarios.map(function () { return { tail: 0, domSeguidos: 0 }; });
-    var plano = [], alertasSemana = [];
-    var SET = setores(cfg).filter(function (st) { return st.min > 0; });
-
-    weeks.forEach(function (days, w) {
-      var abertos = days.filter(function (d) { return d.horas; });
-      var candFolga = abertos.filter(function (d) { return d.tipo !== 'feriado'; });
-      var k = Math.max(0, abertos.length - cfg.diasSemana);
-      var domingo = days[6];
-      var cands = cfg.funcionarios.map(function (f, e) {
-        var K = (cfg.regra386 && f.sexo === 'F') ? 2 : 3;
-        var list = combos(candFolga.map(function (d) { return d.dow; }), Math.min(k, candFolga.length)).filter(function (S) {
-          if (domingo.tipo === 'dom') {
-            if (f.semDomingo && S.indexOf(0) < 0) return false;
-            if (estado[e].domSeguidos >= K - 1 && S.indexOf(0) < 0) return false;
-          }
-          // no máximo 6 dias seguidos
-          var run = estado[e].tail, max = run;
-          days.forEach(function (d) {
-            var trab = d.horas && d.tipo !== 'feriado' && S.indexOf(d.dow) < 0;
-            run = trab ? run + 1 : 0; if (run > max) max = run;
-          });
-          if (max > 6) return false;
-          // as horas da semana precisam caber nos dias trabalhados
-          var cap = 0, nd = 0;
-          days.forEach(function (d) { if (d.horas && S.indexOf(d.dow) < 0) { cap += maxTrabalho(cfg, d); nd++; } });
-          return cap >= cfg.horasSemana * 60 * Math.min(1, nd / cfg.diasSemana) - 1;
-        }).map(function (S) {
-          var a = alvo(estr, e, w, n, fixos, cfg), c = 0;
-          S.forEach(function (dw) { c += custoDia(estr, dw, a); });
-          if (S.indexOf(a) < 0 && candFolga.some(function (d) { return d.dow === a; })) c += 20;
-          if (f.folgaPref && S.indexOf(f.folgaPref) < 0 && estr !== 'B') c += 6;
-          // evita terminar a semana com muitos dias seguidos
-          var run = 0; for (var i = 6; i >= 0; i--) { var d = days[i]; if (d.horas && d.tipo !== 'feriado' && S.indexOf(d.dow) < 0) run++; else break; }
-          if (run > 4) c += (run - 4) * 3;
-          if (estr === 'B' && (S.indexOf(6) >= 0 || S.indexOf(1) >= 0)) c -= 1; // emenda com o domingo
-          return { S: S, c: c };
-        }).sort(function (a, b) { return a.c - b.c; });
-        return list.slice(0, 30);
-      });
-
-      // restantes por setor a partir do funcionário j (para podar a busca)
-      var resto = SET.map(function (st) { var r = []; for (var j = 0; j <= n; j++) r.push(st.idx.filter(function (e) { return e >= j; }).length); return r; });
-      function parcialOk(sel, modo) {
-        if (modo === 2) return true;
-        var falta = n - sel.length;
-        for (var q = 0; q < candFolga.length; q++) {
-          var d = candFolga[q], trab = 0;
-          for (var j = 0; j < sel.length; j++) if (sel[j].S.indexOf(d.dow) < 0) trab++;
-          if (trab + falta < minDiaDe(cfg, d)) return false;
-          if (modo === 0) {
-            for (var a = 0; a < SET.length; a++) {
-              var st = SET[a], ts = 0;
-              for (var b = 0; b < st.idx.length; b++) { var e = st.idx[b]; if (e < sel.length && sel[e].S.indexOf(d.dow) < 0) ts++; }
-              if (ts + resto[a][sel.length] < st.min) return false;
-            }
-          }
-        }
-        return true;
-      }
-      function busca1(modo, lim) {
-        var best = null, bestC = Infinity, sel = [], nos = 0;
-        (function rec(e, c) {
-          if (c >= bestC || nos > 400000) return;
-          if (e === n) { bestC = c; best = sel.slice(); return; }
-          var L = Math.min(lim, cands[e].length);
-          for (var i = 0; i < L; i++) {
-            nos++;
-            sel.push(cands[e][i]);
-            if (parcialOk(sel, modo)) rec(e + 1, c + cands[e][i].c);
-            sel.pop();
-          }
-        })(0, 0);
-        return best;
-      }
-      function busca(modo) {
-        var lims = n > 6 ? [6, 12, 30] : [30];
-        for (var q = 0; q < lims.length; q++) { var r = busca1(modo, lims[q]); if (r) return r; }
-        return null;
-      }
-      var sol = busca(0), alerta = null;
-      if (!sol && SET.length) {
-        sol = busca(1);
-        if (sol) {
-          var motivos = [];
-          SET.forEach(function (st) {
-            var folgam = st.idx.length * Math.min(k, candFolga.length), dias = candFolga.length;
-            if (k > 0 && st.idx.length <= st.min) motivos.push(st.nome + ' tem ' + st.idx.length + (st.idx.length > 1 ? ' pessoas' : ' pessoa') + ' e mínimo de ' + st.min + ' por dia, então ninguém do setor consegue folgar');
-            else if (st.idx.length * dias - folgam < st.min * dias) motivos.push(st.nome + ' não tem gente suficiente para manter ' + st.min + ' por dia com as folgas da semana');
-          });
-          alerta = 'Semana de ' + br(days[0].d).slice(0, 5) + ': não dá para manter o mínimo de cada setor. ' +
-            (motivos.length ? motivos.join('; ') + '.' : 'As folgas do setor se chocam com a folga obrigatória aos domingos (mulheres: um domingo de folga a cada 15 dias; homens: no máximo 2 domingos seguidos) ou com as horas da semana.') +
-            ' Diminua o mínimo do setor ou inclua mais uma pessoa nele.';
-        }
-      }
-      if (!sol) {
-        sol = busca(2);
-        var precisa = candFolga.reduce(function (a, d) { return a + minDiaDe(cfg, d); }, 0);
-        alerta = 'Semana de ' + br(days[0].d).slice(0, 5) + ': com ' + n + ' pessoas não dá para cumprir os mínimos por dia (precisa de ' + precisa + ' turnos; há ' + (n * (abertos.length - k)) + ', e as regras de domingo e de horas reduzem as combinações). Reduza um mínimo ou inclua uma pessoa (ex.: temporária de fim de ano).';
-      }
-      if (!sol) { sol = cfg.funcionarios.map(function () { return { S: [] }; }); alerta = 'Semana ' + (w + 1) + ': sem combinação válida.'; }
-      if (alerta) alertasSemana.push(alerta);
-
-      // atualiza estado
-      sol.forEach(function (x, e) {
-        var run = estado[e].tail;
-        days.forEach(function (d) { var trab = d.horas && d.tipo !== 'feriado' && x.S.indexOf(d.dow) < 0; run = trab ? run + 1 : 0; });
-        estado[e].tail = run;
-        if (domingo.tipo === 'dom') estado[e].domSeguidos = x.S.indexOf(0) >= 0 ? 0 : estado[e].domSeguidos + 1;
-        else estado[e].domSeguidos = 0;
-      });
-      plano.push({ days: days, folgas: sol.map(function (x) { return x.S; }) });
-    });
-
-    // horas e turnos
-    var memoCurto = cfg.funcionarios.map(function () { return null; });
-    plano.forEach(function (sem) { distribuirHoras(cfg, sem, memoCurto); montarTurnos(cfg, sem); });
-    var res = { estr: estr, plano: plano, alertasSemana: alertasSemana, fixos: fixos };
-    res.validacao = validar(cfg, res);
-    res.metricas = metricas(cfg, res);
-    return res;
-  }
-
-  function maxTrabalho(cfg, day) {
-    var span = day.horas.fecha - day.horas.abre, ext = span + cfg.tolFech;
-    if (ext - cfg.almocoMin > 360) return Math.min(cfg.limiteDiario, ext - cfg.almocoMin);
-    if (span <= 240) return span;
-    return Math.min(360, ext - cfg.pausaCurta);
-  }
-
-  function preencher(T, caps) {
-    var alloc = caps.map(function () { return 0; }), rem = T, open = caps.map(function (_, i) { return i; });
-    while (open.length && rem > 0.01) {
-      var per = rem / open.length;
-      var cap = open.filter(function (i) { return caps[i] - alloc[i] <= per; });
-      if (!cap.length) { open.forEach(function (i) { alloc[i] += per; }); rem = 0; break; }
-      cap.forEach(function (i) { rem -= caps[i] - alloc[i]; alloc[i] = caps[i]; });
-      open = open.filter(function (i) { return cap.indexOf(i) < 0; });
-    }
-    // arredonda em minutos inteiros mantendo o total
-    var fl = alloc.map(Math.floor), sobra = Math.round(alloc.reduce(function (a, b) { return a + b; }, 0) - fl.reduce(function (a, b) { return a + b; }, 0));
-    for (var i = 0; i < fl.length && sobra > 0; i++) { if (fl[i] < caps[i]) { fl[i]++; sobra--; } }
-    return { alloc: fl, falta: Math.max(0, Math.round(rem)) };
-  }
-
-  function distribuirHoras(cfg, sem, memoCurto) {
-    var days = sem.days;
-    var staff = days.map(function (d) {
-      if (!d.horas || d.tipo === 'feriado') return 0;
-      return sem.folgas.filter(function (S) { return S.indexOf(d.dow) < 0; }).length;
-    });
-    sem.horas = sem.folgas.map(function (S, e) {
-      var idx = [];
-      days.forEach(function (d, i) { if (d.horas && S.indexOf(d.dow) < 0) idx.push(i); });
-      var T = Math.round(cfg.horasSemana * 60 * Math.min(1, idx.length / cfg.diasSemana));
-      var caps = idx.map(function (i) { return maxTrabalho(cfg, days[i]); });
-      var fixo = idx.map(function () { return null; });
-      if (cfg.modo === 'curto' && idx.length >= 2) {
-        var curtos = idx.filter(function (i, j) { return caps[j] <= 360; });
-        if (!curtos.length) {
-          // escolhe um dia útil com mais gente para ser o "dia curto"
-          var resto = (T - 360) / (idx.length - 1);
-          var cand = idx.map(function (i, j) { return { i: i, j: j }; }).filter(function (x) { return days[x.i].tipo !== 'feriado'; });
-          if (cand.length && idx.every(function (i, j) { return caps[j] >= resto; })) {
-            var pref = cand.filter(function (x) { return days[x.i].dow === memoCurto[e] && staff[x.i] > minDiaDe(cfg, days[x.i]); });
-            cand.sort(function (a, b) { return staff[b.i] - staff[a.i] || b.i - a.i; });
-            var esc = pref.length ? pref[0] : cand[0];
-            fixo[esc.j] = 360; memoCurto[e] = days[esc.i].dow;
-          }
-        } else {
-          idx.forEach(function (i, j) { if (caps[j] <= 360) fixo[j] = caps[j]; });
-        }
-      }
-      var Tr = T, livres = [], capsL = [];
-      idx.forEach(function (i, j) { if (fixo[j] != null) Tr -= fixo[j]; else { livres.push(j); capsL.push(caps[j]); } });
-      var p = preencher(Tr, capsL), out = {};
-      idx.forEach(function (i, j) { out[i] = fixo[j] != null ? fixo[j] : 0; });
-      livres.forEach(function (j, q) { out[idx[j]] = p.alloc[q]; });
-      return { porDia: out, alvo: T, falta: p.falta };
-    });
-  }
-
-  function opcoesTurno(cfg, h, abre, fecha) {
-    var span = fecha - abre, L = h > 360 ? Math.min(cfg.almocoMax, Math.max(cfg.almocoMin, span - h)) : (h > 240 ? cfg.pausaCurta : 0);
-    var dur = h + L, starts = [abre];
-    if (dur < span) starts.push(fecha - dur);
-    if (dur > span + cfg.tolFech) starts = [fecha + cfg.tolFech - dur];
-    var jIni = toMin(cfg.janelaIni), jFim = toMin(cfg.janelaFim), res = [];
-    starts.forEach(function (s) {
-      var e = s + dur, ls = [];
-      if (L === 0) ls = [null];
-      else if (L >= 60) {
-        for (var t = jIni; t <= jFim; t += 30) if (t >= s + 120 && t + L <= e - 60) ls.push(t);
-        if (!ls.length) ls.push(s + Math.round((dur - L) / 2 / 30) * 30);
-      } else {
-        for (var t2 = s + 120; t2 + L <= e - 120; t2 += 30) ls.push(t2);
-        if (!ls.length) ls.push(s + Math.round((dur - L) / 2));
-      }
-      ls.forEach(function (l) { res.push({ ini: s, fim: e, alm: l, L: L, h: h, tarde: s !== abre }); });
-    });
-    return res;
-  }
-
-  function cobDia(turnos, abre, fecha) {
-    var min = Infinity, arr = [];
-    for (var t = abre; t < fecha; t += 15) {
-      var c = 0;
-      turnos.forEach(function (x) { if (t >= x.ini && t < x.fim && !(x.alm != null && t >= x.alm && t < x.alm + x.L)) c++; });
-      arr.push(c); if (c < min) min = c;
-    }
-    return { min: min === Infinity ? 0 : min, arr: arr };
-  }
-
-  function montarTurnos(cfg, sem) {
-    sem.turnos = sem.folgas.map(function () { return {}; });
-    sem.cobertura = {}; sem.cobSetor = {};
-    var SETT = setores(cfg).filter(function (st) { return st.min > 0; });
-    sem.days.forEach(function (d, i) {
-      if (!d.horas) return;
-      var quem = [];
-      sem.horas.forEach(function (hh, e) { if (hh.porDia[i] != null && hh.porDia[i] > 0) quem.push(e); });
-      if (!quem.length) return;
-      var ops = quem.map(function (e) { return opcoesTurno(cfg, sem.horas[e].porDia[i], d.horas.abre, d.horas.fecha); });
-      var total = ops.reduce(function (a, o) { return a * o.length; }, 1), best = null;
-      function faltaSetor(sel) {
-        var f = 0;
-        SETT.forEach(function (st) {
-          var ts = []; sel.forEach(function (x, j) { if (st.idx.indexOf(quem[j]) >= 0) ts.push(x); });
-          var req = Math.min(st.min, ts.length); if (!req) return;
-          cobDia(ts, d.horas.abre, d.horas.fecha).arr.forEach(function (c) { if (c < req) f += req - c; });
-        });
-        return f;
-      }
-      function nota(sel) {
-        var cb = cobDia(sel, d.horas.abre, d.horas.fecha), desvio = 0, tardes = 0;
-        sel.forEach(function (x) { if (x.alm != null && x.L >= 60) desvio += Math.abs(x.alm - 12 * 60); if (x.tarde) tardes++; });
-        // almoços iguais pesam: queremos escalonar
-        return cb.min * 100000 - faltaSetor(sel) * 2000 - desvio - tardes * 5;
-      }
-      if (total <= 60000) {
-        var sel = [], bestN = -Infinity;
-        (function rec(j) {
-          if (j === ops.length) { var nt = nota(sel); if (nt > bestN) { bestN = nt; best = sel.slice(); } return; }
-          for (var q = 0; q < ops[j].length; q++) { sel.push(ops[j][q]); rec(j + 1); sel.pop(); }
-        })(0);
-      } else {
-        best = [];
-        ops.forEach(function (o) {
-          var bq = o[0], bn = -Infinity;
-          o.forEach(function (x) { var nt = nota(best.concat([x])); if (nt > bn) { bn = nt; bq = x; } });
-          best.push(bq);
-        });
-      }
-      best.forEach(function (x, j) { sem.turnos[quem[j]][i] = x; });
-      if (d.tipo !== 'feriado') {
-        sem.cobertura[i] = { pessoas: quem.length, min: cobDia(best, d.horas.abre, d.horas.fecha).min };
-        sem.cobSetor[i] = SETT.map(function (st) {
-          var ts = []; best.forEach(function (x, j) { if (st.idx.indexOf(quem[j]) >= 0) ts.push(x); });
-          var desc = 0, almSoma = 0;
-          if (ts.length) cobDia(ts, d.horas.abre, d.horas.fecha).arr.forEach(function (c) { if (c < Math.min(st.min, ts.length)) desc += 15; });
-          ts.forEach(function (x) { almSoma += x.L || 0; });
-          return { nome: st.nome, req: st.min, pessoas: ts.length, desc: desc, tol: ts.length <= st.min ? almSoma : 0 };
-        });
-      }
-    });
-  }
-
-  // Sequência diária por funcionária (para validação e calendário)
-  function linhas(cfg, res) {
-    return cfg.funcionarios.map(function (f, e) {
-      var seq = [];
-      res.plano.forEach(function (sem, w) {
-        sem.days.forEach(function (d, i) {
-          var t = sem.turnos[e][i] || null, st;
-          if (d.tipo === 'feriado') st = t ? 'feriado' : 'feriado-folga';
-          else if (t) st = 'trab';
-          else if (d.horas) st = 'folga';
-          else st = d.dow === 0 ? 'dsr' : 'fechado';
-          if (d.feriado && !d.horas) st = 'feriado-folga';
-          seq.push({ d: d, w: w, t: d.tipo === 'feriado' ? null : t, virtual: d.tipo === 'feriado' ? t : null, st: st });
-        });
-      });
-      return seq;
-    });
-  }
-
-  function validar(cfg, res) {
-    var L = linhas(cfg, res), itens = [], n = cfg.funcionarios.length;
-    function add(id, titulo, ref, status, detalhe) { itens.push({ id: id, titulo: titulo, ref: ref, status: status, detalhe: detalhe }); }
-    var maxDia = 0, interMin = Infinity, maxSeg = 0, faltas = [], intraOk = true, domErr = [], domTrab = 0;
-    L.forEach(function (seq, e) {
-      var run = 0, domSeg = 0, f = cfg.funcionarios[e], K = (cfg.regra386 && f.sexo === 'F') ? 2 : 3;
-      seq.forEach(function (x, j) {
-        if (x.t) {
-          if (x.t.h > maxDia) maxDia = x.t.h;
-          if (x.t.h > 360 && (x.t.L < 60 || x.t.L > 120)) intraOk = false;
-          if (x.t.h > 240 && x.t.h <= 360 && x.t.L < 15) intraOk = false;
-          var prev = seq[j - 1];
-          if (prev && prev.t) { var gap = x.t.ini + 1440 - prev.t.fim; if (gap < interMin) interMin = gap; }
-          run++; if (run > maxSeg) maxSeg = run;
-        } else run = 0;
-        if (x.d.dow === 0) {
-          if (x.d.tipo === 'dom' && x.t) { domSeg++; domTrab++; if (domSeg >= K) domErr.push(f.nome + ' (' + x.d.dia + '/' + (x.d.d.getMonth() + 1) + ')'); }
-          else domSeg = 0;
-        }
-      });
-    });
-    res.plano.forEach(function (sem, w) {
-      sem.horas.forEach(function (h, e) { if (h.falta > 0) faltas.push(cfg.funcionarios[e].nome + ' sem. ' + (w + 1) + ' (faltam ' + fmtH(h.falta) + ')'); });
-    });
-    // cobertura
-    var cobErr = [], presErr = [];
-    res.plano.forEach(function (sem) {
-      sem.days.forEach(function (d, i) {
-        var c = sem.cobertura[i]; if (!c || !d.noMes) return;
-        if (c.pessoas < minDiaDe(cfg, d)) cobErr.push(DOW[d.dow] + ' ' + d.dia);
-        if (c.min < cfg.minPresente) presErr.push(DOW[d.dow] + ' ' + d.dia);
-      });
-    });
-
-    add('jornada', 'Jornada semanal de ' + cfg.horasSemana + 'h em ' + cfg.diasSemana + ' dias', 'CF art. 7º, XIII', faltas.length ? 'erro' : 'ok',
-      faltas.length ? 'Não fecha: ' + faltas.join('; ') : 'Todas as semanas fecham ' + cfg.horasSemana + 'h (feriado conta como dia trabalhado).');
-    add('diaria', 'Limite diário', 'CLT art. 58 e 59', maxDia > 600 ? 'erro' : (maxDia > 480 ? 'aviso' : 'ok'),
-      maxDia > 600 ? 'Há dia acima de 10h.' : (maxDia > 480 ? 'Maior dia: ' + fmtH(maxDia) + '. Acima de 8h exige acordo de compensação por escrito (art. 59, §2º e §6º).' : 'Nenhum dia passa de 8h.'));
-    add('intra', 'Intervalo para almoço/descanso', 'CLT art. 71', intraOk ? 'ok' : 'erro',
-      intraOk ? 'Dias acima de 6h com ' + fmtH(cfg.almocoMin) + ' a ' + fmtH(cfg.almocoMax) + ' de almoço; dias de 4h a 6h com pausa de 15 min.' : 'Há dia sem o intervalo mínimo.');
-    add('inter', 'Descanso entre jornadas (11h)', 'CLT art. 66', interMin >= 660 ? 'ok' : 'erro',
-      interMin === Infinity ? 'Sem dias seguidos.' : 'Menor descanso entre um dia e outro: ' + fmtH(interMin) + '.');
-    add('dsr', 'Folga semanal e no máximo 6 dias seguidos', 'CLT art. 67; Lei 605/49; OJ 410 TST', maxSeg <= 6 ? 'ok' : 'erro',
-      'Maior sequência de trabalho: ' + maxSeg + ' dias.');
-    var temDom = res.plano.some(function (s) { return s.days[6].tipo === 'dom'; });
-    add('domingo', 'Folga aos domingos', cfg.regra386 ? 'Lei 10.101/2000 art. 6º; CLT art. 386 (mulheres)' : 'Lei 10.101/2000 art. 6º',
-      domErr.length ? 'erro' : 'ok',
-      !temDom ? 'Loja fechada aos domingos: todos os domingos são folga.' :
-        (domErr.length ? 'Domingo seguido sem folga: ' + domErr.join(', ') : 'Domingos trabalhados: ' + domTrab + '. Ninguém trabalha ' + (cfg.regra386 ? 'dois domingos seguidos (mulheres: revezamento quinzenal).' : 'mais de 2 domingos seguidos.')));
-    var ferNoMes = [];
-    res.plano.forEach(function (s) { s.days.forEach(function (d) { if (d.feriado && d.noMes) ferNoMes.push(d.dia + ' (' + d.feriado + ')'); }); });
-    add('feriado', 'Feriados', 'Lei 605/49; Lei 10.101/2000 art. 6º-A', 'ok',
-      ferNoMes.length ? 'Loja fechada em ' + ferNoMes.join(', ') + '. Nenhuma folga caiu no feriado; o dia é abonado.' : 'Sem feriado no mês.');
-    add('cobertura', 'Mínimo de pessoas por dia', 'Regra da loja', cobErr.length ? 'erro' : 'ok',
-      cobErr.length ? 'Abaixo do mínimo em: ' + cobErr.join(', ') : 'Todos os dias com o mínimo escalado (' + cfg.minDia.util + ' em dia útil, ' + cfg.minDia.sab + ' no sábado' + (temDom ? ', ' + cfg.minDia.dom + ' no domingo' : '') + ').');
-    add('presenca', 'Loja nunca abaixo de ' + cfg.minPresente + ' pessoas (inclusive no almoço)', 'Regra da loja', presErr.length ? 'aviso' : 'ok',
-      presErr.length ? 'Fica abaixo em algum horário: ' + presErr.join(', ') : 'Almoços escalonados: a loja sempre tem ' + cfg.minPresente + ' ou mais.');
-    var SETV = setores(cfg).filter(function (st) { return st.min > 0; });
-    if (SETV.length) {
-      var sDia = [], sHora = [], sAlm = 0;
-      res.plano.forEach(function (sem) {
-        sem.days.forEach(function (d, i) {
-          var cs = sem.cobSetor && sem.cobSetor[i]; if (!cs || !d.noMes) return;
-          cs.forEach(function (c) {
-            if (c.pessoas < c.req) sDia.push(c.nome + ' ' + DOW[d.dow] + ' ' + d.dia);
-            else if (c.desc > c.tol) sHora.push(c.nome + ' ' + DOW[d.dow] + ' ' + d.dia);
-            if (c.pessoas === c.req && c.tol > 0) sAlm++;
-          });
-        });
-      });
-      add('setor', 'Cobertura por setor', 'Regra da loja', sDia.length ? 'erro' : (sHora.length ? 'aviso' : 'ok'),
-        sDia.length ? 'Setor abaixo do mínimo em: ' + sDia.join(', ') :
-          (sHora.length ? 'Todo dia tem o mínimo escalado, mas o setor fica descoberto em algum horário além do almoço (ex.: alguém do setor em dia curto): ' + sHora.join(', ') :
-            'Todo dia com o mínimo de cada setor (' + SETV.map(function (st) { return st.nome + ' ' + st.min; }).join(', ') + '), sem dois do mesmo setor de folga juntos além do permitido.' +
-            (sAlm ? ' Nos dias em que o setor fica só com o mínimo, combine quem cobre o almoço (ex.: o gerente cobre o caixa).' : '')));
-    }
-    res.alertasSemana.forEach(function (a) { add('busca', 'Combinação', 'Motor', 'erro', a); });
-    var erros = itens.filter(function (x) { return x.status === 'erro'; }).length, avisos = itens.filter(function (x) { return x.status === 'aviso'; }).length;
-    return { itens: itens, erros: erros, avisos: avisos, linhas: L };
-  }
-
-  function metricas(cfg, res) {
-    var L = res.validacao.linhas;
-    return cfg.funcionarios.map(function (f, e) {
-      var m = { sabTrab: 0, sabFolga: 0, fds: 0, emendas: 0, domTrab: 0, minutosMes: 0, abono: 0, diasFolga: {}, diasTrab: 0 };
-      L[e].forEach(function (x, j) {
-        if (!x.d.noMes) return;
-        if (x.t) { m.minutosMes += x.t.h; m.diasTrab++; }
-        if (x.virtual) m.abono += x.virtual.h;
-        if (x.d.dow === 6 && x.d.horas && x.d.tipo !== 'feriado') { if (x.t) m.sabTrab++; else m.sabFolga++; }
-        if (x.d.dow === 0 && x.t) m.domTrab++;
-        if (x.st === 'folga') m.diasFolga[x.d.dow] = (m.diasFolga[x.d.dow] || 0) + 1;
-        if (x.d.dow === 0 && !x.t) {
-          var sab = L[e][j - 1], seg = L[e][j + 1];
-          if (sab && !sab.t && sab.d.horas) m.fds++;
-          if ((sab && !sab.t && sab.d.horas) || (seg && !seg.t && seg.d.horas)) m.emendas++;
-        }
-      });
-      m.diasFolgaDistintos = Object.keys(m.diasFolga).length;
-      return m;
-    });
-  }
-
-  // Exportação para as abas do Ponto RHAqui (Escalas / Escala por funcionário)
-  function exportar(cfg, res, prefixo) {
-    var mapa = {}, lista = [], porFunc = [];
-    var ordem = [1, 2, 3, 4, 5, 6, 0];
-    var abrev = { 0: 'Dom', 1: 'Seg', 2: 'Ter', 3: 'Qua', 4: 'Qui', 5: 'Sex', 6: 'Sáb' };
-    cfg.funcionarios.forEach(function (f, e) {
-      var ultimo = null;
-      res.plano.forEach(function (sem, w) {
-        var cel = [], almocoMin = null, folgas = [];
-        ordem.forEach(function (dw) {
-          var i = sem.days.findIndex(function (d) { return d.dow === dw; });
-          var t = sem.turnos[e][i];
-          if (t) { cel.push(fmt(t.ini), fmt(t.fim)); if (t.L >= 60) almocoMin = almocoMin == null ? t.L : Math.min(almocoMin, t.L); }
-          else { cel.push('', ''); folgas.push(abrev[dw]); }
-        });
-        var chave = cel.join('|') + '|' + almocoMin;
-        if (!mapa[chave]) {
-          var nome = prefixo + (lista.length + 1) + ' · folga ' + folgas.join('+');
-          mapa[chave] = nome;
-          lista.push([nome].concat(cel, [almocoMin != null ? fmt(almocoMin) : '']));
-        }
-        var nome2 = mapa[chave];
-        if (nome2 !== ultimo) {
-          var ini = sem.days[0].d, primeiro = new Date(cfg.ano, cfg.mes - 1, 1, 12);
-          if (ini < primeiro) ini = primeiro;
-          porFunc.push([f.nome, nome2, br(ini), 'Escala RHAqui – opção ' + res.estr]);
-          ultimo = nome2;
-        }
-      });
-    });
-    return { escalas: lista, porFunc: porFunc };
-  }
-
-  return { gerar: gerar, setores: setores, setorKey: setorKey, exportar: exportar, fmt: fmt, fmtH: fmtH, toMin: toMin, DOW: DOW, buildWeeks: buildWeeks, iso: iso, br: br };
-})();
-if (typeof module !== 'undefined') module.exports = SimulIAqui;
-
-</script>
+<section class="sec ped" id="pedido">
+  <div class="wrap g">
+    <div>
+      <span class="olho">Solicitar o serviço</span>
+      <h2>Quero minha escala montada</h2>
+      <p class="intro">Preencha os campos e envie. Você recebe um número de pedido, a ficha chega por e-mail à nossa equipe e o WhatsApp abre para você falar direto com a gente. O primeiro passo é o diagnóstico gratuito.</p>
+      <ul class="lst">
+        <li>Respondemos em horário comercial</li>
+        <li>Atendimento online para todo o Brasil</li>
+        <li>Presencial em Candeias e região, até Salvador</li>
+      </ul>
+      <p class="demo">Quer ver como fica uma escala antes? <a href="/escala/simulador/">Abra a demonstração</a>.</p>
+    </div>
+    <form class="form" id="fp" onsubmit="return false">
+      <label for="emp">Nome da empresa</label>
+      <input id="emp" autocomplete="organization" placeholder="Ex.: Loja Exemplo">
+      <div class="dup">
+        <div><label for="nom">Seu nome</label><input id="nom" autocomplete="name"></div>
+        <div><label for="tel">Telefone / WhatsApp</label><input id="tel" type="tel" autocomplete="tel" placeholder="(71) 9...."></div>
+      </div>
+      <div class="dup">
+        <div><label for="loj">Quantas lojas?</label>
+          <select id="loj"><option value="">Escolha</option><option>1</option><option>2</option><option>3</option><option>4 ou mais</option></select></div>
+        <div><label for="qtd">Colaboradores no total</label>
+          <select id="qtd"><option value="">Escolha</option><option>Até 10</option><option>11 a 25</option><option>26 a 40</option><option>Mais de 40</option></select></div>
+      </div>
+      <div class="dup">
+        <div><label for="cid">Cidade / UF</label><input id="cid" autocomplete="address-level2" placeholder="Ex.: Salvador/BA"></div>
+        <div><label for="abr">Abre aos domingos e feriados?</label>
+          <select id="abr"><option value="">Escolha</option><option>Sim, domingos e feriados</option><option>Só domingos</option><option>Só feriados</option><option>Não</option></select></div>
+      </div>
+      <label for="obs">Qual é a maior dificuldade com a escala hoje? (opcional)</label>
+      <textarea id="obs" rows="3" placeholder="Ex.: rodízio de domingos, folgas no fim de ano, horas extras..."></textarea>
+      <div class="bts" style="grid-template-columns:1fr">
+        <a class="btn btn-pri" id="btWa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pedido</span></a>
+      </div>
+      <div class="aviso-ped" id="avPed" role="status"></div>
+      <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui e o WhatsApp abre com o número e seus dados básicos. Usamos os dados só para o atendimento, conforme a LGPD.</p>
+    </form>
+  </div>
+</section>
+<script src="/pedido.js"></script>
 <script>
 (function(){
-  var S = SimulIAqui, DOW = S.DOW, fmt = S.fmt, fmtH = S.fmtH;
-  var NOMES = { A: 'Folga fixa', B: 'Fim de semana em rodízio', C: 'Folga que anda' };
-  var DESC = {
-    A: 'Cada pessoa folga sempre no mesmo dia da semana. Mais fácil de decorar e de combinar a vida fora do trabalho.',
-    B: 'Sábado e domingo livres para uma pessoa por semana, em rodízio. Nas outras semanas, a folga tende a emendar com o domingo.',
-    C: 'A folga anda um dia por semana (seg, ter, qua...). Divide por igual os dias bons e ruins ao longo dos meses.'
-  };
-  // Feriados: nacionais + Bahia + Candeias (conferir a cidade de cada cliente)
-  var FERIADOS = [{ data: '2026-11-02', nome: 'Finados' }, { data: '2026-11-15', nome: 'Proclamação da República' }, { data: '2026-11-20', nome: 'Consciência Negra' }, { data: '2026-12-25', nome: 'Natal' }, { data: '2027-01-01', nome: 'Confraternização Universal' }, { data: '2027-02-02', nome: 'N. Sra. das Candeias (Candeias)' }, { data: '2027-02-08', nome: 'Segunda de Carnaval (CCT Candeias)' }, { data: '2027-02-09', nome: 'Carnaval' }, { data: '2027-03-26', nome: 'Sexta-feira Santa' }, { data: '2027-04-21', nome: 'Tiradentes' }, { data: '2027-05-01', nome: 'Dia do Trabalho' }, { data: '2027-07-02', nome: 'Independência da Bahia' }, { data: '2027-08-14', nome: 'Emancipação de Candeias' }, { data: '2027-09-07', nome: 'Independência' }, { data: '2027-10-12', nome: 'N. Sra. Aparecida' }, { data: '2027-11-02', nome: 'Finados' }, { data: '2027-11-15', nome: 'Proclamação da República' }, { data: '2027-11-20', nome: 'Consciência Negra' }, { data: '2027-12-25', nome: 'Natal' }];
-  var HOJE = new Date(), PROX = new Date(HOJE.getFullYear(), HOJE.getMonth() + 1, 1, 12);
-  var cfg = {
-    empresa: 'Loja Exemplo', ano: PROX.getFullYear(), mes: PROX.getMonth() + 1, horasSemana: 42, diasSemana: 5, modo: 'curto',
-    almocoMin: 60, almocoMax: 120, pausaCurta: 15, tolFech: 15, limiteDiario: 600, janelaIni: '11:00', janelaFim: '13:30',
-    loja: { 1:{aberta:true,abre:'08:00',fecha:'18:00'}, 2:{aberta:true,abre:'08:00',fecha:'18:00'}, 3:{aberta:true,abre:'08:00',fecha:'18:00'},
-            4:{aberta:true,abre:'08:00',fecha:'18:00'}, 5:{aberta:true,abre:'08:00',fecha:'18:00'}, 6:{aberta:true,abre:'08:00',fecha:'14:00'} },
-    domingosAbertos: [], horasDomingo: { abre: '09:00', fecha: '15:00' },
-    feriados: FERIADOS,
-    minDia: { util: 3, sab: 3, dom: 2 }, minPresente: 2, regra386: true,
-    funcionarios: [
-      { nome: 'Ana Souza', cargo: 'Gerente', sexo: 'F', folgaPref: null, semDomingo: false },
-      { nome: 'Bruna Lima', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false },
-      { nome: 'Carlos Rocha', cargo: 'Caixa', sexo: 'M', folgaPref: null, semDomingo: false },
-      { nome: 'Daniela Reis', cargo: 'Caixa', sexo: 'F', folgaPref: null, semDomingo: false }
-    ],
-    minSetor: { caixa: 1 }
-  };
-  var resultados = {}, atual = 'B', selCel = null;
-  var $ = function (id) { return document.getElementById(id); };
-  var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-
-  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
-
-  // ---------- formulário ----------
-  function preencherForm() {
-    $('f-emp').value = cfg.empresa;
-    $('f-mes').value = cfg.ano + '-' + String(cfg.mes).padStart(2, '0');
-    $('f-hs').value = cfg.horasSemana; $('f-ds').value = String(cfg.diasSemana); $('f-modo').value = cfg.modo;
-    $('f-amin').value = cfg.almocoMin; $('f-amax').value = cfg.almocoMax; $('f-tol').value = cfg.tolFech;
-    var h = '';
-    [1,2,3,4,5,6].forEach(function (d) {
-      var l = cfg.loja[d] || { aberta: false, abre: '08:00', fecha: '18:00' };
-      h += '<div class="lin2"><span>' + DOW[d] + '</span><input type="checkbox" id="f-ab' + d + '" aria-label="' + DOW[d] + ' aberto"' + (l.aberta ? ' checked' : '') + '>' +
-        '<input type="time" id="f-a' + d + '" value="' + l.abre + '" aria-label="' + DOW[d] + ' abre"><input type="time" id="f-f' + d + '" value="' + l.fecha + '" aria-label="' + DOW[d] + ' fecha"></div>';
-    });
-    $('f-loja').innerHTML = h;
-    $('f-dabre').value = cfg.horasDomingo.abre; $('f-dfecha').value = cfg.horasDomingo.fecha;
-    domingosForm();
-    $('f-mu').value = cfg.minDia.util; $('f-msab').value = cfg.minDia.sab; $('f-mdom').value = cfg.minDia.dom; $('f-mp').value = cfg.minPresente;
-    $('f-fer').value = cfg.feriados.map(function (f) { var p = f.data.split('-'); return p[2] + '/' + p[1] + '/' + p[0] + ' ' + f.nome; }).join('\n');
-    $('f-386').checked = cfg.regra386;
-    funcForm();
+  function v(id){return (document.getElementById(id).value||'').trim()}
+  function linhas(){
+    var l=[];
+    if(v('emp'))l.push('Empresa: '+v('emp'));
+    if(v('nom'))l.push('Nome: '+v('nom'));
+    if(v('tel'))l.push('Telefone: '+v('tel'));
+    if(v('loj'))l.push('Lojas: '+v('loj'));
+    if(v('qtd'))l.push('Colaboradores no total: '+v('qtd'));
+    if(v('cid'))l.push('Cidade: '+v('cid'));
+    if(v('abr'))l.push('Abre domingos/feriados: '+v('abr'));
+    if(v('obs'))l.push('Maior dificuldade: '+v('obs'));
+    return l;
   }
-  function domingosForm() {
-    var d = new Date(cfg.ano, cfg.mes - 1, 1, 12), h = '';
-    while (d.getMonth() === cfg.mes - 1) {
-      if (d.getDay() === 0) { var id = S.iso(d); h += '<label style="display:flex;gap:4px;align-items:center"><input type="checkbox" class="f-dom" value="' + id + '"' + (cfg.domingosAbertos.indexOf(id) >= 0 ? ' checked' : '') + '>' + String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '</label>'; }
-      d.setDate(d.getDate() + 1);
-    }
-    $('f-doms').innerHTML = h;
-  }
-  function funcForm() {
-    var h = '';
-    cfg.funcionarios.forEach(function (f, i) {
-      h += '<div class="f" data-i="' + i + '"><input id="fn' + i + '" value="' + esc(f.nome) + '" aria-label="Nome"><input id="fc' + i + '" value="' + esc(f.cargo || '') + '" aria-label="Setor ou função" placeholder="Setor (ex.: Caixa)" title="Setor ou função">' +
-        '<select id="fp' + i + '" aria-label="Folga preferida" style="grid-column:1/-1"></select>' +
-        '<div class="x"><label><input type="checkbox" id="fs' + i + '"' + (f.sexo === 'F' ? ' checked' : '') + '> Mulher</label>' +
-        '<label><input type="checkbox" id="fd' + i + '"' + (f.semDomingo ? ' checked' : '') + '> Não trabalha domingo</label>' +
-        '<button class="bt sec peq" type="button" data-rm="' + i + '" style="margin-left:auto">Tirar</button></div></div>';
-    });
-    $('f-func').innerHTML = h;
-    setForm();
-    cfg.funcionarios.forEach(function (f, i) {
-      var sel = $('fp' + i);
-      sel.add(new Option('Folga: sem preferência', ''));
-      [1,2,3,4,5,6].forEach(function (d) { sel.add(new Option('Folga preferida: ' + DOW[d], String(d), false, f.folgaPref === d)); });
-    });
-  }
-  function setForm() {
-    var lista = S.setores(cfg), h = '';
-    lista.forEach(function (st, q) {
-      var v = cfg.minSetor && cfg.minSetor[st.key] != null ? cfg.minSetor[st.key] : (st.idx.length >= 2 ? 1 : 0);
-      h += '<div class="lin"><label for="ms' + q + '">' + esc(st.nome) + ' (' + st.idx.length + (st.idx.length > 1 ? ' pessoas' : ' pessoa') + ')</label>' +
-        '<input id="ms' + q + '" class="f-ms" data-k="' + esc(st.key) + '" type="number" min="0" max="20" value="' + v + '" title="Mínimo de pessoas deste setor trabalhando por dia"></div>';
-    });
-    $('f-set').innerHTML = (h || '<p class="nota" style="margin:0">Preencha o setor das pessoas para definir o mínimo de cada um.</p>') +
-      (h ? '<p class="nota" style="margin:0">Mínimo trabalhando por dia em cada setor. 0 = sem regra. Ex.: Caixa 1 = se um caixa folga, o outro trabalha.</p>' : '');
-  }
-  function lerForm() {
-    var c = JSON.parse(JSON.stringify(cfg));
-    c.empresa = $('f-emp').value.trim() || 'Empresa';
-    var m = ($('f-mes').value || '2026-12').split('-'); c.ano = +m[0]; c.mes = +m[1];
-    c.horasSemana = +$('f-hs').value || 42; c.diasSemana = +$('f-ds').value; c.modo = $('f-modo').value;
-    c.almocoMin = Math.max(60, +$('f-amin').value || 60); c.almocoMax = Math.max(c.almocoMin, Math.min(120, +$('f-amax').value || 120)); c.tolFech = +$('f-tol').value || 0;
-    [1,2,3,4,5,6].forEach(function (d) { c.loja[d] = { aberta: $('f-ab' + d).checked, abre: $('f-a' + d).value || '08:00', fecha: $('f-f' + d).value || '18:00' }; });
-    c.horasDomingo = { abre: $('f-dabre').value || '09:00', fecha: $('f-dfecha').value || '15:00' };
-    c.domingosAbertos = Array.prototype.map.call(document.querySelectorAll('.f-dom:checked'), function (x) { return x.value; });
-    c.minDia = { util: +$('f-mu').value || 1, sab: +$('f-msab').value || 1, dom: +$('f-mdom').value || 1 }; c.minPresente = +$('f-mp').value || 1;
-    c.feriados = $('f-fer').value.split('\n').map(function (l) {
-      var mm = l.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s*(.*)$/); if (!mm) return null;
-      return { data: mm[3] + '-' + mm[2].padStart(2,'0') + '-' + mm[1].padStart(2,'0'), nome: mm[4] || 'Feriado' };
-    }).filter(Boolean);
-    c.regra386 = $('f-386').checked;
-    c.minSetor = JSON.parse(JSON.stringify(cfg.minSetor || {}));
-    Array.prototype.forEach.call(document.querySelectorAll('.f-ms'), function (x) { c.minSetor[x.getAttribute('data-k')] = Math.max(0, +x.value || 0); });
-    c.funcionarios = cfg.funcionarios.map(function (f, i) {
-      var p = $('fp' + i).value;
-      return { nome: $('fn' + i).value.trim() || ('Pessoa ' + (i + 1)), cargo: $('fc' + i).value.trim(), sexo: $('fs' + i).checked ? 'F' : 'M', folgaPref: p ? +p : null, semDomingo: $('fd' + i).checked };
-    });
-    return c;
-  }
-  $('f-func').addEventListener('click', function (ev) {
-    var b = ev.target.closest('[data-rm]'); if (!b) return;
-    cfg = lerForm(); if (cfg.funcionarios.length <= 1) return;
-    cfg.funcionarios.splice(+b.getAttribute('data-rm'), 1); funcForm();
-  });
-  $('f-add').addEventListener('click', function () {
-    cfg = lerForm(); cfg.funcionarios.push({ nome: 'Nova pessoa', cargo: 'Atendimento', sexo: 'F', folgaPref: null, semDomingo: false }); funcForm();
-  });
-  $('f-mes').addEventListener('change', function () { cfg = lerForm(); domingosForm(); });
-  $('f-func').addEventListener('change', function (ev) { if (ev.target && /^fc\d+$/.test(ev.target.id)) { cfg = lerForm(); setForm(); } });
-  $('form').addEventListener('submit', function (ev) { ev.preventDefault(); cfg = lerForm(); gerarTudo(); });
-
-  // ---------- render ----------
-  function gerarTudo() {
-    ['A','B','C'].forEach(function (k) { resultados[k] = S.gerar(cfg, k); });
-    $('titulo-sub').textContent = 'Escalas de trabalho com a CLT conferida. ' + cfg.empresa + ', ' + MESES[cfg.mes - 1] + ' de ' + cfg.ano + ', ' + cfg.diasSemana + 'x' + (7 - cfg.diasSemana) + ' com ' + cfg.horasSemana + 'h semanais.';
-    var n = cfg.funcionarios.length;
-    $('resumo-mes').textContent = n + ' pessoas · ' + MESES[cfg.mes - 1] + '/' + cfg.ano + ' · ' + cfg.horasSemana + 'h por semana em ' + cfg.diasSemana + ' dias · ' + (cfg.domingosAbertos.length ? cfg.domingosAbertos.length + ' domingo(s) aberto(s)' : 'domingos fechados') + ' · feriados: ' + (cfg.feriados.filter(function(f){return +f.data.slice(5,7)===cfg.mes && +f.data.slice(0,4)===cfg.ano;}).map(function(f){return f.data.slice(8)+'/'+f.data.slice(5,7);}).join(', ') || 'nenhum');
-    renderOpcoes(); renderAtual();
-  }
-  function statusPill(v) {
-    if (v.erros) return '<span class="pill erro">' + v.erros + ' problema(s)</span>';
-    if (v.avisos) return '<span class="pill aviso">CLT ok · ' + v.avisos + ' aviso(s)</span>';
-    return '<span class="pill ok">CLT ok</span>';
-  }
-  function faixa(arr) { var mn = Math.min.apply(null, arr), mx = Math.max.apply(null, arr); return mn === mx ? String(mn) : mn + ' a ' + mx; }
-  function renderOpcoes() {
-    var h = '';
-    ['A','B','C'].forEach(function (k) {
-      var r = resultados[k], m = r.metricas;
-      h += '<button type="button" class="op" data-op="' + k + '" aria-pressed="' + (k === atual) + '">' +
-        '<span class="let">Opção ' + k + '</span><h3>' + NOMES[k] + '</h3><p>' + DESC[k] + '</p>' + statusPill(r.validacao) +
-        '<div class="mini"><span>Sábados de folga: <b>' + faixa(m.map(function(x){return x.sabFolga;})) + '</b></span><span>Fins de semana completos: <b>' + faixa(m.map(function(x){return x.fds;})) + '</b></span><span>Folga emendada no domingo: <b>' + faixa(m.map(function(x){return x.emendas;})) + '</b></span></div></button>';
-    });
-    $('opcoes').innerHTML = h;
-  }
-  $('opcoes').addEventListener('click', function (ev) {
-    var b = ev.target.closest('[data-op]'); if (!b) return; atual = b.getAttribute('data-op'); selCel = null;
-    renderOpcoes(); renderAtual();
-  });
-
-  function renderAtual() {
-    var r = resultados[atual], L = r.validacao.linhas;
-    $('cal-titulo').textContent = 'Calendário · Opção ' + atual + ' (' + NOMES[atual] + ')';
-    // calendário
-    var dias = L[0].filter(function (x) { return x.d.noMes; });
-    var h = '<table><thead><tr><th class="nome">' + MESES[cfg.mes - 1].replace(/^./, function(c){return c.toUpperCase();}) + '</th>';
-    dias.forEach(function (x) { h += '<th class="' + (x.d.dow === 0 || x.d.dow === 6 ? 'fds' : '') + '">' + DOW[x.d.dow].slice(0,3) + '<br>' + x.d.dia + '</th>'; });
-    h += '</tr></thead><tbody>';
-    cfg.funcionarios.forEach(function (f, e) {
-      h += '<tr><th class="nome">' + esc(f.nome) + '<small>' + esc(f.cargo || '') + '</small></th>';
-      L[e].forEach(function (x, j) {
-        if (!x.d.noMes) return;
-        var cls, txt, key = e + ':' + j;
-        if (x.t) { cls = x.t.h > 360 ? 'longo' : 'curto'; txt = fmt(x.t.ini).replace(':00','') + '<br>' + fmt(x.t.fim).replace(':00',''); }
-        else if (x.st === 'folga') { cls = 'folga'; txt = 'F'; }
-        else if (x.st === 'feriado' || x.st === 'feriado-folga') { cls = 'feriado'; txt = 'FER'; }
-        else { cls = 'dsr'; txt = '·'; }
-        h += '<td><button type="button" class="cel ' + cls + (selCel === key ? ' sel' : '') + '" data-k="' + key + '">' + txt + '</button></td>';
-      });
-      h += '</tr>';
-    });
-    h += '<tr class="equipe"><th class="nome">Equipe<small>escaladas / mín. presente</small></th>';
-    var di = 0;
-    r.plano.forEach(function (sem) {
-      sem.days.forEach(function (d, i) {
-        if (!d.noMes) return;
-        var c = sem.cobertura[i];
-        if (!c) { h += '<td>–</td>'; return; }
-        var baixo = c.pessoas < (d.tipo === 'sab' ? cfg.minDia.sab : d.tipo === 'dom' ? cfg.minDia.dom : cfg.minDia.util) || c.min < cfg.minPresente ||
-          ((sem.cobSetor && sem.cobSetor[i]) || []).some(function (x) { return x.pessoas < x.req; });
-        h += '<td class="' + (baixo ? 'baixo' : '') + '"><b>' + c.pessoas + '</b>/' + c.min + '</td>';
-      });
-    });
-    h += '</tr></tbody></table>';
-    $('cal').innerHTML = h;
-    if (!selCel) $('detalhe').textContent = 'Toque num dia do calendário.';
-
-    // horas por semana
-    var ns = r.plano.length, t = '<table><thead><tr><th>Pessoa</th>';
-    r.plano.forEach(function (sem, w) { var a = sem.days[0].d, b = sem.days[6].d; t += '<th>Sem. ' + (w+1) + '<br><span style="font-weight:400;text-transform:none">' + String(a.getDate()).padStart(2,'0') + '/' + String(a.getMonth()+1).padStart(2,'0') + '–' + String(b.getDate()).padStart(2,'0') + '/' + String(b.getMonth()+1).padStart(2,'0') + '</span></th>'; });
-    t += '<th>Sábados trab.</th><th>Fins de semana livres</th><th>Domingos trab.</th></tr></thead><tbody>';
-    cfg.funcionarios.forEach(function (f, e) {
-      var m = r.metricas[e]; t += '<tr><td>' + esc(f.nome) + '</td>';
-      r.plano.forEach(function (sem) {
-        var tot = 0, ab = 0; sem.days.forEach(function (d, i) { var x = sem.turnos[e][i]; if (x) { if (d.tipo === 'feriado') ab += x.h; else tot += x.h; } });
-        t += '<td>' + fmtH(tot + ab) + (ab ? ' <span style="color:var(--feriado-fg);font-size:11px">(' + fmtH(ab) + ' fer.)</span>' : '') + '</td>';
-      });
-      t += '<td>' + m.sabTrab + '</td><td>' + m.fds + '</td><td>' + m.domTrab + '</td></tr>';
-    });
-    t += '</tbody></table>';
-    $('tab-horas').innerHTML = t;
-
-    // legal
-    $('lei').innerHTML = r.validacao.itens.map(function (it) {
-      var lab = it.status === 'ok' ? 'OK' : it.status === 'aviso' ? 'Aviso' : 'Problema';
-      return '<li><span class="pill ' + it.status + '">' + lab + '</span><strong>' + esc(it.titulo) + '<em>' + esc(it.ref) + '</em></strong><span>' + esc(it.detalhe) + '</span></li>';
-    }).join('');
-
-    // comparação
-    var crit = [
-      ['Situação CLT', function (k) { var v = resultados[k].validacao; return v.erros ? v.erros + ' problema(s)' : (v.avisos ? 'OK, ' + v.avisos + ' aviso(s)' : 'OK'); }],
-      ['Sábados de folga por pessoa', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.sabFolga;})); }],
-      ['Fins de semana completos', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.fds;})); }],
-      ['Folgas emendadas no domingo', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.emendas;})); }],
-      ['Dias diferentes de folga por pessoa', function (k) { return faixa(resultados[k].metricas.map(function(x){return x.diasFolgaDistintos;})); }],
-      ['Linhas novas no Ponto RHAqui', function (k) { return S.exportar(cfg, resultados[k], k).porFunc.length; }],
-      ['Melhor para', function (k) { return { A: 'quem quer rotina fixa', B: 'equipe que valoriza fim de semana', C: 'dividir por igual no longo prazo' }[k]; }]
-    ];
-    var c = '<table><thead><tr><th></th><th>A · ' + NOMES.A + '</th><th>B · ' + NOMES.B + '</th><th>C · ' + NOMES.C + '</th></tr></thead><tbody>';
-    crit.forEach(function (cr) { c += '<tr><td>' + cr[0] + '</td><td>' + cr[1]('A') + '</td><td>' + cr[1]('B') + '</td><td>' + cr[1]('C') + '</td></tr>'; });
-    $('comp').innerHTML = c + '</tbody></table>';
-
-    // exportação
-    var ex = S.exportar(cfg, r, atual);
-    $('exp-escalas').value = ex.escalas.map(function (l) { return l.join('\t'); }).join('\n');
-    $('exp-func').value = ex.porFunc.map(function (l) { return l.join('\t'); }).join('\n');
-    $('exp-nota').textContent = ex.escalas.length + ' escala(s) e ' + ex.porFunc.length + ' linha(s) de troca. A coluna Q (jornada semanal) é calculada pela planilha. Dias curtos de 6h têm pausa de 15 min que não entra na jornada; no Ponto RHAqui de hoje, cadastrar a saída 15 min mais cedo ou ajustar o cálculo (ajuste pendente no Ponto RHAqui).';
-  }
-
-  $('cal').addEventListener('click', function (ev) {
-    var b = ev.target.closest('[data-k]'); if (!b) return;
-    selCel = b.getAttribute('data-k');
-    document.querySelectorAll('.cel.sel').forEach(function (x) { x.classList.remove('sel'); }); b.classList.add('sel');
-    var p = selCel.split(':'), e = +p[0], j = +p[1], x = resultados[atual].validacao.linhas[e][j], f = cfg.funcionarios[e];
-    var dt = DOW[x.d.dow] + ' ' + S.br(x.d.d).slice(0, 5), txt;
-    if (x.t) {
-      txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · entrada ' + fmt(x.t.ini) + ', ' + (x.t.alm != null ? (x.t.L >= 60 ? 'almoço ' : 'pausa ') + fmt(x.t.alm) + '–' + fmt(x.t.alm + x.t.L) + ', ' : '') + 'saída ' + fmt(x.t.fim) + ' · <b>' + fmtH(x.t.h) + '</b> de trabalho';
-    } else if (x.virtual) txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Feriado (' + esc(x.d.feriado) + '). Dia abonado: conta ' + fmtH(x.virtual.h) + ' na semana.';
-    else if (x.st === 'folga') txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Folga da semana.';
-    else if (x.d.feriado) txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Feriado (' + esc(x.d.feriado) + ').';
-    else txt = '<b>' + esc(f.nome) + '</b> · ' + dt + ' · Domingo, loja fechada (descanso semanal).';
-    $('detalhe').innerHTML = txt;
-  });
-
-  function copiar(btn, ta) {
-    btn.addEventListener('click', function () {
-      var el = $(ta), ok = function () { btn.textContent = 'Copiado'; setTimeout(function () { btn.textContent = 'Copiar'; }, 1600); };
-      try { navigator.clipboard.writeText(el.value).then(ok, function () { el.focus(); el.select(); btn.textContent = 'Selecionado: Ctrl+C'; }); }
-      catch (e) { el.focus(); el.select(); btn.textContent = 'Selecionado: Ctrl+C'; }
-    });
-  }
-  $('bt-print').addEventListener('click', function () { window.print(); });
-  copiar($('cp1'), 'exp-escalas'); copiar($('cp2'), 'exp-func');
-
-  // ---------- "Este simulador de escala foi útil?" ----------
-  var RETORNO_URL = 'https://script.google.com/macros/s/AKfycbwWnCih0L9c_eaTc9-5yVPdgRyaA7j7-0Y-wslDEs7pYDO4Se2cTsYORAWPSWIKhD_0YQ/exec';
-  var PIX = { chave: '(71) 99202-2915', payload: '00020126360014br.gov.bcb.pix0114+55719920229155204000053039865802BR5906RHAQUI6008CANDEIAS62070503***6304A6CD', qr: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYgAAAGIAQMAAABhjeVlAAAABlBMVEUWMCz///87k9ZbAAACdElEQVR42u1cwW7rMAwj9v//rAc0lkgF2KEHc4fHFBiS1u5BhESKVof69kJ2ZMf/tAPPVZ8X5Fvmjc/tWVU/+PbKji+uDj8ONM8Dnsfikl4VPO7jccJ/8OhnyRZdleia8GCyCB79UfDw50cnybBFZweCxx/wR+fBB4HnjywIf9jwUH31+yv6yoSHiuURWKdMoQovEZ3oGvhjUfikzHAI5W/wcNQrCtoHm3pROZuR4GGpV0Llp2ev6Q8bk/NRonsbj3FFunCdnJmGEEoxie59/igpXkIjBwoMTOFzC38UcWG6gG0IKT54mPrB1lc13gjEY5z74OHJj04OJe7OFfYf0Vc+PgfYB5YKXkIVPHx6lxbimCeozSDxr2z1Siz2KkIiUpdMk+je788hhA1AbJNaiKRe2fTu1C6Il8h2hAsS3et8Dvq5YzCKc8I+Pfnh6s/lFF2fOdOApvVE934/CKwTQohvhVK/N/XKoXfnnobJKKw2FodfEl2DX8KzDkjxaqmlmjd4ePpBif3wBbNm0AkeLv9q8bmOxu0Tw+BhyY/RTxxhkHGfLmTJD59/tZUtBVUf5PZbia5JXy2TZAsu6RqDh6Mf1OkSthwtenWqOngY+Lz2CUgxc0ZyTZuY6N6vV2qpK6tjkQjiXxn11cs5EWUlMz/Bw4DHtrFEXQmb8CbRve+XALVmr6QN1IHezJe46lXt2XYem2M9Bw+LvsIStpxZFNck81f+39eqlOJPodcsVvCw9IOTHeu8Qyws6dYTXRMeqPUgI1ccJA0eXjx0eOHNJenPvfyxzmkFkpIhk+SHUV+tSgUdq5Z5k+Dh6j/yv3eyIzte1z8SMMVA9K9DJAAAAABJRU5ErkJggg==' }; // chave celular aprovada pelo Marcelo 24/11
-  function enviarRetorno(dados) {
-    dados.mes = cfg.ano + '-' + String(cfg.mes).padStart(2, '0'); dados.pessoas = cfg.funcionarios.length; dados.opcao = atual;
-    try { return fetch(RETORNO_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(dados) }); }
-    catch (e) { return Promise.reject(e); }
-  }
-  var notaAtual = '';
-  Array.prototype.forEach.call(document.querySelectorAll('#util .nt'), function (b) {
-    b.addEventListener('click', function () {
-      notaAtual = b.getAttribute('data-nota');
-      Array.prototype.forEach.call(document.querySelectorAll('#util .nt'), function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      enviarRetorno({ tipo: 'avaliacao', nota: notaAtual, ua: navigator.userAgent.slice(0, 120) });
-      $('av-extra').hidden = false; $('av-ok').hidden = false;
-      $('av-ok').textContent = notaAtual === 'Gostei' ? 'Obrigado! Que bom que ajudou.' : 'Obrigado pelo retorno. Conte o que faltou, se quiser.';
-    });
-  });
-  $('av-env').addEventListener('click', function () {
-    var t = $('av-com').value.trim(); if (!t) return;
-    enviarRetorno({ tipo: 'avaliacao', nota: notaAtual || 'Comentário', comentario: t, ua: navigator.userAgent.slice(0, 120) });
-    $('av-extra').hidden = true; $('av-ok').hidden = false; $('av-ok').textContent = 'Comentário enviado. Obrigado!';
-  });
-  $('ct-env').addEventListener('click', function () {
-    var wa = $('ct-wa').value.trim(), em = $('ct-mail').value.trim();
-    $('ct-err').hidden = true;
-    if (!wa && !em) { $('ct-err').hidden = false; $('ct-err').textContent = 'Informe o WhatsApp ou o e-mail.'; return; }
-    if (em && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { $('ct-err').hidden = false; $('ct-err').textContent = 'Confira o e-mail.'; return; }
-    if (!$('ct-lgpd').checked) { $('ct-err').hidden = false; $('ct-err').textContent = 'Marque a autorização para podermos guardar seu contato.'; return; }
-    var b = $('ct-env'); b.disabled = true; b.textContent = 'Enviando...';
-    enviarRetorno({ tipo: 'contato', nome: $('ct-nome').value.trim(), empresa: $('ct-emp').value.trim(), whatsapp: wa, email: em, consentimento: true, site: $('ct-site').value })
-      .then(function () { b.textContent = 'Recebido'; $('ct-ok').hidden = false; $('ct-ok').textContent = 'Pronto! Vamos avisar quando a escala do próximo mês estiver pronta.'; },
-            function () { b.disabled = false; b.textContent = 'Quero receber'; $('ct-err').hidden = false; $('ct-err').textContent = 'Não foi possível enviar agora. Tente de novo ou chame no WhatsApp (71) 99202-2915.'; });
-  });
-  $('bt-share').href = 'https://wa.me/?text=' + encodeURIComponent('Achei um simulador que monta a escala do mês da loja em minutos, conferida com a CLT e sem deixar setor descoberto. Vale testar: https://www.rhaqui.com.br/escala');
-  if (PIX.payload) {
-    $('natal').hidden = false; $('natal-pix').textContent = PIX.payload; $('natal-qr').src = PIX.qr; $('natal-chave').textContent = PIX.chave;
-    $('natal-cp').addEventListener('click', function () {
-      var bt = this; try { navigator.clipboard.writeText(PIX.payload).then(function () { bt.textContent = 'Copiado'; }); } catch (e) { }
-    });
-  }
-
-  preencherForm(); gerarTudo();
+  if(window.RHAquiPedido)RHAquiPedido.ligar({botao:document.getElementById('btWa'),aviso:document.getElementById('avPed'),obrig:['nome','telefone'],
+    coleta:function(){
+      var r='Montagem de escala';
+      if(v('loj')&&v('loj')!=='1')r+=' - '+v('loj')+' lojas';
+      if(v('qtd'))r+=' ('+v('qtd')+' colaboradores)';
+      return {servico:'Escala RHAqui',resumo:r,wa:'5571992022915',empresa:v('emp'),nome:v('nom'),telefone:v('tel'),cidade:v('cid'),linhas:linhas()};
+    }});
 })();
 </script>
+
+<footer>
+  <div class="wrap">
+    <div class="rod-g">
+      <div>
+        <div class="marca"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></svg><i></i></span><span><b>RH</b>Aqui</span></div>
+        <p style="margin-top:10px">Soluções Empresariais · Uislani Gonçalves &amp; Marcelo Gonçalves</p>
+      </div>
+      <div><h4>Navegue</h4><a href="/#servicos">Serviços</a><br><a href="/#solucoes">Ponto e Escala RHAqui</a><br><a href="/escala/">Escala pronta</a><br><a href="/ponto/">Ponto RHAqui</a><br><a href="/#vagas">Vagas</a><br><a href="/#planos">Planos</a></div>
+      <div><h4>Contato</h4>(71) 99202-2915<br>rhaqui.solucoes@gmail.com<br>Candeias/BA</div>
+    </div>
+    <div class="lgpd">Privacidade: currículos e dados enviados pelo WhatsApp ou e-mail são usados só para recrutamento e atendimento, conforme a LGPD. Para pedir a exclusão, escreva para rhaqui.solucoes@gmail.com.<br>© 2026 RHAqui. Todos os direitos reservados. Fotos: Pexels.</div>
+  </div>
+</footer>
+
+<a class="zap" href="https://wa.me/5571992022915" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg></a>
 
 </body>
 </html>
