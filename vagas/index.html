@@ -112,7 +112,7 @@ footer a{text-decoration:underline}
     <div class="cx cand">
       <h2>Não achou a sua vaga?</h2>
       <p>Mande o seu currículo para o banco de talentos. Avisamos quando surgir uma vaga para você. Também fazemos o seu currículo.</p>
-      <a class="btn btn-sec" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20enviar%20meu%20curr%C3%ADculo%20para%20o%20banco%20de%20talentos%20da%20RHAqui." target="_blank" rel="noopener">Enviar meu currículo</a>
+      <a class="btn btn-sec" href="/vagas/candidatar/">Enviar meu currículo</a>
     </div>
   </div>
   <p class="seg">Segurança: a RHAqui confere cada anúncio, mas a contratação é feita pela empresa anunciante. Desconfie de qualquer pedido de dinheiro, Pix, compra de curso ou kit. Viu algo estranho? Avise no WhatsApp (71) 99202-2915.</p>
@@ -125,11 +125,10 @@ footer a{text-decoration:underline}
 <script>
 // Link do app "Vagas RHAqui" (Apps Script, conta rhaqui.solucoes). Preencher após a implantação.
 var API_URL = 'https://script.google.com/macros/s/AKfycby-H1rKG8wYxF-fCtvAQqDR_S9RRnNuF5htuYQl-Kb335Gp2vNtXsCJZq_BMK_RyNgY/exec';
-var ZAP = '5571992022915';
 
 var EXEMPLO = { ok: true, vagas: [
-  { id:'V261123-1001', publicada:'23/11/2026', validade:'23/12/2026', empresa:'Loja Exemplo Calçados', ramo:'Calçados', cidade:'Candeias', bairro:'Centro', modalidade:'Presencial', cargo:'Vendedor(a)', quantidade:2, contrato:'CLT (efetivo)', jornada:'44h semanais, 08h às 18h', dias:'Seg a sáb, folga no domingo', salario:'R$ 1.650,00 + comissão', beneficios:'Vale-transporte, alimentação', escolaridade:'Médio completo', experiencia:'Desejável', requisitos:'Gostar de atender pessoas.\nDisponibilidade aos sábados.', atividades:'Atender clientes, organizar a loja e repor produtos.', afirmativa:'', candidatura:'rhaqui', contato:'' },
-  { id:'V261123-1002', publicada:'23/11/2026', validade:'08/12/2026', empresa:'', ramo:'Mercado', cidade:'Salvador', bairro:'Pituba', modalidade:'Presencial', cargo:'Operador(a) de caixa', quantidade:1, contrato:'CLT temporário', jornada:'6h por dia', dias:'Escala 6x1', salario:'A combinar', beneficios:'Vale-transporte', escolaridade:'Médio completo', experiencia:'Mínimo 6 meses', requisitos:'Experiência com caixa.', atividades:'Registrar vendas, receber pagamentos e fechar o caixa.', afirmativa:'Mulheres', candidatura:'whatsapp_empresa', contato:'71900000000' }
+  { id:'V261123-1001', publicada:'23/11/2026', validade:'23/12/2026', empresa:'Loja Exemplo Calçados', ramo:'Calçados', cidade:'Candeias', bairro:'Centro', modalidade:'Presencial', cargo:'Vendedor(a)', quantidade:2, contrato:'CLT (efetivo)', jornada:'44h semanais, 08h às 18h', dias:'Seg a sáb, folga no domingo', salario:'R$ 1.650,00 + comissão', beneficios:'Vale-transporte, alimentação', escolaridade:'Médio completo', experiencia:'Desejável', requisitos:'Gostar de atender pessoas.\nDisponibilidade aos sábados.', atividades:'Atender clientes, organizar a loja e repor produtos.', afirmativa:'', candidatura:'site', contato:'' },
+  { id:'V261123-1002', publicada:'23/11/2026', validade:'08/12/2026', empresa:'', ramo:'Mercado', cidade:'Salvador', bairro:'Pituba', modalidade:'Presencial', cargo:'Operador(a) de caixa', quantidade:1, contrato:'CLT temporário', jornada:'6h por dia', dias:'Escala 6x1', salario:'A combinar', beneficios:'Vale-transporte', escolaridade:'Médio completo', experiencia:'Mínimo 6 meses', requisitos:'Experiência com caixa.', atividades:'Registrar vendas, receber pagamentos e fechar o caixa.', afirmativa:'Mulheres', candidatura:'site', contato:'' }
 ]};
 
 var todas = [];
@@ -164,15 +163,7 @@ function iniciar(v){
 }
 
 function botao(x){
-  var txt = 'Olá! Vi no site da RHAqui a vaga de ' + x.cargo + (x.empresa ? ' (' + x.empresa + ')' : '') + ' em ' + x.cidade + ', código ' + x.id + ', e quero me candidatar.';
-  if (x.candidatura === 'whatsapp_empresa' && x.contato){
-    var n = x.contato.replace(/\D/g,''); if (n.length <= 11) n = '55' + n;
-    return '<a class="btn btn-pri" target="_blank" rel="noopener" href="https://wa.me/' + n + '?text=' + encodeURIComponent(txt) + '">Quero me candidatar</a>';
-  }
-  if (x.candidatura === 'email_empresa' && x.contato){
-    return '<a class="btn btn-pri" href="mailto:' + esc(x.contato) + '?subject=' + encodeURIComponent('Candidatura: ' + x.cargo + ' (' + x.id + ')') + '&body=' + encodeURIComponent(txt + '\n\nSegue meu currículo em anexo.') + '">Quero me candidatar</a>';
-  }
-  return '<a class="btn btn-pri" target="_blank" rel="noopener" href="https://wa.me/' + ZAP + '?text=' + encodeURIComponent(txt) + '">Quero me candidatar</a>';
+  return '<a class="btn btn-pri" href="/vagas/candidatar/?vaga=' + encodeURIComponent(x.id) + (/[?&]exemplo=1/.test(location.search) ? '&exemplo=1' : '') + '">Quero me candidatar</a>';
 }
 
 function desenhar(){
