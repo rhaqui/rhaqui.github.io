@@ -271,6 +271,10 @@ footer a:hover{color:#fff}
 .clic .vai::after,.clic .estica::after{content:"";position:absolute;inset:0;border-radius:inherit;z-index:1}
 .vai{display:inline-block;margin-top:14px;font-weight:700;color:var(--ver);text-decoration:none}
 .vai:hover{text-decoration:underline}
+.aviso-ped{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.5}
+.aviso-ped.ok{display:block;background:var(--cla);color:var(--esc);border:1px solid var(--ver)}
+.aviso-ped.erro{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FCA5A5}
+.aviso-ped a{color:inherit;font-weight:700}
 </style>
 <style>
 .ph{background:var(--esc);color:#fff;padding:72px 0 80px;position:relative;overflow:hidden}
@@ -457,7 +461,7 @@ footer a:hover{color:#fff}
     <div>
       <span class="olho">Pedir a consultoria</span>
       <h2>Comece pelo seu objetivo</h2>
-      <p class="intro">Preencha os campos e clique no botão. O e-mail abre pronto no seu programa de e-mail, e você confere antes de enviar.</p>
+      <p class="intro">Preencha os campos e envie. Você recebe um número de pedido e a ficha chega por e-mail à nossa equipe, que entra em contato.</p>
       <ul class="lst">
         <li>Atendimento online para todo o Brasil</li>
         <li>Textos revisados por especialista em RH</li>
@@ -478,12 +482,14 @@ footer a:hover{color:#fff}
       <label for="obs">Algo que devemos saber? (opcional)</label>
       <textarea id="obs" rows="3" placeholder="Ex.: estou mudando de área, não tenho foto profissional..."></textarea>
       <div class="bts" style="grid-template-columns:1fr">
-        <a class="btn btn-pri" id="btMail" href="mailto:rhaqui.solucoes@gmail.com">Pedir por e-mail</a>
+        <a class="btn btn-pri" id="btMail" href="#pedido">Enviar pedido</a>
       </div>
-      <p class="obs">Nada é gravado neste site. Os dados vão só no e-mail que você mesmo envia. Se preferir, anexe o currículo no e-mail.</p>
+      <div class="aviso-ped" id="avPed" role="status"></div>
+      <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui. Usamos os dados só para o atendimento, conforme a LGPD. O currículo, se quiser, pode ser enviado depois respondendo o nosso contato.</p>
     </form>
   </div>
 </section>
+<script src="/pedido.js"></script>
 <script>
 (function(){
   function v(id){return (document.getElementById(id).value||'').trim()}
@@ -494,9 +500,10 @@ footer a:hover{color:#fff}
     if(v('lnk'))l.push('LinkedIn: '+v('lnk'));
     if(v('obj'))l.push('Objetivo: '+v('obj'));
     if(v('obs'))l.push('Observações: '+v('obs'));
-    var assunto='Pedido Consultoria de LinkedIn'+(v('nom')?' - '+v('nom'):'');
-    document.getElementById('btMail').href='mailto:rhaqui.solucoes@gmail.com?subject='+encodeURIComponent(assunto)+'&body='+encodeURIComponent(l.join('\n'));
+    window.__lk=l;
   }
+  if(window.RHAquiPedido)RHAquiPedido.ligar({botao:document.getElementById('btMail'),aviso:document.getElementById('avPed'),obrig:['nome','telefone'],
+    coleta:function(){atualiza();return {servico:'Consultoria de LinkedIn',resumo:'LinkedIn - '+v('para'),wa:'',empresa:'',nome:v('nom'),telefone:v('tel'),linhas:window.__lk.slice(1)}}});
   ['para','nom','tel','lnk','obj','obs'].forEach(function(id){var e=document.getElementById(id);e.addEventListener('input',atualiza);e.addEventListener('change',atualiza)});
   atualiza();
 })();
