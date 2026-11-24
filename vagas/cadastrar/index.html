@@ -157,14 +157,13 @@ footer a{text-decoration:underline}
   <fieldset>
     <legend>4. Como receber os candidatos</legend>
     <div class="opc" id="cand">
-      <label><input type="radio" name="candidatura" value="rhaqui" checked>Pela RHAqui (recebemos os currículos e repassamos)</label>
-      <label><input type="radio" name="candidatura" value="whatsapp_empresa">No WhatsApp da empresa</label>
-      <label><input type="radio" name="candidatura" value="email_empresa">No e-mail da empresa</label>
+      <label><input type="radio" name="candidatura" value="rhaqui" checked>Pela RHAqui, com triagem (recomendado)</label>
+      <label><input type="radio" name="candidatura" value="email_empresa">Direto no meu e-mail</label>
     </div>
     <div class="g" id="contatoBox" style="display:none;margin-top:14px">
-      <label class="tudo" id="contatoLbl">Contato que aparece no anúncio <small>(deixe vazio para usar o informado acima)</small><input name="contato_candidatura" maxlength="120"></label>
+      <label class="tudo" id="contatoLbl">E-mail para receber os currículos <small>(deixe vazio para usar o informado acima; não aparece no anúncio)</small><input name="contato_candidatura" type="email" maxlength="120" placeholder="vagas@suaempresa.com.br"></label>
     </div>
-    <p class="dica" style="margin-top:12px" id="candDica">Os candidatos falam com a RHAqui e você recebe os currículos. Se quiser, também fazemos a triagem e as entrevistas (serviço à parte, com orçamento antes).</p>
+    <p class="dica" style="margin-top:12px" id="candDica">Os candidatos enviam o currículo pelo site da RHAqui. A gente confere e encaminha a você os que têm o perfil da vaga. Seu telefone e e-mail não aparecem no anúncio.</p>
   </fieldset>
 
   <fieldset>
@@ -206,14 +205,12 @@ var pad = new Date(); pad.setDate(pad.getDate() + 30); val.value = iso(pad);
 
 // como receber candidatos
 var dicas = {
-  rhaqui: 'Os candidatos falam com a RHAqui e você recebe os currículos. Se quiser, também fazemos a triagem e as entrevistas (serviço à parte, com orçamento antes).',
-  whatsapp_empresa: 'O botão "Quero me candidatar" abre o WhatsApp informado. Esse número fica visível no anúncio.',
-  email_empresa: 'O botão "Quero me candidatar" abre um e-mail para o endereço informado. Esse e-mail fica visível no anúncio.'
+  rhaqui: 'Os candidatos enviam o currículo pelo site da RHAqui. A gente confere e encaminha a você os que têm o perfil da vaga. Seu telefone e e-mail não aparecem no anúncio.',
+  email_empresa: 'Cada currículo enviado pelo site chega no seu e-mail na hora, com o arquivo em anexo. O e-mail não aparece no anúncio, então você não recebe mensagens de fora da seleção.'
 };
 document.getElementById('cand').addEventListener('change', function(){
   var v = f.candidatura.value;
   document.getElementById('contatoBox').style.display = v === 'rhaqui' ? 'none' : 'grid';
-  f.contato_candidatura.placeholder = v === 'whatsapp_empresa' ? '(71) 90000-0000' : 'vagas@suaempresa.com.br';
   document.getElementById('candDica').textContent = dicas[v];
 });
 
