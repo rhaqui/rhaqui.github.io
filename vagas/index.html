@@ -43,6 +43,8 @@ h1{font-size:clamp(28px,4.4vw,42px);font-weight:800;color:var(--esc);letter-spac
 .tag{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--cla);color:var(--esc)}
 .tag.sal{background:#EAF7E8;color:#1d6b1a}
 .tag.afi{background:#F3E8FB;color:#6b2a99}
+.cod{font-size:12.5px;font-weight:700;color:var(--sua);letter-spacing:.03em}
+.vaga.achada{border-color:var(--ver);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
 .info{font-size:14px;color:var(--txt);display:grid;gap:3px}
 .info b{color:var(--esc);font-weight:600}
 details{border-top:1px solid var(--lin);padding-top:10px}
@@ -91,7 +93,7 @@ footer a{text-decoration:underline}
     <p class="lead">Todas as vagas são conferidas pela RHAqui antes de ir ao ar. Candidatar-se é grátis: nunca pague para participar de uma seleção.</p>
     <div id="prev"></div>
     <div class="filtros">
-      <input id="busca" type="search" placeholder="Buscar cargo, empresa ou palavra" aria-label="Buscar">
+      <input id="busca" type="search" placeholder="Buscar cargo, empresa ou código da vaga" aria-label="Buscar">
       <select id="cidade" aria-label="Cidade"><option value="">Todas as cidades</option></select>
       <select id="contrato" aria-label="Contrato"><option value="">Todos os contratos</option></select>
       <select id="afirm" aria-label="Vagas afirmativas"><option value="">Todas as vagas</option><option value="*">Só vagas afirmativas</option></select>
@@ -167,20 +169,24 @@ function botao(x){
 }
 
 function desenhar(){
-  var q = $('busca').value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  var q = $('busca').value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
   var c = $('cidade').value, t = $('contrato').value, a = $('afirm').value;
+  var cod = codigo(q);   // busca pelo código da vaga (ex.: V261124-1001, v2611241001 ou 261124-1001)
   var v = todas.filter(function(x){
-    var alvo = [x.cargo, x.empresa, x.ramo, x.bairro, x.requisitos, x.atividades].join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+    if (cod) return codigo(x.id) === cod;
+    var alvo = [x.cargo, x.empresa, x.ramo, x.bairro, x.requisitos, x.atividades, x.id].join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
     return (!q || alvo.indexOf(q) >= 0) && (!c || x.cidade === c) && (!t || x.contrato === t) && (!a || (a === '*' ? !!x.afirmativa : x.afirmativa === a));
   });
   $('cont').textContent = todas.length ? (v.length + (v.length === 1 ? ' vaga aberta' : ' vagas abertas')) : '';
   if (!todas.length){
     $('lista').innerHTML = '<div class="vazio"><b>Nenhuma vaga aberta no momento</b>Novas vagas entram toda semana. Mande seu currículo para o banco de talentos e avisamos você.</div>'; return;
   }
+  if (!v.length && cod){ $('lista').innerHTML = '<div class="vazio"><b>Vaga ' + esc($('busca').value.trim().toUpperCase()) + ' não encontrada</b>Ela pode ter sido preenchida ou encerrada. Veja as outras vagas abaixo ou <a href="/vagas/candidatar/" style="color:#0F766E;font-weight:700;text-decoration:underline">envie seu currículo para o banco de talentos</a>.</div>'; return; }
   if (!v.length){ $('lista').innerHTML = '<div class="vazio"><b>Nenhuma vaga com esses filtros</b>Tente outra cidade ou palavra.</div>'; return; }
   $('lista').innerHTML = v.map(function(x){
     var local = [x.bairro, x.cidade].filter(Boolean).join(', ');
-    return '<article class="vaga">' +
+    return '<article class="vaga' + (cod ? ' achada' : '') + '">' +
+      '<span class="cod">Código ' + esc(x.id) + '</span>' +
       '<h2>' + esc(x.cargo) + (x.quantidade > 1 ? ' <small style="font-size:14px;color:#5b6f69">(' + x.quantidade + ' vagas)</small>' : '') + '</h2>' +
       '<div class="emp">' + esc(x.empresa || 'Empresa confidencial') + (x.ramo ? ' · ' + esc(x.ramo) : '') + '</div>' +
       '<div class="tags"><span class="tag">' + esc(local) + '</span><span class="tag">' + esc(x.contrato) + '</span>' +
@@ -193,12 +199,14 @@ function desenhar(){
         '<div><h3>Requisitos</h3><p>' + esc(x.requisitos) + '</p></div>' +
         ((x.escolaridade || x.experiencia) ? '<div><h3>Formação e experiência</h3><p>' + esc([x.escolaridade && 'Escolaridade: ' + x.escolaridade, x.experiencia && 'Experiência: ' + x.experiencia].filter(Boolean).join('\n')) + '</p></div>' : '') +
       '</div></details>' +
-      '<div class="rod"><small>Publicada em ' + esc(x.publicada) + ' · até ' + esc(x.validade) + ' · ' + esc(x.id) + '</small>' + botao(x) + '</div>' +
+      '<div class="rod"><small>Publicada em ' + esc(x.publicada) + ' · até ' + esc(x.validade) + '</small>' + botao(x) + '</div>' +
     '</article>';
   }).join('');
 }
 
+function codigo(s){ var m = String(s || '').toUpperCase().replace(/\s/g, '').match(/^V?(\d{6})-?(\d{4})$/); return m ? m[1] + m[2] : ''; }
 ['busca','cidade','contrato','afirm'].forEach(function(id){ $(id).addEventListener('input', desenhar); });
+(function(){ var p = new URLSearchParams(location.search), c = p.get('codigo') || p.get('vaga'); if (c) $('busca').value = c; })();
 carregar();
 </script>
 </body>
