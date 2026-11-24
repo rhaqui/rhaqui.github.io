@@ -283,6 +283,12 @@ footer a:hover{color:#fff}
 .ext.sob #abrePlan{position:relative;z-index:2}
 #abreEv{position:relative;z-index:2;margin-top:6px}
 button.btn{font-family:inherit}
+.embreve{display:inline-block;margin-top:6px;padding:6px 12px;border-radius:999px;background:#FEF3C7;color:#92400E;font-size:13.5px;font-weight:600}
+.ext.emprep img{filter:grayscale(.5);opacity:.85}
+.aviso-ped{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.5}
+.aviso-ped.ok{display:block;background:var(--cla);color:var(--esc);border:1px solid var(--ver)}
+.aviso-ped.erro{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FCA5A5}
+.aviso-ped a{color:inherit;font-weight:700}
 .modal{position:fixed;inset:0;background:rgba(15,40,34,.55);display:none;align-items:flex-start;justify-content:center;z-index:100;padding:24px 16px;overflow-y:auto}
 .modal.on{display:flex}
 .modal .form{max-width:560px;width:100%;position:relative;margin:auto 0}
@@ -339,7 +345,7 @@ button.btn{font-family:inherit}
       <h1>O RH da sua loja, resolvido por <em>quem é daqui</em>.</h1>
       <p class="lead">Vagas, admissões, exames, ponto, escalas e demissões, do jeito que a CLT e a convenção do comércio pedem. Você cuida das vendas; a gente cuida da equipe.</p>
       <div class="acoes">
-        <a class="btn btn-pri" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20conhecer%20os%20servi%C3%A7os%20da%20RHAqui." target="_blank" rel="noopener">Agende uma conversa gratuita</a>
+        <a class="btn btn-pri" href="#ficha" data-ct="Conversa gratuita|Agende uma conversa gratuita|empresa">Agende uma conversa gratuita</a>
         <a class="btn btn-sec" href="#servicos">Ver serviços</a>
       </div>
       <div class="checks">
@@ -443,11 +449,11 @@ button.btn{font-family:inherit}
           <div class="seta">Aviso automático por e-mail quando o saldo fica baixo</div>
         </div>
       </div>
-      <div class="ext transp clic">
+      <div class="ext transp emprep">
         <img src="https://images.pexels.com/photos/33693159/pexels-photo-33693159.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Funcionários entrando em um micro-ônibus">
-        <div><span class="tag">Com parceiro de transporte</span><h3>Transporte da equipe (fretamento)</h3><p>Rotas e horários montados pela escala de cada funcionário, com veículos licenciados e seguro. Comparamos com o custo do vale-transporte.</p><a class="vai" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20saber%20do%20transporte%20%28fretamento%29%20para%20a%20minha%20equipe." target="_blank" rel="noopener">Quero saber do transporte &rarr;</a></div>
+        <div><span class="tag">Com parceiro de transporte</span><h3>Transporte da equipe (fretamento)</h3><p>Rotas e horários montados pela escala de cada funcionário, com veículos licenciados e seguro. Comparamos com o custo do vale-transporte.</p><span class="embreve">Em preparação · em breve</span></div>
       </div>
-      <div class="ext clic"><span class="tag">Para quem busca emprego</span><h3>Currículos profissionais</h3><p>Currículo bem escrito, com revisão e dicas para a entrevista.</p><a class="vai" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20fazer%20meu%20curr%C3%ADculo%20com%20a%20RHAqui." target="_blank" rel="noopener">Quero fazer meu currículo &rarr;</a></div>
+      <div class="ext clic"><span class="tag">Para quem busca emprego</span><h3>Currículos profissionais</h3><p>Currículo bem escrito, com revisão e dicas para a entrevista.</p><a class="vai" href="#ficha" data-ct="Currículo profissional|Quero fazer meu currículo|pessoa">Quero fazer meu currículo &rarr;</a></div>
       <div class="ext clic"><span class="tag">Novo</span><h3>Consultoria de LinkedIn</h3><p>Para profissionais: perfil completo, foto, título e resumo que chamam a atenção de recrutadores. Para empresas: página da empresa e vagas no LinkedIn para atrair bons candidatos. Feito sob medida com o Claude, uma das IAs mais avançadas do mundo, e revisado pela nossa especialista em RH.</p><a class="vai" href="/linkedin/">Conhecer a consultoria &rarr;</a></div>
       <div class="ext clic"><span class="tag">Equipe unida</span><h3>Eventos e confraternizações</h3><p>Fim de ano, integração e datas comemorativas, com fornecedores parceiros e dentro do seu orçamento.</p><button type="button" class="btn btn-pri" id="abreEv">Planejar meu evento</button></div>
     </div>
@@ -540,7 +546,7 @@ button.btn{font-family:inherit}
       <div class="vag-bt">
         <a class="btn btn-pri" href="/vagas/">Ver vagas abertas</a>
         <a class="btn btn-sec" href="/vagas/candidatar/">Enviar meu currículo</a>
-        <a class="btn btn-sec" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20fazer%20meu%20curr%C3%ADculo%20com%20a%20RHAqui." target="_blank" rel="noopener">Quero fazer meu currículo</a>
+        <a class="btn btn-sec" href="#ficha" data-ct="Currículo profissional|Quero fazer meu currículo|pessoa">Quero fazer meu currículo</a>
         <a class="btn btn-sec" href="/linkedin/">Quero melhorar meu LinkedIn</a>
         <a class="btn btn-sec" href="/vagas/cadastrar/">Sou empresa: anunciar vaga grátis</a>
       </div>
@@ -557,18 +563,18 @@ button.btn{font-family:inherit}
       <div class="pl">
         <h3>Avulso</h3><div class="para">Para uma necessidade pontual</div>
         <p>Uma vaga, uma admissão ou demissão, um regulamento, uma escala ou um currículo. Orçamento fechado antes de começar.</p>
-        <a class="btn btn-sec" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Preciso%20de%20um%20servi%C3%A7o%20avulso%20de%20RH." target="_blank" rel="noopener">Pedir orçamento</a>
+        <a class="btn btn-sec" href="#ficha" data-ct="Orçamento de serviço avulso|Pedir orçamento|empresa">Pedir orçamento</a>
       </div>
       <div class="pl dest">
         <span class="fit">Recomendado</span>
         <h3>RH Essencial</h3><div class="para">Para quem não tem RH próprio</div>
         <p>Ponto RHAqui + acompanhamento mensal do ponto e das escalas + uma consulta por mês para tirar dúvidas trabalhistas.</p>
-        <a class="btn btn-cla" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20saber%20do%20plano%20RH%20Essencial." target="_blank" rel="noopener">Quero o Essencial</a>
+        <a class="btn btn-cla" href="#ficha" data-ct="Plano RH Essencial|Quero o plano RH Essencial|empresa">Quero o Essencial</a>
       </div>
       <div class="pl">
         <h3>RH Completo</h3><div class="para">Para quem quer delegar o RH</div>
         <p>Vagas, recrutamento, admissão, exames, departamento pessoal, ponto, escalas, transporte, demissões e treinamentos, com o seu contador. Um RH inteiro, sem contratar um.</p>
-        <a class="btn btn-sec" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20saber%20do%20plano%20RH%20Completo." target="_blank" rel="noopener">Quero o Completo</a>
+        <a class="btn btn-sec" href="#ficha" data-ct="Plano RH Completo|Quero o plano RH Completo|empresa">Quero o Completo</a>
       </div>
     </div>
   </div>
@@ -645,7 +651,7 @@ button.btn{font-family:inherit}
         <p>Conte o que mais toma o seu tempo com funcionários. Em poucos minutos dizemos como podemos ajudar.</p>
       </div>
       <div class="lado">
-        <a class="btn btn-cla" href="https://wa.me/5571992022915?text=Ol%C3%A1!%20Quero%20conhecer%20os%20servi%C3%A7os%20da%20RHAqui." target="_blank" rel="noopener">Chamar no WhatsApp</a>
+        <a class="btn btn-cla" href="#ficha" data-ct="Conversa gratuita|Agende uma conversa gratuita|empresa">Chamar no WhatsApp</a>
         <a class="btn btn-bor" href="mailto:rhaqui.solucoes@gmail.com">Enviar e-mail</a>
         <div class="infos"><span>WhatsApp: (71) 99202-2915</span><span>E-mail: rhaqui.solucoes@gmail.com</span><span>Candeias/BA</span></div>
       </div>
@@ -689,11 +695,11 @@ button.btn{font-family:inherit}
     </div>
     <label for="s_obs">Conte um pouco do que precisa (opcional)</label>
     <textarea id="s_obs" rows="3" placeholder="Ex.: preciso contratar 2 vendedores até dezembro"></textarea>
-    <div class="bts">
-      <a class="btn btn-pri" id="s_wa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pelo WhatsApp</span></a>
-      <a class="btn btn-sec" id="s_mail" href="mailto:rhaqui.solucoes@gmail.com">Enviar por e-mail</a>
+    <div class="bts" style="grid-template-columns:1fr">
+      <a class="btn btn-pri" id="s_wa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pedido</span></a>
     </div>
-    <p class="obs">Nada é gravado neste site. Os dados vão só na mensagem que você mesmo envia, e são usados apenas para o atendimento, conforme a LGPD.</p>
+    <div class="aviso-ped" id="s_av" role="status"></div>
+    <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui e o WhatsApp abre com o número e seus dados básicos. Usamos os dados só para o atendimento, conforme a LGPD.</p>
   </form>
 </div>
 <div class="modal" id="mPlan" role="dialog" aria-modal="true" aria-labelledby="mPlanT">
@@ -725,10 +731,13 @@ button.btn{font-family:inherit}
       <div><label for="p_emp">Empresa</label><input id="p_emp" autocomplete="organization"></div>
       <div><label for="p_nom">Seu nome</label><input id="p_nom" autocomplete="name"></div>
     </div>
+    <label for="p_tel">Telefone / WhatsApp</label>
+    <input id="p_tel" type="tel" autocomplete="tel" placeholder="(71) 9....">
     <div class="bts" style="grid-template-columns:1fr">
-      <a class="btn btn-pri" id="p_wa" href="https://wa.me/5571981737865" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pelo WhatsApp</span></a>
+      <a class="btn btn-pri" id="p_wa" href="https://wa.me/5571981737865" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pedido</span></a>
     </div>
-    <p class="obs">Nada é gravado neste site. Os dados vão só na mensagem que você mesmo envia, conforme a LGPD.</p>
+    <div class="aviso-ped" id="p_av" role="status"></div>
+    <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui e o WhatsApp abre com o número e seus dados básicos. Usamos os dados só para o atendimento, conforme a LGPD.</p>
   </form>
 </div>
 <div class="modal" id="mEv" role="dialog" aria-modal="true" aria-labelledby="mEvT">
@@ -778,13 +787,39 @@ button.btn{font-family:inherit}
       <div><label for="e_nom">Seu nome</label><input id="e_nom" autocomplete="name"></div>
       <div><label for="e_tel">Telefone / WhatsApp</label><input id="e_tel" type="tel" autocomplete="tel" placeholder="(71) 9...."></div>
     </div>
-    <div class="bts">
-      <a class="btn btn-pri" id="e_wa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg> Enviar pelo WhatsApp</a>
-      <a class="btn btn-sec" id="e_mail" href="mailto:rhaqui.solucoes@gmail.com">Enviar por e-mail</a>
+    <div class="bts" style="grid-template-columns:1fr">
+      <a class="btn btn-pri" id="e_wa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg> Enviar pedido</a>
     </div>
-    <p class="obs">Nada é gravado neste site. Os dados vão só na mensagem que você mesmo envia, conforme a LGPD.</p>
+    <div class="aviso-ped" id="e_av" role="status"></div>
+    <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui e o WhatsApp abre com o número e seus dados básicos. Usamos os dados só para o atendimento, conforme a LGPD.</p>
   </form>
 </div>
+<div class="modal" id="mCt" role="dialog" aria-modal="true" aria-labelledby="mCtT">
+  <form class="form" onsubmit="return false">
+    <button type="button" class="fecha" aria-label="Fechar">&times;</button>
+    <h3 id="mCtT">Fale com a RHAqui</h3>
+    <p class="msub">Preencha e envie. Você recebe um número de pedido e a nossa equipe responde pelo WhatsApp.</p>
+    <div class="so-emp"><label for="c_emp">Nome da empresa</label><input id="c_emp" autocomplete="organization" placeholder="Ex.: Loja Exemplo"></div>
+    <div class="dup">
+      <div><label for="c_nom">Seu nome</label><input id="c_nom" autocomplete="name"></div>
+      <div><label for="c_tel">Telefone / WhatsApp</label><input id="c_tel" type="tel" autocomplete="tel" placeholder="(71) 9...."></div>
+    </div>
+    <div class="dup">
+      <div class="so-emp"><label for="c_qtd">Funcionários</label>
+        <select id="c_qtd"><option value="">Escolha</option><option>Até 5</option><option>6 a 10</option><option>11 a 20</option><option>Mais de 20</option></select></div>
+      <div class="so-pes"><label for="c_area">Cargo ou área que procura</label><input id="c_area" placeholder="Ex.: vendedor, caixa, gerente"></div>
+      <div><label for="c_cid">Cidade</label><input id="c_cid" autocomplete="address-level2" placeholder="Ex.: Candeias"></div>
+    </div>
+    <label for="c_msg" id="c_msgL">Conte um pouco do que precisa (opcional)</label>
+    <textarea id="c_msg" rows="3"></textarea>
+    <div class="bts" style="grid-template-columns:1fr">
+      <a class="btn btn-pri" id="c_wa" href="https://wa.me/5571992022915" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1-.4-.1-1-.3-1.7-.6-3-1.3-4.9-4.3-5.1-4.5-.1-.2-1.2-1.6-1.2-3.1s.8-2.2 1-2.5c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.3 0 .5l-.3.5-.4.5c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.2 1 2.1 1.4 2.4 1.5.3.1.5.1.6-.1l.9-1.1c.2-.3.4-.2.7-.1l2 1c.3.1.5.2.5.3.1.2.1.7-.1 1.4z"/></svg><span>Enviar pedido</span></a>
+    </div>
+    <div class="aviso-ped" id="c_av" role="status"></div>
+    <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui e o WhatsApp abre com o número e seus dados básicos. Usamos os dados só para o atendimento, conforme a LGPD.</p>
+  </form>
+</div>
+<script src="/pedido.js"></script>
 <script>
 (function(){
   function $(id){return document.getElementById(id)}
@@ -814,12 +849,11 @@ button.btn{font-family:inherit}
     if(v('s_obs'))l.push('Detalhes: '+v('s_obs'));
     return l.join('\n');
   }
-  function atuS(){var t=txtS();$('s_wa').href='https://wa.me/5571992022915?text='+encodeURIComponent(t);
-    $('s_mail').href='mailto:rhaqui.solucoes@gmail.com?subject='+encodeURIComponent('Pedido RHAqui - '+mod+(v('s_emp')?' - '+v('s_emp'):''))+'&body='+encodeURIComponent(t)}
+  function atuS(){}
   ['s_emp','s_nom','s_tel','s_qtd','s_cid','s_obs'].forEach(function(id){$(id).addEventListener('input',atuS);$(id).addEventListener('change',atuS)});
   document.querySelectorAll('.pedir').forEach(function(b){b.addEventListener('click',function(){
     mod=b.dataset.mod;sel=[].map.call(document.querySelectorAll('.srv[data-mod="'+mod+'"]:checked'),function(c){return c.value});
-    $('mSrvM').textContent=mod+': confira os serviços e preencha seus dados. A mensagem fica pronta para você enviar.';
+    $('mSrvM').textContent=mod+': confira os serviços e preencha seus dados. Ao enviar, você recebe um número de pedido.';
     $('mSrvTags').innerHTML='';sel.forEach(function(x){var s=document.createElement('span');s.textContent=x;$('mSrvTags').appendChild(s)});
     atuS();abre($('mSrv'));
   })});
@@ -834,7 +868,7 @@ button.btn{font-family:inherit}
     if(v('p_nom'))l.push('Nome: '+v('p_nom'));
     return l.join('\n');
   }
-  function atuP(){$('p_wa').href='https://wa.me/5571981737865?text='+encodeURIComponent(txtP())}
+  function atuP(){}
   $('mPlan').querySelectorAll('input').forEach(function(i){i.addEventListener('input',atuP);i.addEventListener('change',atuP)});
   $('abrePlan').addEventListener('click',function(){atuP();abre($('mPlan'))});
   function txtE(){
@@ -855,10 +889,39 @@ button.btn{font-family:inherit}
     if(v('e_tel'))l.push('Telefone: '+v('e_tel'));
     return l.join('\n');
   }
-  function atuE(){var t=txtE();$('e_wa').href='https://wa.me/5571992022915?text='+encodeURIComponent(t);
-    $('e_mail').href='mailto:rhaqui.solucoes@gmail.com?subject='+encodeURIComponent('Evento RHAqui'+(v('e_emp')?' - '+v('e_emp'):''))+'&body='+encodeURIComponent(t)}
+  function atuE(){}
   $('mEv').querySelectorAll('input,select,textarea').forEach(function(i){i.addEventListener('input',atuE);i.addEventListener('change',atuE)});
   $('abreEv').addEventListener('click',function(){atuE();abre($('mEv'))});
+  var CURTO={'Exames ocupacionais e controle do vencimento de cada ASO':'Exames ocupacionais (ASO)','Regulamento interno, cargos e salários e treinamentos':'Regulamento, cargos e treinamentos','Pesquisa de clima com plano de ação simples':'Pesquisa de clima','Adequação à CLT e à convenção':'Adequação à CLT','Advertências e medidas disciplinares aplicadas do jeito certo':'Medidas disciplinares','Entrevista de desligamento para entender por que as pessoas saem':'Entrevista de desligamento'};
+  var P=window.RHAquiPedido;
+  if(P){
+    P.ligar({botao:$('s_wa'),aviso:$('s_av'),obrig:['nome','telefone'],coleta:function(){return {servico:mod,resumo:sel.map(function(x){return CURTO[x]||x}).join(', '),wa:'5571992022915',empresa:v('s_emp'),nome:v('s_nom'),telefone:v('s_tel'),cidade:v('s_cid'),linhas:txtS().split('\n').slice(1)}}});
+    P.ligar({botao:$('p_wa'),aviso:$('p_av'),obrig:['nome','telefone'],coleta:function(){var pc=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});return {servico:'Planilhas e soluções sob medida',resumo:'Planilha'+(pc.length?' de '+pc.join(', '):(v('p_out')?': '+v('p_out'):' sob medida')),wa:'5571981737865',empresa:v('p_emp'),nome:v('p_nom'),telefone:v('p_tel'),linhas:txtP().split('\n').slice(1).concat(v('p_tel')?['Telefone: '+v('p_tel')]:[])}}});
+    P.ligar({botao:$('e_wa'),aviso:$('e_av'),obrig:['nome','telefone'],coleta:function(){return {servico:'Eventos e confraternizações',resumo:(v('e_tipo')||'Evento')+(v('e_qtd')?' para '+v('e_qtd')+' pessoas':''),wa:'5571992022915',empresa:v('e_emp'),nome:v('e_nom'),telefone:v('e_tel'),linhas:txtE().split('\n').slice(1)}}});
+  }
+  var ct={serv:'',tipo:'empresa'};
+  document.querySelectorAll('[data-ct]').forEach(function(a){a.addEventListener('click',function(ev){
+    ev.preventDefault();var d=a.getAttribute('data-ct').split('|');ct={serv:d[0],tipo:d[2]};
+    $('mCtT').textContent=d[1];
+    $('c_av').className='aviso-ped';$('c_av').textContent='';
+    $('mCt').querySelectorAll('.so-emp').forEach(function(x){x.style.display=ct.tipo==='empresa'?'':'none'});
+    $('mCt').querySelectorAll('.so-pes').forEach(function(x){x.style.display=ct.tipo==='pessoa'?'':'none'});
+    $('c_msg').placeholder=ct.tipo==='pessoa'?'Ex.: tenho experiência em vendas, quero currículo e dicas para entrevista':'Ex.: melhor horário para conversar, o que mais preocupa hoje';
+    abre($('mCt'));
+  })});
+  function txtC(){var l=[];
+    if(ct.tipo==='empresa'&&v('c_emp'))l.push('Empresa: '+v('c_emp'));
+    if(v('c_nom'))l.push('Nome: '+v('c_nom'));
+    if(v('c_tel'))l.push('Telefone: '+v('c_tel'));
+    if(ct.tipo==='empresa'&&v('c_qtd'))l.push('Funcionários: '+v('c_qtd'));
+    if(ct.tipo==='pessoa'&&v('c_area'))l.push('Cargo ou área: '+v('c_area'));
+    if(v('c_cid'))l.push('Cidade: '+v('c_cid'));
+    if(v('c_msg'))l.push('Detalhes: '+v('c_msg'));
+    return l}
+  if(P)P.ligar({botao:$('c_wa'),aviso:$('c_av'),obrig:['nome','telefone'],coleta:function(){return {servico:ct.serv,
+    resumo:ct.serv+(ct.tipo==='pessoa'&&v('c_area')?' - '+v('c_area'):'')+(ct.tipo==='empresa'&&v('c_qtd')?' ('+v('c_qtd')+' funcionários)':''),
+    wa:'5571992022915',empresa:ct.tipo==='empresa'?v('c_emp'):'',nome:v('c_nom'),telefone:v('c_tel'),cidade:v('c_cid'),linhas:txtC()}}});
+  document.querySelectorAll('.modal').forEach(function(m){m.querySelector('.fecha').addEventListener('click',function(){var a=m.querySelector('.aviso-ped');if(a){a.className='aviso-ped';a.textContent=''}})});
 })();
 </script>
 </body>
