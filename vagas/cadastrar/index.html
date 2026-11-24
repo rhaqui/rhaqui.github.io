@@ -145,11 +145,12 @@ footer a{text-decoration:underline}
         <select name="escolaridade"><option value="">Não exigida</option><option>Fundamental completo</option><option>Médio cursando</option><option>Médio completo</option><option>Técnico</option><option>Superior cursando</option><option>Superior completo</option></select></label>
       <label>Experiência
         <select name="experiencia"><option value="">Não exigida</option><option>Desejável</option><option>Mínimo 6 meses</option><option>Mínimo 1 ano</option><option>Mínimo 2 anos</option></select></label>
-      <label>Vaga para pessoa com deficiência (PCD)?
-        <select name="pcd"><option value="">Aberta a todos (inclusive PCD)</option><option>Exclusiva para PCD</option></select></label>
+      <label>Vaga afirmativa? <small>(exclusiva ou preferencial para um público)</small>
+        <select name="afirmativa"><option value="">Não, aberta a todos</option><option>PCD</option><option>Mulheres</option><option>Pessoas negras</option><option>LGBTQIA+</option><option>Pessoas 50+</option><option>Outro</option></select></label>
+      <label id="afirmOutroBox" style="display:none">Qual público?<input name="afirmativa_outro" maxlength="60" placeholder="Ex.: pessoas trans, jovens do primeiro emprego"></label>
       <label>Anunciar até <small>(máx. 60 dias)</small><input name="validade" type="date"></label>
     </div>
-    <div class="aviso" style="margin-top:16px"><b>A lei não permite</b> pedir sexo, idade, estado civil, se tem filhos, gravidez, cor, religião, "boa aparência" ou foto (Lei 9.029/95 e CLT art. 373-A). Vagas assim são recusadas ou ajustadas com você antes de ir ao ar. Vagas afirmativas (ex.: exclusiva para PCD) são permitidas.</div>
+    <div class="aviso" style="margin-top:16px"><b>A lei não permite</b> pedir sexo, idade, estado civil, se tem filhos, gravidez, cor, religião, "boa aparência" ou foto (Lei 9.029/95 e CLT art. 373-A). Vagas assim são recusadas ou ajustadas com você antes de ir ao ar. Vagas afirmativas (para PCD, mulheres, pessoas negras, LGBTQIA+, 50+ e outros grupos) são permitidas: marque o campo "Vaga afirmativa".</div>
     <div class="aviso" id="alerta"></div>
   </fieldset>
 
@@ -222,12 +223,19 @@ var regras = [
   [/\b(idade|entre\s+\d{2}\s*(e|a)\s*\d{2}\s*anos|até\s+\d{2}\s*anos|menos de\s+\d{2}\s*anos)\b/i, 'idade'],
   [/\b(solteir[oa]s?|casad[oa]s?|sem filhos|grávida|gestante)\b/i, 'estado civil, filhos ou gravidez'],
   [/\b(boa aparência|bonit[oa]|magr[oa]|foto)\b/i, 'aparência ou foto'],
-  [/\b(raça|religião|evangélic[oa]|católic[oa])\b/i, 'raça ou religião'],
+  [/\b(raça|negr[oa]s?|brancos?|brancas?)\b/i, 'raça'],
+  [/\b(religião|evangélic[oa]|católic[oa])\b/i, 'religião'],
   [/\b(pix|taxa de inscrição|pagar para|kit inicial)\b/i, 'cobrança do candidato']
 ];
+var soSemAfirmativa = ['sexo', 'idade', 'raça'];
+f.afirmativa.addEventListener('change', function(){
+  document.getElementById('afirmOutroBox').style.display = f.afirmativa.value === 'Outro' ? 'block' : 'none';
+  confere();
+});
 function confere(){
   var t = [f.cargo.value, f.requisitos.value, f.atividades.value, f.beneficios.value].join(' ');
-  var achou = regras.filter(function(r){ return r[0].test(t); }).map(function(r){ return r[1]; });
+  var afirm = !!f.afirmativa.value;
+  var achou = regras.filter(function(r){ return !(afirm && soSemAfirmativa.indexOf(r[1]) >= 0) && r[0].test(t); }).map(function(r){ return r[1]; });
   var a = document.getElementById('alerta');
   a.style.display = achou.length ? 'block' : 'none';
   a.innerHTML = achou.length ? '<b>Confira o texto:</b> parece citar ' + achou.join(', ') + '. Se for exigência, retire antes de enviar, para a vaga não ser recusada.' : '';
