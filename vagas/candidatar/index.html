@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Enviar currículo | RHAqui</title>
+<meta name="description" content="Envie seu currículo para uma vaga ou para o banco de talentos da RHAqui. Grátis, pelo site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--esc:#1F4B40;--ver:#0F766E;--cla:#E6F6F2;--pon:#7ED67A;--txt:#1d2b27;--sua:#5b6f69;--lin:#dde9e5;--fun:#f6faf8;--av:#8A5A00;--avf:#FFF2D6;--er:#B42318;--erf:#FDE7E5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--txt);background:var(--fun);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--lin)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;gap:12px}
+.marca{display:flex;align-items:center;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.03em;color:var(--esc)}
+.marca b{color:var(--ver)}
+.ic{position:relative;width:34px;height:34px;border-radius:24%;background:var(--esc);display:grid;place-items:center;flex-shrink:0}
+.ic svg{width:62%;height:62%;fill:none;stroke:#fff;stroke-width:1.9;stroke-linecap:round}
+.ic i{position:absolute;top:13%;right:13%;width:20%;height:20%;border-radius:50%;background:var(--pon)}
+.nav .lk{font-size:14.5px;font-weight:600;color:var(--ver)}
+.topo{background:linear-gradient(180deg,var(--cla),var(--fun));padding:40px 0 24px}
+.olho{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ver)}
+.olho:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pon)}
+h1{font-size:clamp(28px,4.4vw,40px);font-weight:800;color:var(--esc);letter-spacing:-.02em;line-height:1.15;margin:10px 0 10px}
+.lead{font-size:17px;color:var(--sua);max-width:640px}
+.selos{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:14px;font-weight:600;color:var(--esc)}
+.selos span{display:flex;align-items:center;gap:7px}
+.selos svg{width:17px;height:17px;fill:none;stroke:var(--ver);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+form{padding:8px 0 56px}
+fieldset{border:1px solid var(--lin);background:#fff;border-radius:18px;padding:22px 20px;margin-top:18px}
+legend{font-weight:800;color:var(--esc);font-size:18px;padding:0 6px}
+.dica{color:var(--sua);font-size:13.5px;margin:-2px 0 12px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
+.g .tudo{grid-column:1/-1}
+label{display:block;font-size:14px;font-weight:600;color:var(--esc)}
+label small{font-weight:500;color:var(--sua)}
+.ob{color:var(--er);font-style:normal}
+input,select,textarea{width:100%;margin-top:6px;border:1.5px solid var(--lin);border-radius:12px;padding:11px 12px;font:inherit;font-size:15px;color:var(--txt);background:#fff}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ver);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
+.opc{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.opc label{display:flex;align-items:center;gap:8px;border:1.5px solid var(--lin);border-radius:999px;padding:8px 14px;font-weight:500;cursor:pointer;background:#fff}
+.opc input{width:auto;margin:0;accent-color:var(--ver)}
+.opc label:has(input:checked){border-color:var(--ver);background:var(--cla);font-weight:600}
+.aviso{background:var(--avf);color:var(--av);border-radius:12px;padding:12px 14px;font-size:14px;margin-top:4px}
+.aviso b{color:#6b4500}
+#alerta{display:none;margin-top:12px}
+.aceite{display:flex;gap:10px;align-items:flex-start;font-weight:500;color:var(--txt);font-size:14px}
+.aceite input{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--ver)}
+.termos{font-size:13px;color:var(--sua);margin-top:10px}
+.termos li{margin:4px 0 0 18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:999px;font-weight:700;font-size:16px;border:0;cursor:pointer;background:var(--ver);color:#fff;box-shadow:0 10px 24px rgba(15,118,110,.28);margin-top:20px;width:100%;max-width:360px}
+.btn:hover{background:var(--esc)}
+.btn[disabled]{opacity:.6;cursor:wait}
+#msg{margin-top:14px;font-weight:600}
+#msg.er{color:var(--er)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.feito{display:none;background:#fff;border:1px solid var(--lin);border-radius:18px;padding:32px 22px;margin:24px 0 56px;text-align:center}
+.feito h2{color:var(--esc);font-size:26px;margin-bottom:8px}
+.feito p{color:var(--sua);max-width:520px;margin:0 auto 6px}
+.feito .ok{width:56px;height:56px;border-radius:50%;background:var(--cla);display:grid;place-items:center;margin:0 auto 14px}
+.feito .ok svg{width:30px;height:30px;fill:none;stroke:var(--ver);stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+.sec-bt{display:inline-flex;margin-top:16px;padding:12px 22px;border-radius:999px;border:2px solid var(--esc);color:var(--esc);font-weight:700}
+footer{background:var(--esc);color:#cfe3dd;font-size:13px;padding:26px 0}
+footer a{text-decoration:underline}
+@media (max-width:640px){.g{grid-template-columns:1fr}fieldset{padding:18px 14px}.nav .lk span{display:none}}
+.vg{background:#fff;border:1px solid var(--lin);border-radius:18px;padding:16px 18px;margin-top:18px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.vg b{color:var(--esc);font-size:18px}
+.vg span{color:var(--sua);font-size:14px}
+.vg .tag{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:#F3E8FB;color:#6b2a99}
+.arq{border:2px dashed var(--lin);border-radius:14px;padding:18px;text-align:center;cursor:pointer;background:var(--fun);display:block;margin-top:6px}
+.arq:hover,.arq.on{border-color:var(--ver);background:var(--cla)}
+.arq input{display:none}
+.arq b{display:block;color:var(--ver);font-size:15px}
+.arq small{color:var(--sua)}
+#arqNome{margin-top:8px;font-size:14px;font-weight:600;color:var(--esc)}
+.ou{display:flex;gap:10px;align-items:flex-start;font-weight:500;color:var(--txt);font-size:14px;margin-top:14px}
+.ou input{width:20px;height:20px;margin-top:2px;flex-shrink:0;accent-color:var(--ver)}
+.prev{background:#FFF2D6;color:#8A5A00;border-radius:12px;padding:10px 14px;font-size:14px;margin-top:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a href="/" class="marca"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.2"/><path d="M5.5 19.5c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/></svg><i></i></span><span><b>RH</b>Aqui</span></a>
+    <a class="lk" href="/vagas/"><span>Ver </span>vagas abertas &rarr;</a>
+  </div>
+</header>
+
+<section class="topo">
+  <div class="wrap">
+    <span class="olho">Sou candidato</span>
+    <h1 id="tit">Envie seu currículo</h1>
+    <p class="lead" id="sub">Mande seu currículo para o banco de talentos da RHAqui. Quando surgir uma vaga com o seu perfil, a gente chama você.</p>
+    <div id="prevAviso"></div>
+    <div class="vg" id="vg" style="display:none"></div>
+  </div>
+</section>
+
+<main class="wrap">
+<form id="f" novalidate>
+  <fieldset>
+    <legend>1. Seus dados</legend>
+    <div class="g">
+      <label class="tudo">Nome completo <i class="ob">*</i><input name="nome" required maxlength="100" autocomplete="name"></label>
+      <label>WhatsApp com DDD <i class="ob">*</i><input name="whatsapp" required inputmode="tel" maxlength="20" placeholder="(71) 90000-0000" autocomplete="tel"></label>
+      <label>E-mail <small>(se tiver)</small><input name="email" type="email" maxlength="120" autocomplete="email"></label>
+      <label>Cidade <i class="ob">*</i><input name="cidade" required maxlength="60" value="Candeias"></label>
+      <label>Bairro<input name="bairro" maxlength="60"></label>
+      <label class="tudo" id="areaBox">Cargo ou área que você procura <i class="ob">*</i><input name="area" maxlength="100" placeholder="Ex.: vendedora, caixa, auxiliar administrativo, estoquista"></label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>2. Currículo</legend>
+    <label class="arq" id="arqBox"><input type="file" name="arquivo" id="arquivo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,image/*"><b>Escolher arquivo ou tirar foto</b><small>PDF, Word ou foto do currículo · até 5 MB</small></label>
+    <div id="arqNome"></div>
+    <label class="ou"><input type="checkbox" name="quer_ajuda"><span>Ainda não tenho currículo. Quero ajuda da RHAqui para fazer um.</span></label>
+    <label style="margin-top:14px">Conte um pouco da sua experiência <small>(opcional)</small><textarea name="resumo" maxlength="1500" placeholder="Ex.: 2 anos como vendedora em loja de calçados, sei operar caixa, disponível aos sábados."></textarea></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>3. Seus dados e a LGPD</legend>
+    <label class="aceite"><input type="checkbox" name="lgpd"><span>Autorizo a RHAqui a usar meus dados e meu currículo para recrutamento e a enviá-los à empresa da vaga. <i class="ob">*</i></span></label>
+    <ul class="termos">
+      <li>Seus dados ficam guardados com segurança por até 12 meses e depois são apagados.</li>
+      <li>Para corrigir ou apagar seus dados antes disso, escreva para rhaqui.solucoes@gmail.com.</li>
+      <li>A RHAqui e as empresas nunca cobram para você participar de uma seleção. Desconfie de pedidos de Pix, taxa, curso ou kit.</li>
+    </ul>
+  </fieldset>
+
+  <div class="hp" aria-hidden="true"><label>Site<input name="site_url" tabindex="-1" autocomplete="off"></label></div>
+  <button class="btn" type="submit" id="enviar">Enviar currículo</button>
+  <p id="msg"></p>
+</form>
+
+<div class="feito" id="feito">
+  <div class="ok"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+  <h2>Currículo enviado!</h2>
+  <p id="feitoTxt">Recebemos seu currículo.</p>
+  <p>Seu protocolo: <b id="prot"></b></p>
+  <a class="sec-bt" href="/vagas/">Ver outras vagas</a>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">RHAqui Soluções Empresariais · Candeias/BA · (71) 99202-2915 · rhaqui.solucoes@gmail.com · <a href="/">www.rhaqui.com.br</a></div>
+</footer>
+
+<script>
+// Link do app "Vagas RHAqui" (Apps Script, conta rhaqui.solucoes)
+var API_URL = 'https://script.google.com/macros/s/AKfycby-H1rKG8wYxF-fCtvAQqDR_S9RRnNuF5htuYQl-Kb335Gp2vNtXsCJZq_BMK_RyNgY/exec';
+var MAX_MB = 5;
+var f = document.getElementById('f'), $ = function(id){ return document.getElementById(id); };
+var esc = function(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
+var params = new URLSearchParams(location.search), VAGA = params.get('vaga') || '', DEMO = params.get('exemplo') === '1';
+var inicio = Date.now(), vaga = null;
+
+function mostrarVaga(x){
+  vaga = x;
+  $('tit').textContent = 'Candidatar-se: ' + x.cargo;
+  $('sub').textContent = 'Preencha seus dados e anexe seu currículo. Ele vai direto para a seleção desta vaga, sem precisar de WhatsApp.';
+  $('vg').innerHTML = '<b>' + esc(x.cargo) + '</b><span>' + esc(x.empresa || 'Empresa confidencial') + ' · ' + esc([x.bairro, x.cidade].filter(Boolean).join(', ')) + ' · ' + esc(x.contrato) + ' · ' + esc(x.salario) + '</span>' + (x.afirmativa ? '<span class="tag">Vaga afirmativa: ' + esc(x.afirmativa) + '</span>' : '');
+  $('vg').style.display = 'flex';
+  $('areaBox').style.display = 'none';
+}
+if (DEMO){
+  $('prevAviso').innerHTML = '<p class="prev">Prévia. Nada é enviado nesta página de exemplo.</p>';
+  if (VAGA) mostrarVaga({ id: VAGA, cargo: 'Vendedor(a)', empresa: 'Loja Exemplo Calçados', bairro: 'Centro', cidade: 'Candeias', contrato: 'CLT (efetivo)', salario: 'R$ 1.650,00 + comissão', afirmativa: '' });
+} else if (VAGA){
+  fetch(API_URL + '?acao=vagas').then(function(r){ return r.json(); }).then(function(r){
+    var x = ((r && r.vagas) || []).filter(function(v){ return v.id === VAGA; })[0];
+    if (x) mostrarVaga(x);
+    else { VAGA = ''; $('prevAviso').innerHTML = '<p class="prev">Essa vaga já foi encerrada. Envie seu currículo para o banco de talentos e avisamos quando surgir outra.</p>'; }
+  }).catch(function(){});
+}
+
+$('arquivo').addEventListener('change', function(){
+  var a = this.files[0];
+  $('arqBox').classList.toggle('on', !!a);
+  $('arqNome').textContent = a ? 'Arquivo: ' + a.name + ' (' + (a.size / 1048576).toFixed(1).replace('.', ',') + ' MB)' : '';
+  if (a && a.size > MAX_MB * 1048576){ $('arqNome').textContent = 'Arquivo maior que ' + MAX_MB + ' MB. Escolha outro ou tire uma foto.'; this.value = ''; $('arqBox').classList.remove('on'); }
+});
+
+function erro(t){ var m = $('msg'); m.className = 'er'; m.textContent = t; }
+function ler(a){
+  return new Promise(function(ok, falha){
+    if (!a) return ok(null);
+    var r = new FileReader();
+    r.onload = function(){ ok({ nome: a.name, tipo: tipo(a), base64: String(r.result).split(',')[1] }); };
+    r.onerror = falha; r.readAsDataURL(a);
+  });
+}
+function tipo(a){
+  if (a.type) return a.type;
+  var e = (a.name.split('.').pop() || '').toLowerCase();
+  return { pdf: 'application/pdf', doc: 'application/msword', docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png' }[e] || '';
+}
+
+f.addEventListener('submit', function(ev){
+  ev.preventDefault();
+  $('msg').textContent = '';
+  var fone = f.whatsapp.value.replace(/\D/g, ''), a = $('arquivo').files[0];
+  if (f.nome.value.trim().length < 3) return erro('Preencha seu nome completo.');
+  if (fone.length < 10) return erro('Preencha o WhatsApp com DDD.');
+  if (f.email.value && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(f.email.value)) return erro('Confira o e-mail.');
+  if (!f.cidade.value.trim()) return erro('Preencha sua cidade.');
+  if (!VAGA && !f.area.value.trim()) return erro('Diga o cargo ou a área que você procura.');
+  if (!a && !f.quer_ajuda.checked) return erro('Anexe seu currículo ou marque que quer ajuda para fazer um.');
+  if (!f.lgpd.checked) return erro('Marque a autorização de uso dos dados (LGPD).');
+  var bt = $('enviar'); bt.disabled = true; bt.textContent = 'Enviando…';
+  ler(a).then(function(arq){
+    var d = { tipo: 'candidatura', vaga: VAGA, nome: f.nome.value, whatsapp: f.whatsapp.value, email: f.email.value,
+      cidade: f.cidade.value, bairro: f.bairro.value, area: f.area.value, resumo: f.resumo.value,
+      quer_ajuda: f.quer_ajuda.checked, lgpd: f.lgpd.checked, arquivo: arq, site_url: f.site_url.value, ms: Date.now() - inicio };
+    if (DEMO) return { ok: true, protocolo: 'C261124-0000', banco: !VAGA };
+    return fetch(API_URL, { method: 'POST', body: JSON.stringify(d) }).then(function(r){ return r.json(); });
+  }).then(function(r){
+    if (!r || !r.ok){ bt.disabled = false; bt.textContent = 'Enviar currículo'; return erro((r && r.erro) || 'Não foi possível enviar.'); }
+    $('prot').textContent = r.protocolo;
+    $('feitoTxt').textContent = r.banco
+      ? 'Seu currículo entrou no banco de talentos da RHAqui. Quando surgir uma vaga com o seu perfil, chamamos você no WhatsApp.'
+      : 'Seu currículo foi para a seleção da vaga ' + (vaga ? vaga.cargo : '') + '. Se o seu perfil for escolhido, a empresa ou a RHAqui entra em contato.';
+    f.style.display = 'none'; $('feito').style.display = 'block'; window.scrollTo(0, 0);
+  }).catch(function(){
+    bt.disabled = false; bt.textContent = 'Enviar currículo';
+    erro('Não foi possível enviar agora. Confira sua internet e tente de novo.');
+  });
+});
+</script>
+</body>
+</html>
