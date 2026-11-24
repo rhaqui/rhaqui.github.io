@@ -110,6 +110,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdro
 .pcard li{padding-left:22px;position:relative}
 .pcard li:before{content:"";position:absolute;left:0;top:8px;width:9px;height:9px;border-radius:50%;background:var(--pon)}
 .pcard>.msub{background:#fff;border-radius:18px;padding:14px;color:#1F4B40;align-self:center;width:100%}.pcard>.msub .t{font-weight:800;font-size:13px;margin-bottom:8px}.pcard>.msub table{width:100%;border-collapse:separate;border-spacing:3px;font-size:12px;text-align:center}.pcard>.msub th{color:#5b6f69}.pcard>.msub td{background:#E6F6F2;border-radius:5px;padding:4px 0;font-weight:700}.pcard>.msub td.f{background:#f1f3f2;color:#8a9a96}.pcard>.msub td.n{background:#0F766E;color:#fff}.pcard>.msub .leg{display:flex;gap:12px;margin-top:8px;font-size:11.5px;color:#5b6f69}
+.ext.sob .entregues ul{padding:0;margin:0}.ext.sob .entregues li{padding-left:0}.entregues{margin:0 0 16px;border:1px solid var(--lin);border-radius:14px;padding:12px 14px;background:#fff}.entregues>b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ver);margin-bottom:6px}.entregues ul{list-style:none;display:grid;gap:6px;padding:0;margin:0}.entregues li{display:flex;align-items:center;gap:10px;font-size:14.5px}.entregues li:before{display:none}.entregues .qt{min-width:30px;height:30px;border-radius:9px;background:var(--ver);color:#fff;font-weight:800;display:inline-grid;place-items:center}
 .pcard .rod{margin-top:18px;font-size:14px;font-weight:600;color:var(--pon)}
 .badge{display:inline-block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--pon);color:var(--esc);border-radius:999px;padding:4px 10px;margin-bottom:12px}
 /* celular */
@@ -382,7 +383,7 @@ button.btn{font-family:inherit}
       <article class="jor clic">
         <div class="foto"><img src="https://images.pexels.com/photos/4226115/pexels-photo-4226115.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Entrevista de emprego"><span class="num">01 · CONTRATAR</span></div>
         <div class="corpo">
-          <h3>Contratar bem</h3>
+          <h3>Contratar bem</h3><span class="cont" data-cont="Contratar bem" hidden></span>
           <p class="sub">Você só conversa com os finalistas.</p>
           <ul class="opc">
             <li><label><input type="checkbox" class="srv" data-mod="Contratar bem" value="Recrutamento e seleção"><span><b>Recrutamento e seleção</b>: triagem, entrevistas, testes e referências</span></label></li>
@@ -396,7 +397,7 @@ button.btn{font-family:inherit}
       <article class="jor clic">
         <div class="foto"><img src="https://images.pexels.com/photos/8475205/pexels-photo-8475205.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Colegas de avental conversando na loja"><span class="num">02 · MANTER</span></div>
         <div class="corpo">
-          <h3>Manter a equipe em dia</h3>
+          <h3>Manter a equipe em dia</h3><span class="cont" data-cont="Manter a equipe em dia" hidden></span>
           <p class="sub">Rotina organizada e gente que fica.</p>
           <ul class="opc">
             <li><label><input type="checkbox" class="srv" data-mod="Manter a equipe em dia" value="Departamento pessoal"><span><b>Departamento pessoal</b>: ponto, férias, 13º, atestados, afastamentos e benefícios</span></label></li>
@@ -411,7 +412,7 @@ button.btn{font-family:inherit}
       <article class="jor clic">
         <div class="foto"><img src="https://images.pexels.com/photos/7875831/pexels-photo-7875831.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Pessoa assinando documento"><span class="num">03 · PROTEGER</span></div>
         <div class="corpo">
-          <h3>Proteger a empresa</h3>
+          <h3>Proteger a empresa</h3><span class="cont" data-cont="Proteger a empresa" hidden></span>
           <p class="sub">Prevenção antes da reclamação trabalhista.</p>
           <ul class="opc">
             <li><label><input type="checkbox" class="srv" data-mod="Proteger a empresa" value="Adequação à CLT e à convenção"><span><b>Adequação à CLT e à convenção</b>: jornada, horas extras, banco de horas e pisos</span></label></li>
@@ -429,15 +430,21 @@ button.btn{font-family:inherit}
       <div class="ext sob clic">
         <div>
           <span class="tag">Novo · Tecnologia sob medida</span>
-          <h3>Planilhas de controle e soluções para a sua empresa</h3>
-          <p>Montamos planilhas e pequenos sistemas para organizar o que hoje está no papel, no caderno ou na cabeça de alguém.</p>
+          <h3>Planilhas, portais e dashboards para a sua empresa</h3><span class="cont" data-cont="Planilha de controle|Dashboard|Portal da empresa|Automação de relatórios e avisos|App ou formulário no celular|Integração Google Planilhas e Excel/OneDrive|Solução sob medida" hidden></span>
+          <p>Montamos planilhas, portais e painéis para organizar o que hoje está no papel, no caderno ou na cabeça de alguém, e para mostrar os números do negócio num lugar só.</p>
           <ul>
             <li>Planilhas de controle: estoque, caixa, vendas, entregas, frota, pedidos</li>
+            <li>Dashboards: painéis com vendas, estoque, caixa e equipe atualizados sozinhos</li>
+            <li>Portal da empresa: um endereço único com acessos, documentos e pedidos da equipe</li>
             <li>Automação de tarefas repetitivas: relatórios e avisos por e-mail</li>
             <li>Formulários e apps simples no celular, ligados à planilha</li>
+            <li>Integração entre Google Planilhas e Excel/OneDrive: os dados conversam entre os dois</li>
           </ul>
           <div class="caso"><b>Caso real:</b> uma empresa de Candeias pediu só uma planilha para anotar entradas e saídas dos funcionários. Entregamos um sistema de ponto completo, com app no celular, relatórios automáticos e folha do mês pronta.</div>
-          <button type="button" class="btn btn-pri" id="abrePlan">Contar o que preciso controlar</button>
+          <div class="entregues" id="entregues" hidden><b>Pedidos já recebidos</b>
+            <ul data-cont-lista="Planilha de controle|Dashboard|Portal da empresa|Automação de relatórios e avisos|App ou formulário no celular|Integração Google Planilhas e Excel/OneDrive|Solução sob medida"></ul>
+          </div>
+          <button type="button" class="btn btn-pri" id="abrePlan">Contar o que preciso</button>
         </div>
         <div class="sheet" aria-hidden="true">
           <div class="bar">Controle de estoque · Novembro</div>
@@ -454,9 +461,9 @@ button.btn{font-family:inherit}
         <img src="https://images.pexels.com/photos/33693159/pexels-photo-33693159.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Funcionários entrando em um micro-ônibus">
         <div><span class="tag">Com parceiro de transporte</span><h3>Transporte da equipe (fretamento)</h3><p>Rotas e horários montados pela escala de cada funcionário, com veículos licenciados e seguro. Comparamos com o custo do vale-transporte.</p><span class="embreve">Em preparação · em breve</span></div>
       </div>
-      <div class="ext clic"><span class="tag">Para quem busca emprego</span><h3>Currículos profissionais</h3><p>Currículo bem escrito, com revisão e dicas para a entrevista.</p><a class="vai" href="#ficha" data-ct="Currículo profissional|Quero fazer meu currículo|pessoa">Quero fazer meu currículo &rarr;</a></div>
-      <div class="ext clic"><span class="tag">Novo</span><h3>Consultoria de LinkedIn</h3><p>Para profissionais: perfil completo, foto, título e resumo que chamam a atenção de recrutadores. Para empresas: página da empresa e vagas no LinkedIn para atrair bons candidatos. Feito sob medida com o Claude, uma das IAs mais avançadas do mundo, e revisado pela nossa especialista em RH.</p><a class="vai" href="/linkedin/">Conhecer a consultoria &rarr;</a></div>
-      <div class="ext clic"><span class="tag">Equipe unida</span><h3>Eventos e confraternizações</h3><p>Fim de ano, integração e datas comemorativas, com fornecedores parceiros e dentro do seu orçamento.</p><button type="button" class="btn btn-pri" id="abreEv">Planejar meu evento</button></div>
+      <div class="ext clic"><span class="tag">Para quem busca emprego</span><h3>Currículos profissionais</h3><span class="cont" data-cont="Currículo profissional" hidden></span><p>Currículo bem escrito, com revisão e dicas para a entrevista.</p><a class="vai" href="#ficha" data-ct="Currículo profissional|Quero fazer meu currículo|pessoa">Quero fazer meu currículo &rarr;</a></div>
+      <div class="ext clic"><span class="tag">Novo</span><h3>Consultoria de LinkedIn</h3><span class="cont" data-cont="Consultoria de LinkedIn" hidden></span><p>Para profissionais: perfil completo, foto, título e resumo que chamam a atenção de recrutadores. Para empresas: página da empresa e vagas no LinkedIn para atrair bons candidatos. Feito sob medida com o Claude, uma das IAs mais avançadas do mundo, e revisado pela nossa especialista em RH.</p><a class="vai" href="/linkedin/">Conhecer a consultoria &rarr;</a></div>
+      <div class="ext clic"><span class="tag">Equipe unida</span><h3>Eventos e confraternizações</h3><span class="cont" data-cont="Eventos e confraternizações" hidden></span><p>Fim de ano, integração e datas comemorativas, com fornecedores parceiros e dentro do seu orçamento.</p><button type="button" class="btn btn-pri" id="abreEv">Planejar meu evento</button></div>
     </div>
   </div>
 </section>
@@ -472,7 +479,7 @@ button.btn{font-family:inherit}
         <div>
           <span class="badge">Em uso em Candeias</span>
           <h3>Ponto <span>RH</span>Aqui</h3>
-          <div class="sub">Ponto pelo celular, com localização</div>
+          <div class="sub">Ponto pelo celular, com localização</div><span class="cont" data-cont="Ponto RHAqui" hidden></span>
           <ul>
             <li>Batida por link, sem aplicativo e sem relógio de ponto</li>
             <li>Data, hora e localização em cada registro</li>
@@ -495,7 +502,7 @@ button.btn{font-family:inherit}
         <div>
           <span class="badge">Novidade</span>
           <h3>Escala <span>RH</span>Aqui</h3>
-          <div class="sub">Montagem de escalas de trabalho</div>
+          <div class="sub">Montagem de escalas de trabalho</div><span class="cont" data-cont="Escala RHAqui" hidden></span>
           <ul>
             <li>Nós montamos a escala do mês, dentro da CLT e da convenção do comércio</li>
             <li>Folgas, domingos e feriados no rodízio</li>
@@ -562,18 +569,18 @@ button.btn{font-family:inherit}
     <h2>Do serviço avulso ao RH completo</h2>
     <div class="pl-g">
       <div class="pl">
-        <h3>Avulso</h3><div class="para">Para uma necessidade pontual</div>
+        <h3>Avulso</h3><div class="para">Para uma necessidade pontual</div><span class="cont" data-cont="Orçamento de serviço avulso" hidden></span>
         <p>Uma vaga, uma admissão ou demissão, um regulamento, uma escala ou um currículo. Orçamento fechado antes de começar.</p>
         <a class="btn btn-sec" href="#ficha" data-ct="Orçamento de serviço avulso|Pedir orçamento|empresa">Pedir orçamento</a>
       </div>
       <div class="pl dest">
         <span class="fit">Recomendado</span>
-        <h3>RH Essencial</h3><div class="para">Para quem não tem RH próprio</div>
+        <h3>RH Essencial</h3><div class="para">Para quem não tem RH próprio</div><span class="cont" data-cont="Plano RH Essencial" hidden></span>
         <p>Ponto RHAqui + acompanhamento mensal do ponto e das escalas + uma consulta por mês para tirar dúvidas trabalhistas.</p>
         <a class="btn btn-cla" href="#ficha" data-ct="Plano RH Essencial|Quero o plano RH Essencial|empresa">Quero o Essencial</a>
       </div>
       <div class="pl">
-        <h3>RH Completo</h3><div class="para">Para quem quer delegar o RH</div>
+        <h3>RH Completo</h3><div class="para">Para quem quer delegar o RH</div><span class="cont" data-cont="Plano RH Completo" hidden></span>
         <p>Vagas, recrutamento, admissão, exames, departamento pessoal, ponto, escalas, transporte, demissões e treinamentos, com o seu contador. Um RH inteiro, sem contratar um.</p>
         <a class="btn btn-sec" href="#ficha" data-ct="Plano RH Completo|Quero o plano RH Completo|empresa">Quero o Completo</a>
       </div>
@@ -706,9 +713,19 @@ button.btn{font-family:inherit}
 <div class="modal" id="mPlan" role="dialog" aria-modal="true" aria-labelledby="mPlanT">
   <form class="form" onsubmit="return false">
     <button type="button" class="fecha" aria-label="Fechar">&times;</button>
-    <h3 id="mPlanT">Planilhas e soluções sob medida</h3>
-    <p class="msub">Conte o que você quer controlar. A conversa segue pelo WhatsApp com o Marcelo, que cuida das soluções em tecnologia.</p>
-    <label>O que você quer controlar?</label>
+    <h3 id="mPlanT">Planilhas, portais e dashboards</h3>
+    <p class="msub">Conte o que você precisa. A conversa segue pelo WhatsApp com o Marcelo, que cuida das soluções em tecnologia.</p>
+    <label>Que tipo de solução você procura?</label>
+    <div class="grade">
+      <label><input type="checkbox" class="ps" value="Planilha de controle">Planilha de controle</label>
+      <label><input type="checkbox" class="ps" value="Dashboard (painel de indicadores)">Dashboard / painel</label>
+      <label><input type="checkbox" class="ps" value="Portal da empresa">Portal da empresa</label>
+      <label><input type="checkbox" class="ps" value="Automação de relatórios e avisos">Automação</label>
+      <label><input type="checkbox" class="ps" value="App ou formulário no celular">App ou formulário</label>
+      <label><input type="checkbox" class="ps" value="Integração Google Planilhas e Excel/OneDrive">Google Planilhas + Excel</label>
+      <label><input type="checkbox" class="ps" value="Ainda não sei">Ainda não sei</label>
+    </div>
+    <label>O que você quer controlar ou acompanhar?</label>
     <div class="grade">
       <label><input type="checkbox" class="pc" value="Estoque">Estoque</label>
       <label><input type="checkbox" class="pc" value="Caixa">Caixa</label>
@@ -861,8 +878,10 @@ button.btn{font-family:inherit}
   function txtP(){
     var c=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});
     var s=document.querySelector('input[name=p_sis]:checked');
-    var l=['Olá! Quero uma planilha ou solução para controlar:'];
-    l.push(c.length?c.join(', '):'(a definir)');
+    var t=[].map.call(document.querySelectorAll('.ps:checked'),function(x){return x.value});
+    var l=['Olá! Quero uma solução sob medida.'];
+    l.push('Tipo: '+(t.length?t.join(', '):'(a definir)'));
+    l.push('Controlar/acompanhar: '+(c.length?c.join(', '):'(a definir)'));
     if(v('p_out'))l.push('Detalhes: '+v('p_out'));
     if(s)l.push('Sistema atual: '+(s.value==='Não'?'nenhum (papel ou de cabeça)':s.value==='Planilha'?'uso uma planilha':'tenho um sistema')+(v('p_qual')?' - '+v('p_qual'):''));
     if(v('p_emp'))l.push('Empresa: '+v('p_emp'));
@@ -897,7 +916,7 @@ button.btn{font-family:inherit}
   var P=window.RHAquiPedido;
   if(P){
     P.ligar({botao:$('s_wa'),aviso:$('s_av'),obrig:['nome','telefone'],coleta:function(){return {servico:mod,resumo:sel.map(function(x){return CURTO[x]||x}).join(', '),wa:'5571992022915',empresa:v('s_emp'),nome:v('s_nom'),telefone:v('s_tel'),cidade:v('s_cid'),linhas:txtS().split('\n').slice(1)}}});
-    P.ligar({botao:$('p_wa'),aviso:$('p_av'),obrig:['nome','telefone'],coleta:function(){var pc=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});return {servico:'Planilhas e soluções sob medida',resumo:'Planilha'+(pc.length?' de '+pc.join(', '):(v('p_out')?': '+v('p_out'):' sob medida')),wa:'5571981737865',empresa:v('p_emp'),nome:v('p_nom'),telefone:v('p_tel'),linhas:txtP().split('\n').slice(1).concat(v('p_tel')?['Telefone: '+v('p_tel')]:[])}}});
+    P.ligar({botao:$('p_wa'),aviso:$('p_av'),obrig:['nome','telefone'],coleta:function(){var pc=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});return {servico:'Planilhas, portais e dashboards',resumo:(function(){var t=[].map.call(document.querySelectorAll('.ps:checked'),function(x){return x.value.replace(' (painel de indicadores)','')});return (t.length?t.join(', '):'Solução sob medida')+(pc.length?' - '+pc.join(', '):(v('p_out')?' - '+v('p_out'):''))})(),wa:'5571981737865',empresa:v('p_emp'),nome:v('p_nom'),telefone:v('p_tel'),linhas:txtP().split('\n').slice(1).concat(v('p_tel')?['Telefone: '+v('p_tel')]:[])}}});
     P.ligar({botao:$('e_wa'),aviso:$('e_av'),obrig:['nome','telefone'],coleta:function(){return {servico:'Eventos e confraternizações',resumo:(v('e_tipo')||'Evento')+(v('e_qtd')?' para '+v('e_qtd')+' pessoas':''),wa:'5571992022915',empresa:v('e_emp'),nome:v('e_nom'),telefone:v('e_tel'),linhas:txtE().split('\n').slice(1)}}});
   }
   var ct={serv:'',tipo:'empresa'};
@@ -925,5 +944,6 @@ button.btn{font-family:inherit}
   document.querySelectorAll('.modal').forEach(function(m){m.querySelector('.fecha').addEventListener('click',function(){var a=m.querySelector('.aviso-ped');if(a){a.className='aviso-ped';a.textContent=''}})});
 })();
 </script>
+<script src="/contagem.js"></script>
 </body>
 </html>
