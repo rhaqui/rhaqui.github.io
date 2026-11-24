@@ -31,7 +31,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdro
 .olho:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--pon)}
 h1{font-size:clamp(28px,4.4vw,42px);font-weight:800;color:var(--esc);letter-spacing:-.02em;line-height:1.15;margin:10px 0 10px}
 .lead{font-size:17px;color:var(--sua);max-width:640px}
-.filtros{display:grid;grid-template-columns:1fr 220px 220px;gap:10px;margin-top:22px}
+.filtros{display:grid;grid-template-columns:1fr 190px 190px 190px;gap:10px;margin-top:22px}
 .filtros input,.filtros select{width:100%;border:1.5px solid var(--lin);border-radius:12px;padding:12px 14px;font:inherit;font-size:15px;background:#fff;color:var(--txt)}
 .filtros input:focus,.filtros select:focus{outline:none;border-color:var(--ver);box-shadow:0 0 0 3px rgba(15,118,110,.15)}
 .cont{color:var(--sua);font-size:14px;margin:18px 0 10px}
@@ -42,7 +42,7 @@ h1{font-size:clamp(28px,4.4vw,42px);font-weight:800;color:var(--esc);letter-spac
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12.5px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--cla);color:var(--esc)}
 .tag.sal{background:#EAF7E8;color:#1d6b1a}
-.tag.pcd{background:#E8EEFB;color:#2949a0}
+.tag.afi{background:#F3E8FB;color:#6b2a99}
 .info{font-size:14px;color:var(--txt);display:grid;gap:3px}
 .info b{color:var(--esc);font-weight:600}
 details{border-top:1px solid var(--lin);padding-top:10px}
@@ -94,6 +94,7 @@ footer a{text-decoration:underline}
       <input id="busca" type="search" placeholder="Buscar cargo, empresa ou palavra" aria-label="Buscar">
       <select id="cidade" aria-label="Cidade"><option value="">Todas as cidades</option></select>
       <select id="contrato" aria-label="Contrato"><option value="">Todos os contratos</option></select>
+      <select id="afirm" aria-label="Vagas afirmativas"><option value="">Todas as vagas</option><option value="*">Só vagas afirmativas</option></select>
     </div>
   </div>
 </section>
@@ -127,8 +128,8 @@ var API_URL = 'https://script.google.com/macros/s/AKfycby-H1rKG8wYxF-fCtvAQqDR_S
 var ZAP = '5571992022915';
 
 var EXEMPLO = { ok: true, vagas: [
-  { id:'V261123-1001', publicada:'23/11/2026', validade:'23/12/2026', empresa:'Loja Exemplo Calçados', ramo:'Calçados', cidade:'Candeias', bairro:'Centro', modalidade:'Presencial', cargo:'Vendedor(a)', quantidade:2, contrato:'CLT (efetivo)', jornada:'44h semanais, 08h às 18h', dias:'Seg a sáb, folga no domingo', salario:'R$ 1.650,00 + comissão', beneficios:'Vale-transporte, alimentação', escolaridade:'Médio completo', experiencia:'Desejável', requisitos:'Gostar de atender pessoas.\nDisponibilidade aos sábados.', atividades:'Atender clientes, organizar a loja e repor produtos.', pcd:'', candidatura:'rhaqui', contato:'' },
-  { id:'V261123-1002', publicada:'23/11/2026', validade:'08/12/2026', empresa:'', ramo:'Mercado', cidade:'Salvador', bairro:'Pituba', modalidade:'Presencial', cargo:'Operador(a) de caixa', quantidade:1, contrato:'CLT temporário', jornada:'6h por dia', dias:'Escala 6x1', salario:'A combinar', beneficios:'Vale-transporte', escolaridade:'Médio completo', experiencia:'Mínimo 6 meses', requisitos:'Experiência com caixa.', atividades:'Registrar vendas, receber pagamentos e fechar o caixa.', pcd:'Exclusiva para PCD', candidatura:'whatsapp_empresa', contato:'71900000000' }
+  { id:'V261123-1001', publicada:'23/11/2026', validade:'23/12/2026', empresa:'Loja Exemplo Calçados', ramo:'Calçados', cidade:'Candeias', bairro:'Centro', modalidade:'Presencial', cargo:'Vendedor(a)', quantidade:2, contrato:'CLT (efetivo)', jornada:'44h semanais, 08h às 18h', dias:'Seg a sáb, folga no domingo', salario:'R$ 1.650,00 + comissão', beneficios:'Vale-transporte, alimentação', escolaridade:'Médio completo', experiencia:'Desejável', requisitos:'Gostar de atender pessoas.\nDisponibilidade aos sábados.', atividades:'Atender clientes, organizar a loja e repor produtos.', afirmativa:'', candidatura:'rhaqui', contato:'' },
+  { id:'V261123-1002', publicada:'23/11/2026', validade:'08/12/2026', empresa:'', ramo:'Mercado', cidade:'Salvador', bairro:'Pituba', modalidade:'Presencial', cargo:'Operador(a) de caixa', quantidade:1, contrato:'CLT temporário', jornada:'6h por dia', dias:'Escala 6x1', salario:'A combinar', beneficios:'Vale-transporte', escolaridade:'Médio completo', experiencia:'Mínimo 6 meses', requisitos:'Experiência com caixa.', atividades:'Registrar vendas, receber pagamentos e fechar o caixa.', afirmativa:'Mulheres', candidatura:'whatsapp_empresa', contato:'71900000000' }
 ]};
 
 var todas = [];
@@ -158,6 +159,7 @@ function iniciar(v){
   var uniq = function(k){ return v.map(function(x){ return x[k]; }).filter(function(x,i,a){ return x && a.indexOf(x) === i; }).sort(); };
   uniq('cidade').forEach(function(c){ $('cidade').insertAdjacentHTML('beforeend', '<option>' + esc(c) + '</option>'); });
   uniq('contrato').forEach(function(c){ $('contrato').insertAdjacentHTML('beforeend', '<option>' + esc(c) + '</option>'); });
+  uniq('afirmativa').forEach(function(c){ $('afirm').insertAdjacentHTML('beforeend', '<option value="' + esc(c) + '">Afirmativa: ' + esc(c) + '</option>'); });
   desenhar();
 }
 
@@ -175,10 +177,10 @@ function botao(x){
 
 function desenhar(){
   var q = $('busca').value.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-  var c = $('cidade').value, t = $('contrato').value;
+  var c = $('cidade').value, t = $('contrato').value, a = $('afirm').value;
   var v = todas.filter(function(x){
     var alvo = [x.cargo, x.empresa, x.ramo, x.bairro, x.requisitos, x.atividades].join(' ').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
-    return (!q || alvo.indexOf(q) >= 0) && (!c || x.cidade === c) && (!t || x.contrato === t);
+    return (!q || alvo.indexOf(q) >= 0) && (!c || x.cidade === c) && (!t || x.contrato === t) && (!a || (a === '*' ? !!x.afirmativa : x.afirmativa === a));
   });
   $('cont').textContent = todas.length ? (v.length + (v.length === 1 ? ' vaga aberta' : ' vagas abertas')) : '';
   if (!todas.length){
@@ -192,7 +194,7 @@ function desenhar(){
       '<div class="emp">' + esc(x.empresa || 'Empresa confidencial') + (x.ramo ? ' · ' + esc(x.ramo) : '') + '</div>' +
       '<div class="tags"><span class="tag">' + esc(local) + '</span><span class="tag">' + esc(x.contrato) + '</span>' +
         (x.modalidade && x.modalidade !== 'Presencial' ? '<span class="tag">' + esc(x.modalidade) + '</span>' : '') +
-        '<span class="tag sal">' + esc(x.salario) + '</span>' + (x.pcd ? '<span class="tag pcd">' + esc(x.pcd) + '</span>' : '') + '</div>' +
+        '<span class="tag sal">' + esc(x.salario) + '</span>' + (x.afirmativa ? '<span class="tag afi">Vaga afirmativa: ' + esc(x.afirmativa) + '</span>' : '') + '</div>' +
       '<div class="info"><span><b>Jornada:</b> ' + esc(x.jornada) + (x.dias ? ' · ' + esc(x.dias) : '') + '</span>' +
         (x.beneficios ? '<span><b>Benefícios:</b> ' + esc(x.beneficios) + '</span>' : '') + '</div>' +
       '<details><summary>Ver atividades e requisitos</summary><div class="det">' +
@@ -205,7 +207,7 @@ function desenhar(){
   }).join('');
 }
 
-['busca','cidade','contrato'].forEach(function(id){ $(id).addEventListener('input', desenhar); });
+['busca','cidade','contrato','afirm'].forEach(function(id){ $(id).addEventListener('input', desenhar); });
 carregar();
 </script>
 </body>
