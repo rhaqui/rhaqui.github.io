@@ -267,6 +267,38 @@ footer a:hover{color:#fff}
 .ext.sob ul{list-style:none;display:grid;gap:8px;margin:12px 0 16px}
 .ext.sob li{font-size:15px;color:var(--sua);padding-left:22px;position:relative}
 .ext.sob li:before{content:"";position:absolute;left:0;top:7px;width:10px;height:10px;border-radius:3px;background:var(--ver)}
+.vitrine{display:grid;gap:14px}
+.vitrine .rot{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ver);margin:0 0 6px}
+.vitrine .duo{display:grid;grid-template-columns:1.25fr 1fr;gap:14px;align-items:stretch}
+.vt{background:#fff;border:1px solid var(--lin);border-radius:16px;box-shadow:0 10px 24px rgba(15,58,50,.08);overflow:hidden}
+.vt .bar{background:var(--esc);color:#fff;font-weight:700;font-size:13px;padding:9px 12px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px 12px 4px}
+.kpi{background:var(--cla);border-radius:10px;padding:8px 10px}
+.kpi small{display:block;font-size:11px;color:var(--sua)}
+.kpi b{font-size:16px;color:var(--esc)}
+.kpi i{font-style:normal;font-size:11px;font-weight:700;color:#15803D}
+.barras{display:flex;align-items:flex-end;gap:10px;height:86px;padding:8px 14px 0}
+.barras span{flex:1;background:linear-gradient(180deg,#14B8A6,var(--ver));border-radius:6px 6px 0 0;position:relative}
+.barras span em{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-style:normal;font-size:10.5px;color:var(--sua)}
+.vt .pe{font-size:11.5px;color:var(--sua);padding:24px 12px 10px}
+.portal .url{display:flex;align-items:center;gap:6px;background:#F1F5F4;padding:7px 10px;border-bottom:1px solid var(--lin);font-size:11px;color:var(--sua)}
+.portal .url i{width:7px;height:7px;border-radius:50%;background:#CBD5D1;display:inline-block}
+.portal .url span{margin-left:6px;background:#fff;border-radius:6px;padding:2px 8px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal .ola{font-weight:700;color:var(--esc);font-size:13px;padding:10px 12px 4px}
+.ptiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px 12px 12px}
+.ptiles div{border:1px solid var(--lin);border-radius:10px;padding:9px 8px;font-size:12px;font-weight:600;color:var(--esc);background:#FAFCFB}
+.ptiles div b{display:block;width:22px;height:22px;border-radius:7px;background:var(--cla);color:var(--ver);font-size:12px;line-height:22px;text-align:center;margin-bottom:4px}
+.fone{max-width:190px;margin:0 auto;border:7px solid #1F2A27;border-radius:26px;overflow:hidden;background:#F4F7F6;box-shadow:0 10px 24px rgba(15,58,50,.14)}
+.fone .topo{background:#2c4a40;color:#fff;padding:10px 12px;font-size:12px}
+.fone .topo b{display:block;font-size:13.5px}
+.fone .hora{text-align:center;font-size:26px;font-weight:800;color:var(--esc);padding:10px 0 2px}
+.fone .dia{text-align:center;font-size:11px;color:var(--sua);margin-bottom:8px}
+.fone .bt{margin:0 12px 7px;border-radius:10px;padding:8px;text-align:center;font-size:12px;font-weight:700;color:#fff;background:var(--ver)}
+.fone .bt.cl{background:#fff;color:var(--esc);border:1px solid var(--lin)}
+.fone .ok{margin:4px 12px 12px;font-size:11px;color:#15803D;font-weight:700;text-align:center}
+.vitrine .aviso-ex{font-size:11.5px;color:var(--sua);text-align:right}
+.ext.sob{align-items:start}
+@media(max-width:620px){.vitrine .duo{grid-template-columns:1fr}.kpis{gap:6px;padding:10px 10px 4px}.kpi{padding:7px 8px}.kpi b{font-size:13px;display:block}.kpi i{display:block}}
 .ext.sob .caso{background:var(--cla);border-radius:14px;padding:12px 14px;font-size:14.5px;color:var(--esc);margin-bottom:16px}
 .sheet{border:1px solid var(--lin);border-radius:14px;overflow:hidden;font-size:12.5px;box-shadow:0 14px 30px rgba(15,60,50,.10)}
 .sheet .bar{background:var(--esc);color:#fff;font-weight:700;padding:9px 12px}
@@ -295,6 +327,7 @@ footer a:hover{color:#fff}
 button.btn{font-family:inherit}
 .embreve{display:inline-block;margin-top:6px;padding:6px 12px;border-radius:999px;background:#FEF3C7;color:#92400E;font-size:13.5px;font-weight:600}
 .ext.emprep img{filter:grayscale(.5);opacity:.85}
+.anexo{border:1.5px dashed var(--ver);border-radius:14px;padding:12px 14px;background:var(--cla)}.anexo input{background:#fff;width:100%}.anexo small{display:block;font-size:12.5px;color:var(--sua);margin-top:6px;line-height:1.4}.anexo ul{list-style:none;margin:6px 0 0;padding:0;font-size:13px;color:var(--esc)}.anexo li{padding:3px 0}.anexo li:before{content:"📎 "}
 .aviso-ped{display:none;margin-top:12px;padding:12px 14px;border-radius:12px;font-size:14.5px;line-height:1.5}
 .aviso-ped.ok{display:block;background:var(--cla);color:var(--esc);border:1px solid var(--ver)}
 .aviso-ped.erro{display:block;background:#FEF2F2;color:#991B1B;border:1px solid #FCA5A5}
@@ -455,7 +488,50 @@ button.btn{font-family:inherit}
           </div>
           <button type="button" class="btn btn-pri" id="abrePlan">Contar o que preciso</button>
         </div>
-        <div class="sheet" aria-hidden="true">
+        <div class="vitrine" aria-hidden="true">
+          <div>
+            <p class="rot">Dashboard</p>
+            <div class="vt">
+              <div class="bar">Painel de vendas · Novembro</div>
+              <div class="kpis">
+                <div class="kpi"><small>Vendas no mês</small><b>R$ 48,2 mil</b> <i>+12%</i></div>
+                <div class="kpi"><small>Ticket médio</small><b>R$ 86</b> <i>+4%</i></div>
+                <div class="kpi"><small>Caixa hoje</small><b>R$ 3.410</b></div>
+              </div>
+              <div class="barras"><span style="height:55%"><em>Sem 1</em></span><span style="height:72%"><em>Sem 2</em></span><span style="height:64%"><em>Sem 3</em></span><span style="height:92%"><em>Sem 4</em></span></div>
+              <div class="pe">Atualiza sozinho a partir das planilhas de vendas e caixa</div>
+            </div>
+          </div>
+          <div class="duo">
+            <div>
+              <p class="rot">Mini portal</p>
+              <div class="vt portal">
+                <div class="url"><i></i><i></i><i></i><span>portal.suaempresa.com.br</span></div>
+                <div class="ola">Olá, equipe!</div>
+                <div class="ptiles">
+                  <div><b>$</b>Holerites</div>
+                  <div><b>D</b>Documentos</div>
+                  <div><b>F</b>Pedir folga</div>
+                  <div><b>!</b>Avisos</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <p class="rot">App · Ponto RHAqui</p>
+              <div class="fone">
+                <div class="topo"><b>Ponto RHAqui</b>Bom dia, Ana</div>
+                <div class="hora">07:58</div>
+                <div class="dia">Terça, 25 de novembro</div>
+                <div class="bt">Registrar entrada</div>
+                <div class="bt cl">Saída para almoço</div>
+                <div class="bt cl">Saída final</div>
+                <div class="ok">Localização confirmada</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="rot">Planilha de controle</p>
+        <div class="sheet">
           <div class="bar">Controle de estoque · Novembro</div>
           <table>
             <tr><th>Produto</th><th>Entrada</th><th>Saída</th><th>Saldo</th></tr>
@@ -464,6 +540,9 @@ button.btn{font-family:inherit}
             <tr><td>Argamassa</td><td>80</td><td>52</td><td class="ok">28</td></tr>
           </table>
           <div class="seta">Aviso automático por e-mail quando o saldo fica baixo</div>
+        </div>
+          </div>
+          <div class="aviso-ex">Exemplos com dados fictícios</div>
         </div>
       </div>
       <div class="ext transp emprep">
@@ -762,6 +841,12 @@ button.btn{font-family:inherit}
       <label><input type="radio" name="p_sis" value="Sim">Sim, tenho um sistema</label>
     </div>
     <input id="p_qual" placeholder="Qual sistema ou planilha? (opcional)" style="margin-top:8px">
+    <label for="p_arq">Anexar documentos (opcional)</label>
+    <div class="anexo">
+      <input id="p_arq" type="file" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.ods,.odt,.ppt,.pptx,.txt,.jpg,.jpeg,.png,.webp,.heic">
+      <small>A planilha que você já usa, a lista de melhorias que deseja, fotos do caderno ou um modelo de relatório. Até 3 arquivos, 10 MB no total.</small>
+      <ul id="p_arqs"></ul>
+    </div>
     <div class="dup">
       <div><label for="p_emp">Empresa</label><input id="p_emp" autocomplete="organization"></div>
       <div><label for="p_nom">Seu nome</label><input id="p_nom" autocomplete="name"></div>
@@ -933,7 +1018,16 @@ button.btn{font-family:inherit}
   var P=window.RHAquiPedido;
   if(P){
     P.ligar({botao:$('s_wa'),aviso:$('s_av'),obrig:['nome','telefone'],coleta:function(){return {servico:mod,resumo:sel.map(function(x){return CURTO[x]||x}).join(', '),wa:'5571992022915',empresa:v('s_emp'),nome:v('s_nom'),telefone:v('s_tel'),cidade:v('s_cid'),linhas:txtS().split('\n').slice(1)}}});
-    P.ligar({botao:$('p_wa'),aviso:$('p_av'),obrig:['nome','telefone'],coleta:function(){var pc=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});return {servico:'Planilhas, portais e dashboards',resumo:(function(){var t=[].map.call(document.querySelectorAll('.ps:checked'),function(x){return x.value.replace(' (painel de indicadores)','')});return (t.length?t.join(', '):'Solução sob medida')+(pc.length?' - '+pc.join(', '):(v('p_out')?' - '+v('p_out'):''))})(),wa:'5571981737865',empresa:v('p_emp'),nome:v('p_nom'),telefone:v('p_tel'),linhas:txtP().split('\n').slice(1).concat(v('p_tel')?['Telefone: '+v('p_tel')]:[])}}});
+    P.ligar({botao:$('p_wa'),aviso:$('p_av'),obrig:['nome','telefone'],coleta:function(){var pc=[].map.call(document.querySelectorAll('.pc:checked'),function(x){return x.value});return {servico:'Planilhas, portais e dashboards',resumo:(function(){var t=[].map.call(document.querySelectorAll('.ps:checked'),function(x){return x.value.replace(' (painel de indicadores)','')});return (t.length?t.join(', '):'Solução sob medida')+(pc.length?' - '+pc.join(', '):(v('p_out')?' - '+v('p_out'):''))})(),wa:'5571981737865',anexos:anexosP,empresa:v('p_emp'),nome:v('p_nom'),telefone:v('p_tel'),linhas:txtP().split('\n').slice(1).concat(v('p_tel')?['Telefone: '+v('p_tel')]:[])}}});
+    var anexosP=[];
+    $('p_arq').addEventListener('change',function(){
+      var fs=[].slice.call(this.files||[]),ul=$('p_arqs'),av=$('p_av'),tot=fs.reduce(function(t,f){return t+f.size},0);
+      anexosP=[];ul.innerHTML='';
+      if(fs.length>3||tot>10*1024*1024){this.value='';av.className='aviso-ped erro';av.textContent='Envie até 3 arquivos, com no máximo 10 MB no total.';return}
+      av.className='aviso-ped';av.textContent='';
+      fs.forEach(function(f){var li=document.createElement('li');li.textContent=f.name+' ('+Math.max(1,Math.round(f.size/1024))+' KB)';ul.appendChild(li);
+        var r=new FileReader();r.onload=function(){anexosP.push({nome:f.name,tipo:f.type,dados:String(r.result).split(',')[1]})};r.readAsDataURL(f)});
+    });
     P.ligar({botao:$('e_wa'),aviso:$('e_av'),obrig:['nome','telefone'],coleta:function(){return {servico:'Eventos e confraternizações',resumo:(v('e_tipo')||'Evento')+(v('e_qtd')?' para '+v('e_qtd')+' pessoas':''),wa:'5571992022915',empresa:v('e_emp'),nome:v('e_nom'),telefone:v('e_tel'),linhas:txtE().split('\n').slice(1)}}});
   }
   var ct={serv:'',tipo:'empresa'};
