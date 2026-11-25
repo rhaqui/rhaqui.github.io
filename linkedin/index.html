@@ -476,6 +476,8 @@ footer a:hover{color:#fff}
         <div><label for="nom">Seu nome</label><input id="nom" autocomplete="name"></div>
         <div><label for="tel">Telefone</label><input id="tel" type="tel" autocomplete="tel" placeholder="(71) 9...."></div>
       </div>
+      <label for="mail">E-mail <small style="font-weight:400;color:#5b6b66">(opcional, para receber a cópia do pedido)</small></label>
+      <input id="mail" type="email" autocomplete="email" inputmode="email" placeholder="seu@email.com">
       <label for="lnk">Link do LinkedIn (se já tiver)</label>
       <input id="lnk" type="url" placeholder="linkedin.com/in/seu-nome">
       <label for="obj">Objetivo</label>
@@ -486,7 +488,7 @@ footer a:hover{color:#fff}
         <a class="btn btn-pri" id="btMail" href="#pedido">Enviar pedido</a>
       </div>
       <div class="aviso-ped" id="avPed" role="status"></div>
-      <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui. Usamos os dados só para o atendimento, conforme a LGPD. O currículo, se quiser, pode ser enviado depois respondendo o nosso contato.</p>
+      <p class="obs">Ao enviar, você recebe um número de pedido. A ficha vai por e-mail para a equipe RHAqui (e para você, se informar o e-mail). Usamos os dados só para o atendimento, conforme a LGPD. O currículo, se quiser, pode ser enviado depois respondendo o nosso contato.</p>
     </form>
   </div>
 </section>
@@ -506,7 +508,7 @@ footer a:hover{color:#fff}
     window.__lk=l;
   }
   if(window.RHAquiPedido)RHAquiPedido.ligar({botao:document.getElementById('btMail'),aviso:document.getElementById('avPed'),obrig:['nome','telefone'],
-    coleta:function(){atualiza();return {servico:'Consultoria de LinkedIn',resumo:'LinkedIn - '+v('para'),wa:'',empresa:'',nome:v('nom'),telefone:v('tel'),linhas:window.__lk.slice(1)}}});
+    coleta:function(){atualiza();return {servico:'Consultoria de LinkedIn',resumo:'LinkedIn - '+v('para'),wa:'',empresa:'',nome:v('nom'),telefone:v('tel'),email:v('mail'),linhas:window.__lk.slice(1)}}});
   ['para','nom','tel','lnk','obj','obs'].forEach(function(id){var e=document.getElementById(id);e.addEventListener('input',atualiza);e.addEventListener('change',atualiza)});
   atualiza();
 })();
