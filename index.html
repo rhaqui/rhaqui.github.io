@@ -299,6 +299,14 @@ footer a:hover{color:#fff}
 .vitrine .aviso-ex{font-size:11.5px;color:var(--sua);text-align:right}
 .ext.sob{align-items:start}
 @media(max-width:620px){.vitrine .duo{grid-template-columns:1fr}.kpis{gap:6px;padding:10px 10px 4px}.kpi{padding:7px 8px}.kpi b{font-size:13px;display:block}.kpi i{display:block}}
+.precos{border:1px solid var(--lin);border-radius:14px;padding:12px 14px;background:var(--fun);margin:0 0 16px}
+.precos>b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ver);margin-bottom:6px}
+.precos table{width:100%;border-collapse:collapse;font-size:14px}
+.precos td{padding:5px 0;border-top:1px solid var(--lin);color:var(--txt);vertical-align:top}
+.precos tr:first-child td{border-top:0}
+.precos td.v{text-align:right;font-weight:700;color:var(--esc);white-space:nowrap;padding-left:12px}
+.precos p{font-size:12.5px;color:var(--sua);margin:8px 0 0}
+.modal .precos{margin:10px 0 4px}.modal .precos summary{cursor:pointer;list-style-position:inside}.modal .precos summary b{display:inline;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ver)}.modal .precos table{margin-top:6px}
 .ext.sob .caso{background:var(--cla);border-radius:14px;padding:12px 14px;font-size:14.5px;color:var(--esc);margin-bottom:16px}
 .sheet{border:1px solid var(--lin);border-radius:14px;overflow:hidden;font-size:12.5px;box-shadow:0 14px 30px rgba(15,60,50,.10)}
 .sheet .bar{background:var(--esc);color:#fff;font-weight:700;padding:9px 12px}
@@ -427,7 +435,7 @@ button.btn{font-family:inherit}
           <h3>Contratar bem</h3><span class="cont" data-cont="Contratar bem" hidden></span>
           <p class="sub">Você só conversa com os finalistas.</p>
           <ul class="opc">
-            <li><label><input type="checkbox" class="srv" data-mod="Contratar bem" value="Recrutamento e seleção"><span><b>Recrutamento e seleção</b>: triagem, entrevistas, testes e referências</span></label></li>
+            <li><label><input type="checkbox" class="srv" data-mod="Contratar bem" value="Recrutamento e seleção"><span><b>Recrutamento e seleção</b>: triagem, entrevistas, testes e referências. Triagem a partir de R$ 97 por vaga, com a 1ª vaga grátis (<a href="/vagas/cadastrar/#triagem" style="text-decoration:underline;position:relative;z-index:2">ver níveis</a>)</span></label></li>
             <li><label><input type="checkbox" class="srv" data-mod="Contratar bem" value="Admissão"><span><b>Admissão</b>: documentos, contrato, acordo de compensação e envio ao contador</span></label></li>
             <li><label><input type="checkbox" class="srv" data-mod="Contratar bem" value="Exames ocupacionais e controle do vencimento de cada ASO"><span><b>Exames ocupacionais</b> e controle do vencimento de cada ASO</span></label></li>
           </ul>
@@ -483,6 +491,19 @@ button.btn{font-family:inherit}
             <li>Integração entre Google Planilhas e Excel/OneDrive: os dados conversam entre os dois</li>
             <li>Apresentações gerenciais em PowerPoint: resultados do mês, metas e indicadores prontos para a reunião</li>
           </ul>
+          <div class="precos"><b>Preços de lançamento</b>
+            <table>
+              <tr><td>Ajuste ou conserto de planilha</td><td class="v">R$ 40/h <small>(mín. 1 h)</small></td></tr>
+              <tr><td>Planilha de controle simples (até 3 abas)</td><td class="v">R$ 98,50</td></tr>
+              <tr><td>Planilha completa (4 a 8 abas)</td><td class="v">R$ 198,50</td></tr>
+              <tr><td>Dashboard de indicadores</td><td class="v">R$ 248,50</td></tr>
+              <tr><td>Mini portal ou app Google</td><td class="v">a partir de R$ 398,50</td></tr>
+              <tr><td>Apresentação gerencial em PowerPoint (até 10 slides)</td><td class="v">R$ 123,50</td></tr>
+              <tr><td>Atualização mensal da apresentação</td><td class="v">R$ 74,50/mês</td></tr>
+              <tr><td>Suporte mensal de planilhas (1 h inclusa)</td><td class="v">R$ 49,50/mês</td></tr>
+            </table>
+            <p>Orçamento grátis pela ficha. 50% na aprovação e 50% na entrega · 1 rodada de ajustes · 7 dias de garantia nas fórmulas · prazo de 3, 7 ou 10 a 15 dias úteis, conforme o tamanho.</p>
+          </div>
           <div class="caso"><b>Caso real:</b> uma empresa de Candeias pediu só uma planilha para anotar entradas e saídas dos funcionários. Entregamos um sistema de ponto completo, com app no celular, relatórios automáticos e folha do mês pronta.</div>
           <div class="entregues" id="entregues" hidden><b>Pedidos já recebidos</b>
             <ul data-cont-lista="Planilha de controle|Dashboard|Portal da empresa|Automação de relatórios e avisos|App ou formulário no celular|Integração Google Planilhas e Excel/OneDrive|Apresentação gerencial em PowerPoint|Solução sob medida"></ul>
@@ -813,7 +834,20 @@ button.btn{font-family:inherit}
   <form class="form" onsubmit="return false">
     <button type="button" class="fecha" aria-label="Fechar">&times;</button>
     <h3 id="mPlanT">Planilhas, portais e dashboards</h3>
-    <p class="msub">Conte o que você precisa. A conversa segue pelo WhatsApp com o Marcelo, que cuida das soluções em tecnologia.</p>
+    <p class="msub">Conte o que você precisa. O orçamento é grátis e a conversa segue pelo WhatsApp com o Marcelo, que cuida das soluções em tecnologia.</p>
+    <details class="precos"><summary><b>Ver preços de lançamento</b></summary>
+      <table>
+        <tr><td>Ajuste ou conserto</td><td class="v">R$ 40/h (mín. 1 h)</td></tr>
+        <tr><td>Planilha simples (até 3 abas)</td><td class="v">R$ 98,50</td></tr>
+        <tr><td>Planilha completa (4 a 8 abas)</td><td class="v">R$ 198,50</td></tr>
+        <tr><td>Dashboard de indicadores</td><td class="v">R$ 248,50</td></tr>
+        <tr><td>Mini portal ou app Google</td><td class="v">a partir de R$ 398,50</td></tr>
+        <tr><td>PowerPoint gerencial (até 10 slides)</td><td class="v">R$ 123,50</td></tr>
+        <tr><td>Atualização mensal do PowerPoint</td><td class="v">R$ 74,50/mês</td></tr>
+        <tr><td>Suporte mensal (1 h inclusa)</td><td class="v">R$ 49,50/mês</td></tr>
+      </table>
+      <p>50% na aprovação e 50% na entrega · 1 rodada de ajustes · 7 dias de garantia nas fórmulas · prazo de 3, 7 ou 10 a 15 dias úteis.</p>
+    </details>
     <label>Que tipo de solução você procura?</label>
     <div class="grade">
       <label><input type="checkbox" class="ps" value="Planilha de controle">Planilha de controle</label>
