@@ -57,6 +57,16 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ver);box
 .btn[disabled]{opacity:.6;cursor:wait}
 #msg{margin-top:14px;font-weight:600}
 #msg.er{color:var(--er)}
+.niv{display:grid;gap:10px;margin-top:14px}
+.niv label{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--lin);border-radius:14px;padding:12px 14px;font-weight:500;cursor:pointer;background:#fff}
+.niv input{width:18px;height:18px;margin:3px 0 0;flex-shrink:0;accent-color:var(--ver)}
+.niv label:has(input:checked){border-color:var(--ver);background:var(--cla)}
+.niv .t{display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 12px;font-weight:700;color:var(--esc)}
+.niv .p{color:var(--ver);white-space:nowrap}
+.niv small{display:block;color:var(--sua);font-size:13.5px;font-weight:500;margin-top:2px}
+.regras{font-size:13px;color:var(--sua);margin-top:10px}
+.regras li{margin:3px 0 0 18px}
+.selo1{display:inline-block;background:var(--pon);color:var(--esc);font-size:12px;font-weight:800;border-radius:999px;padding:2px 10px;margin-left:6px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .feito{display:none;background:#fff;border:1px solid var(--lin);border-radius:18px;padding:32px 22px;margin:24px 0 56px;text-align:center}
 .feito h2{color:var(--esc);font-size:26px;margin-bottom:8px}
@@ -155,22 +165,35 @@ footer a{text-decoration:underline}
   </fieldset>
 
   <fieldset>
-    <legend>4. Como receber os candidatos</legend>
+    <legend id="triagem">4. Como receber os candidatos</legend>
     <div class="opc" id="cand">
-      <label><input type="radio" name="candidatura" value="rhaqui" checked>Pela RHAqui, com triagem (recomendado)</label>
-      <label><input type="radio" name="candidatura" value="email_empresa">Direto no meu e-mail</label>
+      <label><input type="radio" name="candidatura" value="rhaqui" checked>Pela RHAqui, com triagem</label>
+      <label><input type="radio" name="candidatura" value="email_empresa">Direto no meu e-mail (grátis)</label>
+    </div>
+    <div id="nivBox">
+      <div class="niv" id="niv">
+        <label><input type="radio" name="triagem" value="basica" checked><span><span class="t">Triagem básica <span class="p">R$ 97 por vaga <span class="selo1">1ª vaga grátis</span></span></span><small>Lemos todos os currículos e enviamos os 5 melhores com comentário, em até 3 dias úteis após o fechamento da vaga.</small></span></label>
+        <label><input type="radio" name="triagem" value="contato"><span><span class="t">Triagem com contato <span class="p">R$ 197 por vaga</span></span><small>Além da triagem, ligamos para os selecionados, confirmamos interesse, salário e disponibilidade, e entregamos 3 finalistas.</small></span></label>
+        <label><input type="radio" name="triagem" value="completa"><span><span class="t">Seleção completa <span class="p">R$ 397 por vaga ou 40% de 1 salário</span></span><small>Vale o maior valor. Inclui entrevista dos finalistas, parecer e agendamento com você, e reposição única em até 30 dias.</small></span></label>
+      </div>
+      <ul class="regras">
+        <li>Mesmo cargo com várias vagas: conta como 1 vaga + R$ 30 por pessoa extra.</li>
+        <li>3 ou mais cargos no mesmo pedido: 15% de desconto.</li>
+        <li>Pagamento: 50% no pedido e 50% na entrega, por Pix no CNPJ da RHAqui. Confirmamos o valor pelo WhatsApp antes de começar.</li>
+        <li>Prefere sem triagem? Escolha "Direto no meu e-mail": o anúncio continua grátis.</li>
+      </ul>
     </div>
     <div class="g" id="contatoBox" style="display:none;margin-top:14px">
       <label class="tudo" id="contatoLbl">E-mail para receber os currículos <small>(deixe vazio para usar o informado acima; não aparece no anúncio)</small><input name="contato_candidatura" type="email" maxlength="120" placeholder="vagas@suaempresa.com.br"></label>
     </div>
-    <p class="dica" style="margin-top:12px" id="candDica">Os candidatos enviam o currículo pelo site da RHAqui. A gente confere e encaminha a você os que têm o perfil da vaga. Seu telefone e e-mail não aparecem no anúncio.</p>
+    <p class="dica" style="margin-top:12px" id="candDica">Os candidatos enviam o currículo pelo site da RHAqui. A gente faz a triagem no nível escolhido e entrega a você só os melhores. Seu telefone e e-mail não aparecem no anúncio.</p>
   </fieldset>
 
   <fieldset>
     <legend>5. Termos</legend>
     <label class="aceite"><input type="checkbox" name="aceite" required><span>Declaro que a vaga é real, que estou autorizado(a) a anunciá-la e aceito os termos abaixo.</span></label>
     <ul class="termos">
-      <li>O anúncio é gratuito. A RHAqui pode ajustar o texto, recusar ou retirar vagas que pareçam falsas, discriminatórias ou fora da lei.</li>
+      <li>O anúncio é gratuito. A triagem pela RHAqui é cobrada por vaga, conforme o nível escolhido e a tabela acima (a 1ª vaga com triagem básica é grátis). A RHAqui pode ajustar o texto, recusar ou retirar vagas que pareçam falsas, discriminatórias ou fora da lei.</li>
       <li>É proibido cobrar qualquer valor do candidato (taxa, curso, kit, uniforme) para participar da seleção.</li>
       <li>A vaga sai do ar na data escolhida ou quando você pedir pelo WhatsApp (71) 99202-2915.</li>
       <li>Privacidade (LGPD): os dados da empresa e do responsável são usados só para conferir e publicar a vaga e para contato sobre ela. CNPJ, nome do responsável e telefone não aparecem no site, salvo o contato que você escolher para receber candidatos. Para pedir a exclusão, escreva para rhaqui.solucoes@gmail.com.</li>
@@ -205,12 +228,13 @@ var pad = new Date(); pad.setDate(pad.getDate() + 30); val.value = iso(pad);
 
 // como receber candidatos
 var dicas = {
-  rhaqui: 'Os candidatos enviam o currículo pelo site da RHAqui. A gente confere e encaminha a você os que têm o perfil da vaga. Seu telefone e e-mail não aparecem no anúncio.',
-  email_empresa: 'Cada currículo enviado pelo site chega no seu e-mail na hora, com o arquivo em anexo. O e-mail não aparece no anúncio, então você não recebe mensagens de fora da seleção.'
+  rhaqui: 'Os candidatos enviam o currículo pelo site da RHAqui. A gente faz a triagem no nível escolhido e entrega a você só os melhores. Seu telefone e e-mail não aparecem no anúncio.',
+  email_empresa: 'Grátis, sem triagem: cada currículo enviado pelo site chega no seu e-mail na hora, com o arquivo em anexo. O e-mail não aparece no anúncio, então você não recebe mensagens de fora da seleção.'
 };
 document.getElementById('cand').addEventListener('change', function(){
   var v = f.candidatura.value;
   document.getElementById('contatoBox').style.display = v === 'rhaqui' ? 'none' : 'grid';
+  document.getElementById('nivBox').style.display = v === 'rhaqui' ? 'block' : 'none';
   document.getElementById('candDica').textContent = dicas[v];
 });
 
@@ -256,6 +280,7 @@ f.addEventListener('submit', function(ev){
   var d = {};
   new FormData(f).forEach(function(v,k){ d[k] = typeof v === 'string' ? v.trim() : v; });
   d.aceite = f.aceite.checked;
+  if (d.candidatura !== 'rhaqui') delete d.triagem;
   var bt = document.getElementById('enviar'); bt.disabled = true; bt.textContent = 'Enviando…';
 
   if (!API_URL){ // prévia: ainda sem o app ligado
